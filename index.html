@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script data-main="js/main.js" src="js/require.js"></script>
+    </head>
+    <body>
+        <div id="workspace">
+
+        </div>
+        <div id="output" class="output">
+            <div id="graphs"></div>
+        </div>
+        <div id="toolbar">
+           <div class="workspace-toolbar toolbar">
+                <a href="#running" id="run">Run</a>
+                 New
+                <a id="btn-stock" href="#new">Stock</a>
+                <a id="btn-flow" href="#flow">Flow</a>
+                <a id="btn-watch" href="#watch">watch</a>
+                <input id="value" type="text" placeholder="value" maxlength="200">
+                <input id="formula" type="text" placeholder="formula" maxlength="200">
+                <input id="times" type="number" value="100" placeholder="#Iterations">
+            </div>
+            <div class="output-toolbar toolbar output">
+                <a href="Line Chart">Line</a>
+            </div>
+        </div>
+    </body>
+</html>
