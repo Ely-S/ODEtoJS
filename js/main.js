@@ -1,4 +1,4 @@
-require("js/vendor/jquery-1.10.2.min.js svg variable flow system graphs views".split(" "),
+require("js/vendor/jquery-1.10.2.min.js svg variable flow system output views".split(" "),
 function($, SVG, Variable, Flow, Sys, Graphs){
 "use strict";
 
@@ -32,25 +32,18 @@ $("#btn-flow").click(function(){
 
 $("#btn-run").click(Sys.run.bind(Sys));
 
- new Variable(alphabet.next(), 100, 200);
- new Variable(alphabet.next(), 200, 200);
-
 $("#run").click(Sys.run.bind(Sys));
 
 var selected = false;
 $("#workspace").on("click", "rect", function(){
-	if (selected) {
-		selected.classList.remove("selected");
-	}
-	selected = this;
-	selected.classList.add("selected");
-});
+	$(this).toggleClass("selected");
+	selected = this;});
 
 var timeout, out = false;
 $(".output").hover(function(){
 	clearTimeout(timeout);
 	if (!out) {
-		$("#output").animate({width: "95%"}, 'fast');
+		$("#output").css({width: "95%"});
 		$(".workspace-toolbar").hide();
 		$(".output-toolbar").show();
 		out = true;
@@ -64,7 +57,13 @@ $(".output").hover(function(){
 	}, 300);
 });
 
-//graphs.new();
+
+ new Variable(alphabet.next(), 100, 200);
+ var b = new Variable(alphabet.next(), 200, 200);
+b.toggleWatch();
+b.set("1.2");
+
+//$(".chart").click();$("#run").click();
 
 });
 

@@ -1,39 +1,105 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script data-main="js/main.js" src="js/require.js"></script>
-    </head>
-    <body>
-        <div id="workspace">
-
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/main.css">
+    <script data-main="js/main.js" src="js/require.js"></script>
+  </head>
+  <body>
+    <div id="workspace"></div>
+    <div id="output" class="output">
+      <div class="output-toolbar toolbar output">
+      <a href="#chart" class="chart">line </a> 
+      <a href="#chart" class="chart">bar </a> 
+      <a href="#chart" class="chart">area </a> 
+      <a href="#chart" class="chart">scatterplot </a> 
+      <a href="#table" class="table">table</a>
+      </div>
+      <hr>
+      <form id="control-template" class="hidden">
+        <section>
+          <div class="legend"></div>
+        </section>
+        <!--  
+        section
+          .renderer_form.toggler
+            input.area(type='radio', name='renderer', value='area', checked='checked')
+            label(for='area') area
+            input.bar(type='radio', name='renderer', value='bar')
+            label(for='bar') bar
+            input.line(type='radio', name='renderer', value='line')
+            label(for='line') line
+            input.scatter(type='radio', name='renderer', value='scatterplot')
+            label(for='scatter') scatter
+        section
+          .offset_form
+            label(for='stack')
+              input.stack(type='radio', name='offset', value='zero', checked='checked')
+              span stack
+            label(for='stream')
+              input.stream(type='radio', name='offset', value='wiggle')
+              span stream
+            label(for='pct')
+              input.pct(type='radio', name='offset', value='expand')
+              span pct
+            label(for='value')
+              input.value(type='radio', name='offset', value='value')
+              span value
+          .interpolation_form
+            label(for='cardinal')
+              input.cardinal(type='radio', name='interpolation', value='cardinal', checked='checked')
+              span cardinal
+            label(for='linear')
+              input.linear(type='radio', name='interpolation', value='linear')
+              span linear
+            label(for='step')
+              input.step(type='radio', name='interpolation', value='step-after')
+              span step
+        section
+          h6 Smoothing
+          #smoother
+        -->
+      </form>
+      <div id="graphs"></div>
+    </div>
+    <div id="toolbar">
+      <div class="workspace-toolbar toolbar"><a id="run" href="#running">Run</a>New<a id="btn-stock" href="#new">Stock</a><a id="btn-flow" href="#flow">Flow</a><a id="btn-watch" href="#watch">watch</a>
+        <input id="value" type="text" placeholder="value" maxlength="200">
+        <input id="formula" type="text" placeholder="formula" maxlength="200">
+        <input id="times" type="number" value="100" placeholder="#Iterations">
+        <div class="hidden">
+          <table class="stat-table" id="table-template" data-template> 
+            <thead> 
+              <tr> 
+                <th>name</th> 
+                <th>First</th> 
+                <th>Last</th> 
+                <th>Median</th> 
+                <th>STD. Deviation</th>
+                <th>Max</th>
+                <th>Min</th>
+                <th>total</th>
+              </tr>
+            </thead> 
+            <tbody>
+              <tr data-template>
+                <td>{{name}}</td>
+                <td>{{first}}</td>
+                <td>{{last}}</td>
+                <td>{{n}}</td>
+                <td>{{STDDev}}</td>
+                <td>{{max}}</td>
+                <td>{{min}}</td>
+                <td>{{sum}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div id="output" class="output">
-            <div id="graphs"></div>
-        </div>
-        <div id="toolbar">
-           <div class="workspace-toolbar toolbar">
-                <a href="#running" id="run">Run</a>
-                 New
-                <a id="btn-stock" href="#new">Stock</a>
-                <a id="btn-flow" href="#flow">Flow</a>
-                <a id="btn-watch" href="#watch">watch</a>
-                <input id="value" type="text" placeholder="value" maxlength="200">
-                <input id="formula" type="text" placeholder="formula" maxlength="200">
-                <input id="times" type="number" value="100" placeholder="#Iterations">
-            </div>
-            <div class="output-toolbar toolbar output">
-                <a href="Line Chart">Line</a>
-            </div>
-        </div>
-    </body>
+      </div>
+    </div>
+  </body>
 </html>

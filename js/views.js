@@ -1,4 +1,4 @@
-define(["system", "graphs", "js/rickshaw.min.js"], function(System, Graphs){
+define(["system", "table", "graph", "output", "js/rickshaw.min.js"], function(System, Table, Graph){
 	"use strict";
 	System.views.new("console", function(){
 		this.dataStream = function(name, val) {
@@ -15,20 +15,22 @@ define(["system", "graphs", "js/rickshaw.min.js"], function(System, Graphs){
 	});
 
 	System.views.new("graph", function(){
-		this.graph = Graphs.new();
+		this.graph = new Graph();
 		this.setup = function(watching) {
 			this.graph.create(watching.map(function(v){ return v.name; }))
 		};
 		this.dataStream = function(name, val){
-			this.data = this.graph.getSeries(name).data;
 			return (function(data, t){
 				data.push({x: t, y: val.val});
-			}).bind(this, this.data)
+			}).bind(this, this.graph.getSeries(name).data)
 		};
 		this.done = function() {
 			this.graph.update();
+			this.graph.makeControls();
 		};
+		return this.graph;
 	});
-	System.views.select("graph");
+
+	System.views.new("table", Table);
 
 });

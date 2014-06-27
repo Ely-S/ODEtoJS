@@ -1,4 +1,4 @@
-define(["variable"], function(Variable){
+define(["variable", "output"], function(Variable, Output){
 	"use strict";
 	var sys = {
 		watching: [],
@@ -31,17 +31,19 @@ define(["variable"], function(Variable){
 				return v.next.bind(v);
 			});
 
-			var view = this.views.view;
 			
 			this.views.view.setup(this.watching);
 
-			var watchlength = this.watching.length,
-			streams = this.watching.map(function(v){
-				return view.dataStream(v.name, v.val);
-			});
+			var streams = [];
 
-
-			var varlength = Variable.variables.length;
+			this.watching.forEach((function(w) {
+				for (var a = 0, l = this.views.view.active.length; a < l; a++) {
+					streams.push(this.views.view.active[a].dataStream(w.name, w.val)) 
+				}
+			}.bind(this)))
+			
+			var streamlength = streams.length,
+			    varlength = Variable.variables.length;
 
 			return function(t){
 				for (var i = 0; i < varlength; i++ ) {
@@ -50,21 +52,12 @@ define(["variable"], function(Variable){
 				for (i = 0; i < varlength; i++ ) {
 					saves[i]()
 				}
-				for (i = 0; i < watchlength; i++ ) {
+				for (i = 0; i < streamlength; i++ ) {
 					streams[i](t);
 				}
 			};
 		},
-		views: {
-			new: function(name, view) {
-				this.views[name] = new view();
-			},
-			select: function(name) {
-				this.view = this.views[name];
-			},
-			views: {},
-			view: {}
-		},
+		views: new Output($("#output"))
 	};
 	return sys;
 });
