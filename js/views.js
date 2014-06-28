@@ -14,22 +14,7 @@ define(["system", "table", "graph", "output", "js/rickshaw.min.js"], function(Sy
 		};
 	});
 
-	System.views.new("graph", function(){
-		this.graph = new Graph();
-		this.setup = function(watching) {
-			this.graph.create(watching.map(function(v){ return v.name; }))
-		};
-		this.dataStream = function(name, val){
-			return (function(data, t){
-				data.push({x: t, y: val.val});
-			}).bind(this, this.graph.getSeries(name).data)
-		};
-		this.done = function() {
-			this.graph.update();
-			this.graph.makeControls();
-		};
-		return this.graph;
-	});
+	System.views.new("graph", Graph);
 
 	System.views.new("table", Table);
 

@@ -1,27 +1,51 @@
 define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js", "js/vendor/rick-extensions.js"], function(){
 	var Graph = function () {
-		this.el=$("<div>")
-			.addClass("graph-container")
-			.html("<div class='graph'></div><div class='controls'></div>");
-		this.div=this.el[0];
-		this.create([]);
+		this.element = $("<div>").addClass("graph-container")
+			.html("<div class='graph'></div><div class='controls'></div>")[0];
+		this.initialize();
 	};
 	Graph.prototype = {
 		renderer: "line",
+
+		setup: function(watching) {
+			this.create(watching.map(function(v){ return v.name; }))
+		},
+
+		dataStream: function(name, val){
+			return (function(data, t){
+				data.push({x: t, y: val.val});
+			}).bind(this, this.getSeries(name).data)
+		},
+
+		done: function() {
+			this.update();
+			this.makeControls();
+		},
 
 		render: function(){
 			this.graph.render();
 		},
 
+		initialize: function() {
+			this.graph = new Rickshaw.Graph({
+				element: this.element.children[0],
+				renderer: 'line',
+				series: [{
+					data: [ { x: 0, y: 40 }, { x: 100, y: 40 } ],
+					color: 'steelblue'
+				}]
+			});
+		},
+
 		create: function(names){
-			this.div.children[0].innerHTML="";
+			this.element.children[0].innerHTML="";
  			this.graph = new Rickshaw.Graph({
-			  element: this.div.children[0],
-		      renderer: this.renderer,
-		      width: 500,
-		      height: 300,
+			  element: this.element.children[0],
+			  renderer: this.renderer,
+			  width: 500,
+			  height: 300,
 			  stroke: true,
-		      preserve: true,
+			  preserve: true,
 			  series: names.map(function(name){
 			  	return {
 			  		color: Graph.prototype.randColor(),
@@ -54,7 +78,7 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 		},
 
 		update: function() {
-			this.graph.update();
+//			this.graph.update();
 			this.graph.render();
 		},
 		getSeries: function (name) { 
@@ -67,7 +91,7 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 		},
 		makeControls: function(){
 			var temp = $("#control-template"), graph = this.graph;
-			this.el.find(".controls").html(temp[0].outerHTML)
+			$(this.el).find(".controls").html(temp[0].outerHTML)
 				.find("form").removeClass("hidden");
 /*
 			var preview = new Rickshaw.Graph.RangeSlider( {

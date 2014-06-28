@@ -2220,13 +2220,19 @@ line, rect {
   top: 0px;
   height: 100%; }
 
+table, .graph-container {
+  margin: 20px; }
+
 th, td {
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   padding: 5px;
   text-align: center;
   width: 50px;
   overflow: hidden;
   text-overflow: clip; }
+
+.domain {
+  display: none; }
 
 /* ==========================================================================
  * Print styles.
