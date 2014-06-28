@@ -28,10 +28,10 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 		},
 
 		initialize: function(type) {
-			type = type || "line";
+			this.renderer = type || "line";
 			this.graph = new Rickshaw.Graph({
 				element: this.element.children[0],
-				renderer: type,
+				renderer: this.renderer,
 				width: this.width,
 				height: this.height,
 				series: [{
