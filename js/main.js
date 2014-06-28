@@ -1,5 +1,5 @@
-require("js/vendor/jquery-1.10.2.min.js svg variable flow system output views".split(" "),
-function($, SVG, Variable, Flow, Sys, Graphs){
+require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendor/shortcut.js views".split(" "),
+function($, SVG, Variable, Flow, Sys, Graphs, Shortcut){
 "use strict";
 
 jQuery(function($){
@@ -11,33 +11,56 @@ var alphabet = {
 	}
 };
 
-$("#btn-stock").click(function(){
-	$("#workspace").one("click", function(e){
-		var s = new Variable(alphabet.next(), e.clientX, e.clientY);
+
+var menu = {
+	fl: false,
+	init: function() {
+		for (var btn in this.buttons) {
+			$(btn).click(this.buttons[btn]);
+		}
+	},
+	buttons: {
+		"#btn-stock": function(){
+			$("#workspace").one("click", function(e){
+				var s = new Variable(alphabet.next(), e.clientX, e.clientY);
+			});
+		},
+		"#btn-flow": function(){
+			$("g").one("click", function(e){
+				FlowWaiting(this);
+			});
+		},
+		"#run": Sys.run.bind(Sys)
+	}
+};
+
+
+var FlowWaiting = function(from) {
+	$("g").on("click", function(e){
+		e.stopPropagation();
+		if (this !== from) {
+			new Flow("Flow", from.instance, this.instance);
+			$("g").off("click");
+			menu.fl = false;
+		}
 	});
+};
+
+$("#workspace").on("click", "rect", function(e){
+	if (e.ctrlKey) {
+		if (!menu.fl) {
+			menu.fl = FlowWaiting(e.target.parentNode);
+		}
+	} else {
+		$(this).toggleClass("selected");
+	}
+}).click(function(e){
+	if (e.shiftKey) {
+		new Variable(alphabet.next(), e.clientX, e.clientY);
+	}
 });
 
-$("#btn-flow").click(function(){
-	$("g").one("click", function(e){
-		var from = this;			
-		$("g").on("click", function(e){
-			e.stopPropagation();
-			if (this !== from) {
-				new Flow("Flow", from.instance, this.instance);
-				$("g").off("click");
-			}
-		});
-	});
-});
 
-$("#btn-run").click(Sys.run.bind(Sys));
-
-$("#run").click(Sys.run.bind(Sys));
-
-var selected = false;
-$("#workspace").on("click", "rect", function(){
-	$(this).toggleClass("selected");
-	selected = this;});
 
 var timeout, out = false;
 $(".output").hover(function(){
@@ -59,7 +82,7 @@ $(".output").hover(function(){
 
 
 var a= new Variable(alphabet.next(), 100, 200);
- var b = new Variable(alphabet.next(), 200, 200);
+var b = new Variable(alphabet.next(), 200, 200);
 b.toggleWatch();
 b.set("1.3");
 a.set("1.25");

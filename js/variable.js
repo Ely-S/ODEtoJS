@@ -40,7 +40,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 			},
 			mousedown: function() {
 				document.onmousemove = (function(e) {
-						this.g.move(e.x, e.y);
+						this.g.move(e.x - 20, e.y - 20);
 					this.links.forEach(function(e){
 						e.move();
 					});
