@@ -58,10 +58,12 @@ $(".output").hover(function(){
 });
 
 
- new Variable(alphabet.next(), 100, 200);
+var a= new Variable(alphabet.next(), 100, 200);
  var b = new Variable(alphabet.next(), 200, 200);
 b.toggleWatch();
 b.set("1.2");
+a.set("1.25");
+a.toggleWatch();
 
 //$(".chart").click();$("#run").click();
 

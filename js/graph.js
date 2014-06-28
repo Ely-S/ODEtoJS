@@ -2,10 +2,11 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 	var Graph = function () {
 		this.element = $("<div>").addClass("graph-container")
 			.html("<div class='graph'></div><div class='controls'></div>")[0];
-		this.initialize();
 	};
 	Graph.prototype = {
 		renderer: "line",
+		width: 300,
+		height: 500,
 
 		setup: function(watching) {
 			this.create(watching.map(function(v){ return v.name; }))
@@ -26,12 +27,15 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 			this.graph.render();
 		},
 
-		initialize: function() {
+		initialize: function(type) {
+			type = type || "line";
 			this.graph = new Rickshaw.Graph({
 				element: this.element.children[0],
-				renderer: 'line',
+				renderer: type,
+				width: this.width,
+				height: this.height,
 				series: [{
-					data: [ { x: 0, y: 40 }, { x: 100, y: 40 } ],
+					data: this.randPoints(),
 					color: 'steelblue'
 				}]
 			});
@@ -42,8 +46,8 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
  			this.graph = new Rickshaw.Graph({
 			  element: this.element.children[0],
 			  renderer: this.renderer,
-			  width: 500,
-			  height: 300,
+			  width: this.height,
+			  height: this.width,
 			  stroke: true,
 			  preserve: true,
 			  series: names.map(function(name){
@@ -78,7 +82,7 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 		},
 
 		update: function() {
-//			this.graph.update();
+			this.graph.update();
 			this.graph.render();
 		},
 		getSeries: function (name) { 
@@ -88,6 +92,17 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 		},
 		randColor: function(){
 			return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+		},
+		randPoints: function(length) {
+			length = length || 10;
+			var points = Array(length);
+			while (length--) {
+				points[length] = {
+					x: length * 10,
+					y: Math.floor(Math.random()*100)/3 + 30
+				};
+			}
+			return points;
 		},
 		makeControls: function(){
 			var temp = $("#control-template"), graph = this.graph;
