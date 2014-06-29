@@ -14,11 +14,6 @@
   <div id="output" class="output">
     <div class="output-toolbar toolbar output"><a href="#chart" class="chart">line </a><a href="#chart" class="chart">bar </a><a href="#chart" class="chart">area </a><a href="#chart" class="chart">scatterplot </a><a href="#table" class="table">table</a></div>
     <hr/>
-    <form id="control-template" class="hidden">
-      <section>
-        <div class="legend"></div>
-      </section>
-    </form>
     <div id="graphs"></div>
   </div>
   <div id="toolbar">
@@ -26,6 +21,7 @@
       <input id="value" type="text" placeholder="value" maxlength="200"/>
       <input id="formula" type="text" placeholder="formula" maxlength="200"/>
       <input id="times" type="number" value="100" placeholder="#Iterations"/>
+      <input id="name" type="text" maxlength="100"/>
       <div class="hidden">
         <table id="table-template" data-template="data-template" class="stat-table">
           <thead>
@@ -54,45 +50,6 @@
           </tbody>
         </table>
       </div>
-      <!--
-      section
-        .renderer_form.toggler
-          input.area(type='radio', name='renderer', value='area', checked='checked')
-          label(for='area') area
-          input.bar(type='radio', name='renderer', value='bar')
-          label(for='bar') bar
-          input.line(type='radio', name='renderer', value='line')
-          label(for='line') line
-          input.scatter(type='radio', name='renderer', value='scatterplot')
-          label(for='scatter') scatter
-      section
-        .offset_form
-          label(for='stack')
-            input.stack(type='radio', name='offset', value='zero', checked='checked')
-            span stack
-          label(for='stream')
-            input.stream(type='radio', name='offset', value='wiggle')
-            span stream
-          label(for='pct')
-            input.pct(type='radio', name='offset', value='expand')
-            span pct
-          label(for='value')
-            input.value(type='radio', name='offset', value='value')
-            span value
-        .interpolation_form
-          label(for='cardinal')
-            input.cardinal(type='radio', name='interpolation', value='cardinal', checked='checked')
-            span cardinal
-          label(for='linear')
-            input.linear(type='radio', name='interpolation', value='linear')
-            span linear
-          label(for='step')
-            input.step(type='radio', name='interpolation', value='step-after')
-            span step
-      section
-        h6 Smoothing
-        #smoother
-      -->
     </div>
   </div>
 </body>

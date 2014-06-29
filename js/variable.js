@@ -7,7 +7,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 		this.links = [];
 		this.create(name);
 		for (e in this.events)
-			this.g.on(e, this.events[e].bind(this));
+			this.rect.on(e, this.events[e].bind(this));
 		this.val = new Value(1);
 		this.addText();
 		this.g.move(x, y);
@@ -40,7 +40,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 			},
 			mousedown: function() {
 				document.onmousemove = (function(e) {
-						this.g.move(e.x - 20, e.y - 20);
+						this.g.move(e.clientX - 20, e.clientY - 20);
 					this.links.forEach(function(e){
 						e.move();
 					});
@@ -54,6 +54,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 			this.name = name;
 			this.g = SVG.group();
 			this.g.model = this;
+			this.g.node.classList.add("variable");
 			this.text = SVG.plain(name);
 			this.rect = SVG.rect(this.width, this.height).attr({ fill: '#f06', rx: "15px" });
 			this.g.add(this.rect);
@@ -117,15 +118,15 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 
 		addText: function() {
 			this.g.add(this.text);
-			this.text.move(10, 50);
+			this.text.move(10, -20);
 			var textVal = new Value(this.text.text()),
 				t = this;
 			this.text.click((function(){
-				editors.veditor.select(textVal, function(n){
-					t.text.text(n);
+				editors.neditor.select(textVal, function(n){
+					t.text.text(n).move(10, -20);
 					t.name = n;
 					return n;
-				});
+				}).place(this.text.node);
 			}).bind(this));
 		},
 

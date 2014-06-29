@@ -2234,6 +2234,13 @@ th, td {
 .domain {
   display: none; }
 
+#name {
+  position: absolute;
+  border: none;
+  width: 0;
+  padding: 0;
+  display: none; }
+
 /* ==========================================================================
  * Print styles.
  * Inlined to avoid required HTTP connection: h5bp.com/r

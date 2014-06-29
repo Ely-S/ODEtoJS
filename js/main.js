@@ -27,7 +27,7 @@ var menu = {
 		},
 		"#btn-flow": function(){
 			$("g").one("click", function(e){
-				FlowWaiting(this);
+				Flow.waiting(this);
 			});
 		},
 		"#run": Sys.run.bind(Sys)
@@ -35,27 +35,18 @@ var menu = {
 };
 
 
-var FlowWaiting = function(from) {
-	$("g").on("click", function(e){
-		e.stopPropagation();
-		if (this !== from) {
-			new Flow("Flow", from.instance, this.instance);
-			$("g").off("click");
-			menu.fl = false;
-		}
-	});
-};
-
-$("#workspace").on("click", "rect", function(e){
+$("#workspace").on("click", ".variable", function(e){
 	if (e.ctrlKey) {
-		if (!menu.fl) {
-			menu.fl = FlowWaiting(e.target.parentNode);
+		e.stopPropagation();
+		if (!Flow.fl) {
+			Flow.fl = Flow.waiting(this);
 		}
 	} else {
 		$(this).toggleClass("selected");
 	}
 }).click(function(e){
-	if (e.shiftKey) {
+	if (e.ctrlKey) {
+		e.stopPropagation();
 		new Variable(alphabet.next(), e.clientX, e.clientY);
 	}
 });
@@ -88,6 +79,7 @@ b.set("1.3");
 a.set("1.25");
 a.toggleWatch();
 
+menu.init();
 $(".chart").click();$("#run").click();
 
 });

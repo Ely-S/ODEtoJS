@@ -105,9 +105,7 @@ define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js
 			return points;
 		},
 		makeControls: function(){
-			var temp = $("#control-template"), graph = this.graph;
-			$(this.el).find(".controls").html(temp[0].outerHTML)
-				.find("form").removeClass("hidden");
+			var graph = this.graph;
 /*
 			var preview = new Rickshaw.Graph.RangeSlider( {
 				graph: graph,
