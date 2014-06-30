@@ -1,4 +1,4 @@
-define(["js/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/rickshaw.min.js", "js/vendor/rick-extensions.js"], function(){
+define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/rickshaw.min.js", "js/vendor/rick-extensions.js"], function(){
 	var Graph = function () {
 		this.element = $("<div>").addClass("graph-container")
 			.html("<div class='graph'></div><div class='controls'></div>")[0];

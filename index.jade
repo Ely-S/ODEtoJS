@@ -1,0 +1,54 @@
+doctype htlm
+html.no-js
+head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    title
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='css/main.css')
+    script(data-main='js/main.js', src='js/vendor/require.js')
+  body
+    #workspace
+    #output.output
+      .output-toolbar.toolbar.output
+        a.chart(href='#chart') line 
+        a.chart(href='#chart') bar 
+        a.chart(href='#chart') area 
+        a.chart(href='#chart') scatterplot 
+        a.table(href='#table') table
+      hr
+      #graphs
+    #toolbar
+      .workspace-toolbar.toolbar
+        a#run(href='#running') Run
+        | New
+        a.btn#btn-stock(href='#new') Stock
+        a.btn#btn-flow(href='#flow') Flow
+        a.btn#btn-watch(href='#watch') watch
+        input#value(type='text', placeholder='value', maxlength='200')
+        input#formula(type='text', placeholder='formula', maxlength='200')
+        input#times(type='number', value='100', placeholder='#Iterations')
+        input#name(type="text", maxlength="100")
+        .hidden
+          table#table-template.stat-table(data-template='data-template')
+            thead
+              tr
+                th Variable
+                th First
+                th Last
+                th Mean
+                th STD. Deviation
+                th Max
+                th Min
+                th total
+            tbody
+              tr(data-template='data-template')
+                td {{name}}
+                td {{first}}
+                td {{last}}
+                td {{n}}
+                td {{STDDev}}
+                td {{max}}
+                td {{min}}
+                td {{sum}}

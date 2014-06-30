@@ -1,4 +1,4 @@
-define(["system", "table", "graph", "output", "js/rickshaw.min.js"], function(System, Table, Graph){
+define(["system", "table", "graph", "output", "js/vendor/rickshaw.min.js"], function(System, Table, Graph){
 	"use strict";
 	System.views.new("console", function(){
 		this.dataStream = function(name, val) {

@@ -80,7 +80,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 		set: function(formula) {
 			var t = this,
 				argnames = this.links.map(function(l){
-					return l.other(this).name;
+					return l.other(t).name;
 				});
 				argnames.unshift(this.name);
 			this.delta = new Function(argnames.join(","), "return " + formula);
