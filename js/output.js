@@ -4,7 +4,7 @@ define(["graph", "system"], function (Graph, System) {
 		this.el.on("click", ".chart", (function(e){
 			var g = this.create("graph");
 			g.initialize($(e.target).text().trim());
-			g.update();
+//			g.update();
 			e.preventDefault();
 		}).bind(this));
 		this.el.on("click", ".table", (function(e){

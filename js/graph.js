@@ -5,8 +5,8 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 	};
 	Graph.prototype = {
 		renderer: "line",
-		width: 300,
-		height: 500,
+		width: 500,
+		height: 300,
 
 		setup: function(watching) {
 			this.create(watching.map(function(v){ return v.name; }))
@@ -23,8 +23,15 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 			this.makeControls();
 		},
 
+		update: function() {
+			this.graph.update();
+			this.render();
+		},		
+
 		render: function(){
 			this.graph.render();
+			this.yAxis.render();
+			this.xAxis.render();
 		},
 
 		initialize: function(type) {
@@ -39,15 +46,19 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 					color: 'steelblue'
 				}]
 			});
+			this.makeAxis();
 		},
 
 		create: function(names){
-			this.element.children[0].innerHTML="";
+			// replace graph
+			this.element.innerHTML="<div class='graph-container'>\
+			<div class='graph'></div>\
+			<div class='controls'></div></div>";
  			this.graph = new Rickshaw.Graph({
 			  element: this.element.children[0],
 			  renderer: this.renderer,
-			  width: this.height,
-			  height: this.width,
+			  width: this.width,
+			  height: this.height,
 			  stroke: true,
 			  preserve: true,
 			  series: names.map(function(name){
@@ -80,10 +91,6 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 			this.xAxis.render();
 		},
 
-		update: function() {
-			this.graph.update();
-			this.graph.render();
-		},
 		getSeries: function (name) { 
 			return this.graph.series.filter(function(s){
 				return s.name == name;
