@@ -1,4 +1,4 @@
-define(["variable", "output"], function(Variable, Output){
+define(["variable", "output", "js/vendor/numeric.js"], function(Variable, Output, Numeric){
 	"use strict";
 	var sys = {
 		watching: [],
@@ -11,7 +11,7 @@ define(["variable", "output"], function(Variable, Output){
 		run: function() {
 			var t,
 				dt = this.specs.dt,
-				times = this.specs = Number($("#times").val())*(1/dt),
+				times = this.specs.time = Number($("#times").val())*(1/dt),
 				go  = this.prepare(dt, times);
 			for (t = 0; t < times; t++ ) {
 				go(t);

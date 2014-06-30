@@ -64,8 +64,7 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 		reset: function() {
 			this.series.forEach(function(s){
 				var data = s.data;
-				while(data.length > 0)
-			    	data.pop();
+				while(data.pop()) {}
 			});
 		},
 
