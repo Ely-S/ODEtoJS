@@ -1,16 +1,17 @@
 define(function(){
 	"use strict";
-	var  Value = function(val) {
+	var  Value = function(val, name) {
 		// Observable data
 		this.watcher = function(){};
 		this.val = this.default = val || 0;
+		this.name = name;
 	};
 
 	Value.prototype = {
 		name: "",
 		
 		reset: function() {
-			this.constructor.call(this, this.default);
+			this.constructor.call(this, this.default, this.name);
 		},
 		
 		save: function(val) {

@@ -80,7 +80,7 @@ a.set("1.25");
 a.toggleWatch();
 
 menu.init();
-$(".chart").click();$("#run").click();
+//$(".chart").click();$("#run").click();
 
 });
 

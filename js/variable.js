@@ -8,7 +8,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 		this.create(name);
 		for (e in this.events)
 			this.rect.on(e, this.events[e].bind(this));
-		this.val = new Value(1);
+		this.val = new Value(1, name);
 		this.addText();
 		this.g.move(x, y);
 		this.dformula = new Value();
@@ -31,6 +31,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 		height: 80,
 		color: '#f06',
 		value: 0,
+		formula: "0",
 
 		events: {
 			click: function(e){
@@ -78,31 +79,32 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 		},
 
 		set: function(formula) {
-			var t = this,
-				argnames = this.links.map(function(l){
-					return l.other(t).name;
-				});
-				argnames.unshift(this.name);
-			this.delta = new Function(argnames.join(","), "return " + formula);
-			this.delta = this.delta.bind(this);
-			return this;
+			this.formula = formula;
 		},
 
 		compile: function() {
-			// Wrap delta with the necessary arguments
-			var delta = this.delta,
+			var t = this, delta,
+				argnames = this.links.map(function(l){
+					return l.other(t).name;
+				}),
 				vals = this.links.map(function(l){
 					return l.other(this).val;
 				});
+
+			// Wrap delta with the necessary arguments
 			vals.unshift(this.val); // add this val to the begining
-			this.dt = function() {
+			argnames.unshift(this.name);
+
+			delta = new Function(argnames.join(","), "return " + this.formula);
+			
+			this.dv = function() {
 				return delta.apply(this, vals.map(function(v){ return v.val; }));
 			};
-			this.val.name = this.name;
+
 		},
 
-		calculate: function() {
-			 return this.step = this.dt()*this.val.val; 
+		calculate: function(dt) {
+			return this.step = this.val.val + this.dv()*dt; 
 		},
 
 		next: function() {

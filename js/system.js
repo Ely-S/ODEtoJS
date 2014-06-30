@@ -2,9 +2,17 @@ define(["variable", "output"], function(Variable, Output){
 	"use strict";
 	var sys = {
 		watching: [],
+
+		specs: {
+			dt: .2,
+			time: 100
+		},
+
 		run: function() {
-			var t, times = Number($("#times").val()),
-				go  = this.prepare(times);
+			var t,
+				dt = this.specs.dt,
+				times = this.specs = Number($("#times").val())*(1/dt),
+				go  = this.prepare(dt, times);
 			for (t = 0; t < times; t++ ) {
 				go(t);
 			};
@@ -17,14 +25,14 @@ define(["variable", "output"], function(Variable, Output){
 			});
 		},
 
-		prepare: function() {
+		prepare: function(dt) {
 			this.watching = Variable.variables.filter(function(e){
 				return e.watching;
 			});
 
 			var actions = Variable.variables.map(function(v){
 				v.compile();
-				return v.calculate.bind(v);
+				return v.calculate.bind(v, dt);
 			});
 
 			var saves = Variable.variables.map(function(v){
@@ -47,7 +55,7 @@ define(["variable", "output"], function(Variable, Output){
 
 			return function(t){
 				for (var i = 0; i < varlength; i++ ) {
-					actions[i]();
+					actions[i](t);
 				}
 				for (i = 0; i < varlength; i++ ) {
 					saves[i]()
