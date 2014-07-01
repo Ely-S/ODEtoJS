@@ -1,10 +1,10 @@
-define(["variable", "output", "js/vendor/numeric.js"], function(Variable, Output, Numeric){
+define(["variable", "output", "solver"], function(Variable, Output, Solver){
 	"use strict";
 	var sys = {
 		watching: [],
 
 		specs: {
-			dt: .2,
+			dt: .05,
 			time: 100
 		},
 
@@ -13,9 +13,10 @@ define(["variable", "output", "js/vendor/numeric.js"], function(Variable, Output
 				dt = this.specs.dt,
 				times = this.specs.time = Number($("#times").val())*(1/dt),
 				go  = this.prepare(dt, times);
-			for (t = 0; t < times; t++ ) {
-				go(t);
-			};
+
+			solver = new Solver(0, time);
+			solver.solve();
+
 			this.views.view.done();
 		},
 
