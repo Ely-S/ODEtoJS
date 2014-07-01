@@ -81,11 +81,12 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 
 		makeAxis: function(){
 			this.xAxis = new Rickshaw.Graph.Axis.X({
-    			graph: this.graph,
+    			graph: this.graph
 			});
 
 			this.yAxis = new Rickshaw.Graph.Axis.Y({
 			    graph: this.graph,
+				tickFormat: Rickshaw.Fixtures.Number.formatKMBT
 			});
 			this.yAxis.render();
 			this.xAxis.render();

@@ -55,13 +55,13 @@ define(["variable", "output", "js/vendor/numeric.js"], function(Variable, Output
 
 			return function(t){
 				for (var i = 0; i < varlength; i++ ) {
-					actions[i](t);
+					actions[i](t*dt);
 				}
 				for (i = 0; i < varlength; i++ ) {
 					saves[i]()
 				}
 				for (i = 0; i < streamlength; i++ ) {
-					streams[i](t);
+					streams[i](t*dt);
 				}
 			};
 		},

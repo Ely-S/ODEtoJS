@@ -104,7 +104,7 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 		},
 
 		calculate: function(dt) {
-			return this.step = this.val.val + this.dv()*dt; 
+			return this.step = this.val.val + (this.dv()*dt); 
 		},
 
 		next: function() {

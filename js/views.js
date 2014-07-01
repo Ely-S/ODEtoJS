@@ -14,6 +14,8 @@ define(["system", "table", "graph", "output", "js/vendor/rickshaw.min.js"], func
 		};
 	});
 
+//	System.views.create("console");
+
 	System.views.new("graph", Graph);
 
 	System.views.new("table", Table);
