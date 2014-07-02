@@ -4,7 +4,7 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		watching: [],
 
 		specs: {
-			dt: .05,
+			dt: .5,
 			time: 100
 		},
 
@@ -17,7 +17,10 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 			solver = new Solver(0, times);
 			solver.setFunction(go);
 			solver.state(_(Variable.variables).pluck("val").pluck("val").__wrapped__);
-			solver.solve();
+			solver.dt(dt);
+			solver.DOPRI();
+
+//			solver.DOPRI(0, times, _(Variable.variables).pluck("val").pluck("val").__wrapped__, go);
 
 			this.views.view.done();
 		},
@@ -61,13 +64,15 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		    varlength = Variable.variables.length;
 
 			return function(t, y){
+				var res = new Float32Array(y.length);
 				for (var i = 0; i < varlength; i++ ) {
-					actions[i](t, y);
+					res[i] = actions[i](t, y);
 					saves[i]();
 				}
 				for (i = 0; i < streamlength; i++ ) {
 					streams[i](t);
 				}
+				return res;
 			};
 		},
 		views: new Output($("#output"))

@@ -17,14 +17,19 @@ define(["js/vendor/numeric.js"], function(N){
 
 		solve: function(alg) {
 			alg = alg || "DOPRI";
-			this[alg](this.start, this.end, this.state, this.func);
+			this[alg]();
 		},
 
 		state: function(state) {
-			return this.state = state || this.state;
+			return this.state0 = state || this.state0;
 		},
 
-		DOPRI: function(start, end, state0, f) {
+
+		dt: function(dt) {
+			return this.dt = dt || this.dt;
+		},
+
+		DOPRI: function() {
 
 			/*
 			need to create Array of state0
@@ -36,7 +41,7 @@ define(["js/vendor/numeric.js"], function(N){
 
 			*/
 
-			this.dopri = numeric.dopri(start, end, state0, f);
+			this.dopri = numeric.dopri(this.start, this.end, this.state0, this.func);
 			return this.dopri;
 
 			/*
@@ -56,47 +61,54 @@ numeric.dopri(0, 1.2,[5,10], (function(){
 
 		},
 
-		RK4: function(y, t, dt, f) {
+		RK4: function() {
 
-			// This needs to be put inside an interator
-		    var l = y.length, i,
-		      k1 = new new Float32Array(l);
-		      k2 = new new Float32Array(l);
-		      k3 = new new Float32Array(l);
-		      k4 = new new Float32Array(l);
+			// state is y
 
-		/*
-			var RK4 = function (x, h, y, f) {
-				var k1 = h * f(x, y),
-			        k2 = h * f(x + 0.5*h, y + 0.5*k1),
-			        k3 = h * f(x + 0.5*h, y + 0.5*k2),
-			        k4 = h * f(x + h, y + k3);
-			        return x + h, y + (k1 + 2*(k2 + k3) + k4)/6.0
-			};
-		*/
-		    
-		    k1 = f(y, t); // Lotka-Voltarra as a function of y and t
-		    
-		    for (i=0; i<l; ++i)
-		      // change x and y by the dt
-		      k2[i] = y[i] + dt * k1[i]/2.0;
-		    
-		    k2 = f(k2, t + dt / 2.0);
-		    
-		    for (i=0; i<l; ++i)
-		      k3[i] = y[i] + dt*k2[i]/2.0;
-		    
-		    k3 = f(k3, t+dt/2.0);
-		    
-		    for (i=0; i<l; ++i)
-		      k4[i] = y[i] + dt*k3[i];
-		    
-		    k4 = f(k4, t+dt);
-		    
-		    for (i=0; i<l; ++i)
-		      k1[i] = y[i] + dt *(k1[i] + 2.0 * (k2[i] + k3[i]) + k4[i]) /6.0;
-		    
-		    return k1;
+	       for (var i, y = this.state0, dt = this.dt, f = this.func, l = y.length,
+	       		t= this.start, times = this.end; t<times; ++t)  {
+
+	           t = dt*l;
+
+			    var k1 = new Float32Array(l),
+			      k2 = new Float32Array(l),
+			      k3 = new Float32Array(l),
+			      k4 = new Float32Array(l);
+
+			/*
+				var RK4 = function (x, h, y, f) {
+					var k1 = h * f(x, y),
+				        k2 = h * f(x + 0.5*h, y + 0.5*k1),
+				        k3 = h * f(x + 0.5*h, y + 0.5*k2),
+				        k4 = h * f(x + h, y + k3);
+				        return x + h, y + (k1 + 2*(k2 + k3) + k4)/6.0
+				};
+			*/
+			    
+			    k1 = f(t, y); // Lotka-Voltarra as a function of y and t
+			    
+			    for (i=0; i<l; ++i)
+			      // change x and y by the dt
+			      k2[i] = y[i] + dt * k1[i]/2.0;
+			    
+			    k2 = f(t + dt / 2.0, k2);
+			    
+			    for (i=0; i<l; ++i)
+			      k3[i] = y[i] + dt*k2[i]/2.0;
+			    
+			    k3 = f(t+dt/2.0, k3);
+			    
+			    for (i=0; i<l; ++i)
+			      k4[i] = y[i] + dt*k3[i];
+			    
+			    k4 = f(t+dt, k4);
+			    
+			    for (i=0; i<l; ++i)
+			      k1[i] = y[i] + dt *(k1[i] + 2.0 * (k2[i] + k3[i]) + k4[i]) /6.0;
+			    
+			    y = k1;
+			}
+
 		}
 
 	};
