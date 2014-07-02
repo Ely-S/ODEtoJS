@@ -14,6 +14,7 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 
 		dataStream: function(name, val){
 			return (function(data, t){
+				if (t || t == 0)
 				data.push({x: t, y: val.val});
 			}).bind(this, this.getSeries(name).data)
 		},

@@ -1,4 +1,4 @@
-define(["value", "svg", "editors"], function(Value, SVG, editors) {
+define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, SVG, editors, _) {
 	"use strict";
 
 	var Variable = function(name, x, y) {
@@ -16,14 +16,6 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 	};
 
 	Variable.variables = [];
-
-	var RK4 = function (x, h, y, f) {
-		var k1 = h * f(x, y),
-	        k2 = h * f(x + 0.5*h, y + 0.5*k1),
-	        k3 = h * f(x + 0.5*h, y + 0.5*k2),
-	        k4 = h * f(x + h, y + k3);
-	        return x + h, y + (k1 + 2*(k2 + k3) + k4)/6.0
-	};
 
 	Variable.prototype = {
 		watching: false,
@@ -82,29 +74,49 @@ define(["value", "svg", "editors"], function(Value, SVG, editors) {
 			this.formula = formula;
 		},
 
-		compile: function() {
-			var t = this, delta,
-				argnames = this.links.map(function(l){
-					return l.other(t).name;
-				}),
-				vals = this.links.map(function(l){
-					return l.other(this).val;
+		compile: function(argnames) {
+			var t = this,
+				replaces = {},
+				nonstatic = [];
+//				argnames, vals;
+
+				this.links.forEach(function(l){
+					// replace static variables with their values
+					var other = l.other(t);
+					if (!other.formula || other.formula.trim() == "" || other.formula.trim() == "0") {
+						replaces[other.name] = other.val.val;
+					} else {
+						nonstatic.push(other);
+					}
+				});
+
+			// replace names with values for static params
+			for (var name in replaces)
+				this.formula = this.formula.replace(name, replaces[name]);
+
+/*
+				argnames = nonstatic.map(function(o){
+					return o.name;
+				});
+
+				vals = nonstatic.map(function(o){
+					return o.val;
 				});
 
 			// Wrap delta with the necessary arguments
 			vals.unshift(this.val); // add this val to the begining
 			argnames.unshift(this.name);
 
-			delta = new Function(argnames.join(","), "return " + this.formula);
+*/
+			this.delta = new Function(argnames.join(","), "return " + this.formula);
 			
-			this.dv = function() {
-				return delta.apply(this, vals.map(function(v){ return v.val; }));
-			};
 
 		},
 
-		calculate: function(dt) {
-			return this.step = this.val.val + (this.dv()*dt); 
+		calculate: function(t, y) {
+			var d = this.delta.apply(this, y); 
+			this.step = this.val.val + d;
+			return d; 
 		},
 
 		next: function() {

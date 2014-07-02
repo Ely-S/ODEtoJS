@@ -73,8 +73,8 @@ $(".output").hover(function(){
 
 
 var a= new Variable(alphabet.next(), 100, 200);
-var b = new Variable(alphabet.next(), 200, 200);
-b.toggleWatch();
+//var b = new Variable(alphabet.next(), 200, 200);
+//b.toggleWatch();
 //b.set("0.04*b*a-.5*b");
 //a.set("1.0*a-.2*a*b");
 
