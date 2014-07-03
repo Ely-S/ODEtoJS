@@ -2197,7 +2197,11 @@ line, rect {
   width: 10%; }
 
 #workspace {
-  height: 90%; }
+  height: 90%;
+  overflow: hidden; }
+
+#workspace svg {
+  position: relative; }
 
 .watching {
   fill: red; }
@@ -2233,6 +2237,9 @@ th, td {
 
 .domain {
   display: none; }
+
+#dt {
+  width: 60px; }
 
 #name {
   position: absolute;
