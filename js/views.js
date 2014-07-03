@@ -1,10 +1,8 @@
 define(["system", "table", "graph", "output", "js/vendor/rickshaw.min.js"], function(System, Table, Graph){
 	"use strict";
 	System.views.new("console", function(){
-		this.dataStream = function(name, val) {
-			return function(t) {
-				console.log(name, t, val.val);
-			};
+		this.dataStream = function() {
+			return console.log.bind(console);
 		};
 		this.setup = function(){
 

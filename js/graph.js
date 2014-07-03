@@ -1,4 +1,4 @@
-define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/rickshaw.min.js", "js/vendor/rick-extensions.js", "js/vendor/lodash.min.js"],
+define(["js/vendor/lodash.min.js", "js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/rickshaw.min.js", "js/vendor/rick-extensions.js"],
 	function(_){
 	var Graph = function () {
 		this.element = $("<div>").addClass("graph-container")
@@ -11,14 +11,14 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 
 		setup: function(watching) {
 			this.length = watching.length;
-			this.create(_(watching).pluck("v").pluck("name"));
+			this.create(_(watching).pluck("val").pluck("name").__wrapped__);
 		},
 
 		dataStream: function() {
 			var n = 0, l = this.length, data = this.getSeries();
 			return function(t, y){
-				for (var i = 0, i++; i<l) {
-					data[n][i] = {x: t, y: y[i]}; 
+				for (var i = 0; i<l; i++) {
+					data[i][n] = {x: t, y: y[i]}; 
 				}
 				n++;
 			};
@@ -104,7 +104,7 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 					return s.name == name;
 				})[0];
 			} // or else get all series sorted by data name
-			return _(this.graph.series).sortBy("name").pluck("data");
+			return _(this.graph.series).sortBy("name").pluck("data").__wrapped__;
 
 		},
 		randColor: function(){

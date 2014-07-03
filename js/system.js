@@ -19,11 +19,9 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 				func: this.vectorize(dt),
 				state0: _(Variable.variables).pluck("val").pluck("val").__wrapped__,
 				dt: dt,
-				callback: this.watcher(dt)
+				callback: this.recorder()
 			});
 			solver.solve("DOPRI");
-
-//			solver.DOPRI(0, times, _(Variable.variables).pluck("val").pluck("val").__wrapped__, go);
 
 			this.views.view.done();
 		},
@@ -46,7 +44,7 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 			return new Function(varnames, body);
 		},
 
-		watcher: function(dt) {
+		recorder: function() {
 			var streams, streamlength;
 
 			this.watching = Variable.variables.filter(function(e){
@@ -59,11 +57,10 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 				return view.dataStream();
 			});
 
-			
 			streamlength = streams.length;
 
 		    return function(t, y) {
-		    	for (i = 0; i < streamlength; i++) {
+		    	for (var i = 0; i < streamlength; i++) {
 		    		streams[i](t, y);
 		    	}
 		    };

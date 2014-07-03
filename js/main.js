@@ -86,7 +86,8 @@ var a= new Variable(alphabet.next(), 100, 200);
 a.toggleWatch();
 
 menu.init();
-//$(".chart").click();$("#run").click();
+$(".chart")[0].click();
+//$("#run").click();
 
 });
 
