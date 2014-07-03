@@ -4,7 +4,7 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		watching: [],
 
 		specs: {
-			dt: .5,
+			dt: 1,
 			time: 100
 		},
 
@@ -12,13 +12,19 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 			var t, solver,
 				dt = this.specs.dt,
 				times = this.specs.time = Number($("#times").val()),//*(1/dt),
-				go  = this.prepare();
+				go  = this.prepare(dt);
 
-			solver = new Solver(0, times);
-			solver.setFunction(go);
-			solver.state(_(Variable.variables).pluck("val").pluck("val").__wrapped__);
-			solver.dt(dt);
-			solver.DOPRI();
+			solver = new Solver({
+				start: 0,
+				end: times,
+				func: go,
+				state0: _(Variable.variables).pluck("val").pluck("val").__wrapped__,
+				dt: dt,
+				callback: function(t, y){
+					console.log(t, y);
+				}
+			});
+			solver.solve("RK4");
 
 //			solver.DOPRI(0, times, _(Variable.variables).pluck("val").pluck("val").__wrapped__, go);
 
@@ -31,8 +37,22 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 			});
 		},
 
-		prepare: function() {
+		vectorize: function(dt) {
+			var dynavars, varnames, body;
+			
+			dynavars = _(Variable.variables).filter(function(v){ return v.static(); });
+
+			varnames = dynavars.pluck("name").__wrapped__;
+
+			body =  "return [" + dynavars.map(function(v){	return v.compile(varnames, dt); }).join(",") + "];";
+
+			return new Function(varnames, body);
+		},
+
+		prepare: function(dt) {
 			var streams, actions, saves, streams, streamlength, varlength;
+
+			Variable.variables = _.sortBy(Variable.variables, "name");
 
 			this.watching = Variable.variables.filter(function(e){
 				return e.watching;
@@ -48,13 +68,6 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 				}
 			}.bind(this)))
 
-			var varnames = _(Variable.variables).pluck("name").sort().__wrapped__;
-
-			actions = Variable.variables.map(function(v){
-				v.compile(varnames);
-				return v.calculate.bind(v);
-			});
-
 			saves = Variable.variables.map(function(v){
 				return v.next.bind(v);
 			});
@@ -63,7 +76,19 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 			streamlength = streams.length;
 		    varlength = Variable.variables.length;
 
-			return function(t, y){
+		    this.record = function(t, y){
+		    	for (var i = 0; i < varlength; i++) {
+		    		saves[i](t, y);
+		    	}
+		    	for (i = 0; i < streamlength; i++) {
+		    		streams[i](t, y);
+		    	}
+
+		    };
+
+		    return this.vectorize(dt);
+
+/*			return function(t, y){
 				var res = new Float32Array(y.length);
 				for (var i = 0; i < varlength; i++ ) {
 					res[i] = actions[i](t, y);
@@ -74,7 +99,9 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 				}
 				return res;
 			};
+*/
 		},
+
 		views: new Output($("#output"))
 	};
 	return sys;

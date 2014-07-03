@@ -1,7 +1,7 @@
 define(["js/vendor/numeric.js"], function(N){
-	var Solver = function(start, end) {
-		this.start = start;
-		this.end = end;
+	var Solver = function(config) {
+
+		_.assign(this, config);
 
 	//	N.dopri(0,1,[3,0,4],function (x,y) { return [y[1], -y[0], y[2]]; });
 
@@ -10,23 +10,9 @@ define(["js/vendor/numeric.js"], function(N){
 	Solver.prototype = {
 
 
-		setFunction: function(func) {
-			// must be a function of every dynamic variable
-			this.func = func;
-		},
-
 		solve: function(alg) {
 			alg = alg || "DOPRI";
 			this[alg]();
-		},
-
-		state: function(state) {
-			return this.state0 = state || this.state0;
-		},
-
-
-		dt: function(dt) {
-			return this.dt = dt || this.dt;
 		},
 
 		DOPRI: function() {
@@ -41,21 +27,21 @@ define(["js/vendor/numeric.js"], function(N){
 
 			*/
 
-			this.dopri = numeric.dopri(this.start, this.end, this.state0, this.func);
+			this.dopri = numeric.dopri(this.start, this.end, this.state0, this.func, undefined, Infinity, this.callback);
 			return this.dopri;
 
 			/*
 
-numeric.dopri(0, 1.2,[5,10], (function(){
-    var a=1.0, b=0.2, p=0.04, c=0.5;      
+			numeric.dopri(0, 1.2,[5,10], (function(){
+			    var a=1.0, b=0.2, p=0.04, c=0.5;      
 
- 	return function(t, y) { write(t +" "+ y + "<br>");
-	    var v = new Uint32Array(y.length);
-	    v[0] = a*y[0] - b*y[0]*y[1];  
-	    v[1] = p*y[0]*y[1] - c*y[1];   
-	    return v;
-  }
-})() );
+			 	return function(t, y) { write(t +" "+ y + "<br>");
+				    var v = new Uint32Array(y.length);
+				    v[0] = a*y[0] - b*y[0]*y[1];  
+				    v[1] = p*y[0]*y[1] - c*y[1];   
+				    return v;
+			  }
+			})() );
 
 			*/
 
@@ -65,7 +51,7 @@ numeric.dopri(0, 1.2,[5,10], (function(){
 
 			// state is y
 
-	       for (var i, y = this.state0, dt = this.dt, f = this.func, l = y.length,
+	       for (var i, cb = this.callback, y = this.state0, dt = this.dt, f = this.func, l = y.length,
 	       		t= this.start, times = this.end; t<times; ++t)  {
 
 	           t = dt*l;
@@ -106,7 +92,7 @@ numeric.dopri(0, 1.2,[5,10], (function(){
 			    for (i=0; i<l; ++i)
 			      k1[i] = y[i] + dt *(k1[i] + 2.0 * (k2[i] + k3[i]) + k4[i]) /6.0;
 			    
-			    y = k1;
+			    cb(t, y = k1);
 			}
 
 		}

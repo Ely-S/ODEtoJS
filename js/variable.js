@@ -74,20 +74,24 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 			this.formula = formula;
 		},
 
-		compile: function(argnames) {
-			var t = this,
-				replaces = {},
-				nonstatic = [];
+		static: function(){
+			return this.formula || this.formula.trim() == "" || this.formula.trim() == "0";
+		},
+
+		compile: function(argnames, dt) {
+			var t = this, replaces = {};
+//				nonstatic = [];
 //				argnames, vals;
 
 				this.links.forEach(function(l){
 					// replace static variables with their values
 					var other = l.other(t);
-					if (!other.formula || other.formula.trim() == "" || other.formula.trim() == "0") {
+					if (other.static()) {
 						replaces[other.name] = other.val.val;
-					} else {
-						nonstatic.push(other);
 					}
+					/* else {
+						nonstatic.push(other);
+					}*/
 				});
 
 			// replace names with values for static params
@@ -108,7 +112,9 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 			argnames.unshift(this.name);
 
 */
-			this.delta = new Function(argnames.join(","), "return " + this.formula);
+
+			return this.formula;
+//			this.delta = new Function(argnames.join(","), "return (" + this.formula + ")*" + dt );
 			
 
 		},
