@@ -75,7 +75,7 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 		},
 
 		static: function(){
-			return this.formula || this.formula.trim() == "" || this.formula.trim() == "0";
+			return (this.formula.trim() == "") || (this.formula.trim() == "0");
 		},
 
 		compile: function(argnames, dt) {

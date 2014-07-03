@@ -35,7 +35,7 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		vectorize: function(dt) {
 			var dynavars, varnames, body;
 			
-			dynavars = _(Variable.variables).sortBy("name").filter(function(v){ return v.static(); });
+			dynavars = _(Variable.variables).sortBy("name").filter(function(v){ return !v.static(); });
 
 			varnames = dynavars.pluck("name").__wrapped__;
 
