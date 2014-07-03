@@ -11,20 +11,17 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		run: function() {
 			var t, solver,
 				dt = this.specs.dt,
-				times = this.specs.time = Number($("#times").val()),//*(1/dt),
-				go  = this.prepare(dt);
+				times = this.specs.time = Number($("#times").val());
 
 			solver = new Solver({
 				start: 0,
 				end: times,
-				func: go,
+				func: this.vectorize(dt),
 				state0: _(Variable.variables).pluck("val").pluck("val").__wrapped__,
 				dt: dt,
-				callback: function(t, y){
-					console.log(t, y);
-				}
+				callback: this.watcher(dt)
 			});
-			solver.solve("RK4");
+			solver.solve("DOPRI");
 
 //			solver.DOPRI(0, times, _(Variable.variables).pluck("val").pluck("val").__wrapped__, go);
 
@@ -40,7 +37,7 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		vectorize: function(dt) {
 			var dynavars, varnames, body;
 			
-			dynavars = _(Variable.variables).filter(function(v){ return v.static(); });
+			dynavars = _(Variable.variables).sortBy("name").filter(function(v){ return v.static(); });
 
 			varnames = dynavars.pluck("name").__wrapped__;
 
@@ -49,10 +46,8 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 			return new Function(varnames, body);
 		},
 
-		prepare: function(dt) {
-			var streams, actions, saves, streams, streamlength, varlength;
-
-			Variable.variables = _.sortBy(Variable.variables, "name");
+		watcher: function(dt) {
+			var streams, streamlength;
 
 			this.watching = Variable.variables.filter(function(e){
 				return e.watching;
@@ -60,46 +55,19 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 
 			this.views.view.setup(this.watching);
 
-			streams = [];
-
-			this.watching.forEach((function(w) {
-				for (var a = 0, l = this.views.view.active.length; a < l; a++) {
-					streams.push(this.views.view.active[a].dataStream(w.name, w.val)) 
-				}
-			}.bind(this)))
-
-			saves = Variable.variables.map(function(v){
-				return v.next.bind(v);
+			streams = _.map(this.views.view.active, function(view) {
+				return view.dataStream();
 			});
 
 			
 			streamlength = streams.length;
-		    varlength = Variable.variables.length;
 
-		    this.record = function(t, y){
-		    	for (var i = 0; i < varlength; i++) {
-		    		saves[i](t, y);
-		    	}
+		    return function(t, y) {
 		    	for (i = 0; i < streamlength; i++) {
 		    		streams[i](t, y);
 		    	}
-
 		    };
 
-		    return this.vectorize(dt);
-
-/*			return function(t, y){
-				var res = new Float32Array(y.length);
-				for (var i = 0; i < varlength; i++ ) {
-					res[i] = actions[i](t, y);
-					saves[i]();
-				}
-				for (i = 0; i < streamlength; i++ ) {
-					streams[i](t);
-				}
-				return res;
-			};
-*/
 		},
 
 		views: new Output($("#output"))

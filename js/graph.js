@@ -1,4 +1,5 @@
-define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/rickshaw.min.js", "js/vendor/rick-extensions.js"], function(){
+define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/rickshaw.min.js", "js/vendor/rick-extensions.js", "js/vendor/lodash.min.js"],
+	function(_){
 	var Graph = function () {
 		this.element = $("<div>").addClass("graph-container")
 			.html("<div class='graph'></div><div class='controls'></div>")[0];
@@ -9,14 +10,18 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 		height: 300,
 
 		setup: function(watching) {
-			this.create(watching.map(function(v){ return v.name; }))
+			this.length = watching.length;
+			this.create(_(watching).pluck("v").pluck("name"));
 		},
 
-		dataStream: function(name, val){
-			return (function(data, t){
-				if (t || t == 0)
-				data.push({x: t, y: val.val});
-			}).bind(this, this.getSeries(name).data)
+		dataStream: function() {
+			var n = 0, l = this.length, data = this.getSeries();
+			return function(t, y){
+				for (var i = 0, i++; i<l) {
+					data[n][i] = {x: t, y: y[i]}; 
+				}
+				n++;
+			};
 		},
 
 		done: function() {
@@ -74,7 +79,7 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 		},
 
 		reset: function() {
-			this.series.forEach(function(s){
+			_.forEach(this.series, function(s){
 				var data = s.data;
 				while(data.pop()) {}
 			});
@@ -94,9 +99,13 @@ define(["js/vendor/d3.layout.min.js", "js/vendor/jquery-ui.min.js", "js/vendor/r
 		},
 
 		getSeries: function (name) { 
-			return this.graph.series.filter(function(s){
-				return s.name == name;
-			})[0];
+			if (name) {
+				return this.graph.series.filter(function(s){
+					return s.name == name;
+				})[0];
+			} // or else get all series sorted by data name
+			return _(this.graph.series).sortBy("name").pluck("data");
+
 		},
 		randColor: function(){
 			return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
