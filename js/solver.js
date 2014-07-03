@@ -3,7 +3,9 @@ define(["js/vendor/numeric.js"], function(N){
 
 		_.assign(this, config);
 
-	//	N.dopri(0,1,[3,0,4],function (x,y) { return [y[1], -y[0], y[2]]; });
+		// Typed arrays are more efficient
+		this.state0 = new Float32Array(this.state0);
+
 
 	};
 
@@ -15,64 +17,54 @@ define(["js/vendor/numeric.js"], function(N){
 			this[alg]();
 		},
 
+		Euler: function() {
+			var i, t = this.start, times = this.end,
+	       		cb = this.callback,
+	       		y = this.state0, yn,
+	       		dt = this.dt, f = this.func,
+	       		l = y.length;
+
+	       while(t<times) {
+
+	       		yn = f(t, y);
+
+	       		for(i = 0; i < l; i++) {
+	       			y[i] = y[i] + dt*yn[i];
+	       		}
+
+				cb(t, y);
+
+				t += dt;
+	        }
+	    },
+
 		DOPRI: function() {
-
-			/*
-			need to create Array of state0
-			combine dfs to a single function that takes all of them,
-			 	saves them,
-			 	and returns them;
-			 keep watchers working or change that
-			 Plugin Solver to system
-
-			*/
 
 			this.dopri = numeric.dopri(this.start, this.end, this.state0, this.func, undefined, Infinity, this.callback);
 			return this.dopri;
-
-			/*
-
-			numeric.dopri(0, 1.2,[5,10], (function(){
-			    var a=1.0, b=0.2, p=0.04, c=0.5;      
-
-			 	return function(t, y) { write(t +" "+ y + "<br>");
-				    var v = new Uint32Array(y.length);
-				    v[0] = a*y[0] - b*y[0]*y[1];  
-				    v[1] = p*y[0]*y[1] - c*y[1];   
-				    return v;
-			  }
-			})() );
-
-			*/
 
 		},
 
 		RK4: function() {
 
 			// state is y
-
-	       for (var i, cb = this.callback, y = this.state0, dt = this.dt, f = this.func, l = y.length,
-	       		t= this.start, times = this.end; t<times; ++t)  {
-
-	           t = dt*l;
-
-			    var k1 = new Float32Array(l),
-			      k2 = new Float32Array(l),
-			      k3 = new Float32Array(l),
-			      k4 = new Float32Array(l);
-
-			/*
-				var RK4 = function (x, h, y, f) {
-					var k1 = h * f(x, y),
-				        k2 = h * f(x + 0.5*h, y + 0.5*k1),
-				        k3 = h * f(x + 0.5*h, y + 0.5*k2),
-				        k4 = h * f(x + h, y + k3);
-				        return x + h, y + (k1 + 2*(k2 + k3) + k4)/6.0
-				};
-			*/
+			var i,
+	       		cb = this.callback,
+	       		y = this.state0,
+	       		dt = this.dt,
+	       		f = this.func,
+	       		l = y.length,
+	       		t = this.start,
+	       		k1,
+	       		 k2 = new Float32Array(l),
+	       		 k3 = new Float32Array(l),
+	       		 k4 = new Float32Array(l),
+	       		times = this.end;
+	       	
+	       	while (t < times) {
+			    k1 = f(t, y);
 			    
-			    k1 = f(t, y); // Lotka-Voltarra as a function of y and t
-			    
+			    // loop through components of the vector
 			    for (i=0; i<l; ++i)
 			      // change x and y by the dt
 			      k2[i] = y[i] + dt * k1[i]/2.0;
@@ -90,9 +82,11 @@ define(["js/vendor/numeric.js"], function(N){
 			    k4 = f(t+dt, k4);
 			    
 			    for (i=0; i<l; ++i)
-			      k1[i] = y[i] + dt *(k1[i] + 2.0 * (k2[i] + k3[i]) + k4[i]) /6.0;
+			      y[i] = y[i] + dt *(k1[i] + 2.0 * (k2[i] + k3[i]) + k4[i]) / 6.0;
 			    
-			    cb(t, y = k1);
+			    cb(t, y);
+
+			 t+= dt;
 			}
 
 		}

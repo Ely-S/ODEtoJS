@@ -4,8 +4,9 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		watching: [],
 
 		specs: {
-			dt: 1,
-			time: 100
+			dt: .1,
+			time: 100,
+			method: "Euler"
 		},
 
 		run: function() {
@@ -21,7 +22,7 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 				dt: dt,
 				callback: this.recorder()
 			});
-			solver.solve("DOPRI");
+			solver.solve(this.specs.method);
 
 			this.views.view.done();
 		},
@@ -33,15 +34,18 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		},
 
 		vectorize: function(dt) {
-			var dynavars, varnames, body;
+			var dynavars, varnames, body, func;
 			
 			dynavars = _(Variable.variables).sortBy("name").filter(function(v){ return !v.static(); });
 
 			varnames = dynavars.pluck("name").__wrapped__;
 
-			body =  "return [" + dynavars.map(function(v){	return v.compile(varnames, dt); }).join(",") + "];";
+			body =  "return [" + dynavars.map(function(v){ return v.compile(varnames, dt); }).join(",") + "];";
 
-			return new Function(varnames, body);
+			func = new Function(varnames, body);
+
+			return func.apply.bind(func);
+
 		},
 
 		recorder: function() {

@@ -18,6 +18,17 @@ var menu = {
 		for (var btn in this.buttons) {
 			$(btn).click(this.buttons[btn]);
 		}
+		for (var inp in this.inputs) {
+			$(inp).change(this.inputs[inp]);
+		}
+	},
+	inputs: {
+		"#method": function(){
+			Sys.specs.method = this.value
+		},
+		"#dt": function(){
+			Sys.specs.dt = parseFloat(this.value);
+		}
 	},
 	buttons: {
 		"#btn-stock": function(){

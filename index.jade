@@ -30,6 +30,14 @@ head
         input#formula(type='text', placeholder='formula', maxlength='200')
         input#times(type='number', value='100', placeholder='#Iterations')
         input#name(type="text", maxlength="100")
+        hr
+        label Method 
+            select#method
+                option(value="Euler", "selected") Euler
+                option(value="DOPRI") DOPRI
+                option(value="RK4") RK4
+        label dt 
+            input#dt(type="number", value=".1", maxlength="10", min=".01")
         .hidden
           table#table-template.stat-table(data-template='data-template')
             thead
