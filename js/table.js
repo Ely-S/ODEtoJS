@@ -1,20 +1,27 @@
-define(["js/vendor/tempo.js"], function (tempo){
+define(["js/vendor/tempo.js", "js/vendor/lodash.min.js"], function (tempo, _){
 	var Table, template = Tempo.prepare("table-template");
 	Table = function() {
 		this.element = document.createElement("div");
 		this.element.className = "statistics-table";
 		this.template = template.into(this.element);
-		this.data = {};
+		this.setup([]);
 	};
 
 	Table.prototype = {
-		setup: function() {
-			this.rows = {};
+		setup: function(watching) {
+			this.rows =  _(watching).pluck("name").sort().map(function(name){
+				return new Table.prototype.Row(name);
+			}).__wrapped__;
 		},
 	
-		dataStream: function(name, val) {
-			this.rows[name] = new this.Row(name);
-			return this.rows[name].add.bind(this.rows[name], val);
+		dataStream: function() {
+			var l = this.rows.length, rows = this.rows;
+			return function(t, y){
+				for (var i = 0; i<l; i++) {
+					rows[i].add(y[i]);
+				}
+			};
+
 		},
 
 		done: function(){
@@ -26,13 +33,11 @@ define(["js/vendor/tempo.js"], function (tempo){
 		},
 
 		render: function() {
-			var i, rows = [];
-			for (i in this.rows) {
-				this.rows[i].stdDev();
-				this.rows[i].total();				
-				this.rows[i].name = i;
-				rows.push(this.rows[i]);
-			}
+			var rows = this.rows.map(function(row) {
+				row.stdDev();
+				row.total();				
+				return row
+			});
 			this.template.render(rows);
 		}
 
@@ -47,16 +52,15 @@ define(["js/vendor/tempo.js"], function (tempo){
 		n: 0,
 		mean: 0,
 		M2: 0,
-		add: function(val, x) {
-			x = val.val;
-			if (x > this.max) this.max = x;
-			if (x < this.min) this.min = x;
-			if (this.n == 0) this.first = x
-			this.last = x;
+		add: function(y) {
+			if (y > this.max) this.max = y;
+			if (y < this.min) this.min = y;
+			if (this.n == 0) this.first = y
+			this.last = y;
  		    this.n = this.n + 1
-		    this.delta = x - this.mean;
+		    this.delta = y - this.mean;
 		    this.mean = this.mean + this.delta/this.n;
-		    this.M2 = this.M2 + this.delta * (x - this.mean);
+		    this.M2 = this.M2 + this.delta * (y - this.mean);
 		},
 		total: function(){
 			this.sum = this.mean * this.n;
