@@ -26,13 +26,13 @@ define(["js/vendor/numeric.js"], function(N){
 
 	       while(t<times) {
 
+				cb(t, y);
+
 	       		yn = f(t, y);
 
 	       		for(i = 0; i < l; i++) {
 	       			y[i] = y[i] + dt*yn[i];
 	       		}
-
-				cb(t, y);
 
 				t += dt;
 	        }
@@ -62,6 +62,8 @@ define(["js/vendor/numeric.js"], function(N){
 	       		times = this.end;
 	       	
 	       	while (t < times) {
+			    cb(t, y);
+
 			    k1 = f(t, y);
 			    
 			    // loop through components of the vector
@@ -84,8 +86,6 @@ define(["js/vendor/numeric.js"], function(N){
 			    for (i=0; i<l; ++i)
 			      y[i] = y[i] + dt *(k1[i] + 2.0 * (k2[i] + k3[i]) + k4[i]) / 6.0;
 			    
-			    cb(t, y);
-
 			 t+= dt;
 			}
 
