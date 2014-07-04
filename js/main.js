@@ -31,6 +31,12 @@ var menu = {
 		}
 	},
 	buttons: {
+		"#save": function() {
+			Sys.save();
+		},
+		"#load": function() {
+			Sys.load();
+		},
 		"#btn-stock": function(){
 			$("#workspace").one("click", function(e){
 				var s = new Variable(alphabet.next(), e.clientX, e.clientY);
@@ -52,8 +58,6 @@ $("#workspace").on("click", ".variable", function(e){
 		if (!Flow.fl) {
 			Flow.fl = Flow.waiting(this);
 		}
-	} else {
-		$(this).toggleClass("selected");
 	}
 }).click(function(e){
 	if (e.ctrlKey) {
@@ -92,6 +96,26 @@ var a= new Variable(alphabet.next(), 100, 200);
 
 //    public static double a=1.0, b=0.2, p=0.04, c=0.5, Prey0=5, Predator0=2;
 //    public static double dt=0.01, tstart=0.0;
+
+// Delete things
+
+var selected;
+$("svg").on("click", ".flow, .variable", function(){
+	var prev = document.querySelector(".selected");
+	if (prev) prev.classList.remove("selected");
+	selected = this.instance;
+	this.classList.add("selected");
+}).on("mouseover", ".flow, .variable", function(){
+	selected = null;
+});
+
+$(document).on("keypress", function(e) {
+	if (e.charCode == 127) {
+//		try {
+			selected.model.delete();
+//		} catch (e) {}
+	}
+});
 
 
 a.toggleWatch();

@@ -1,12 +1,15 @@
 define(["svg"], function(SVG, SVGModel) {
 	"use strict";
 	var Flow = function(name, from, to) {
-		var fm = from.model,
-			tm = to.model,
+		var fm = from.model || from,
+			tm = to.model || to,
 			line = SVG.line(from.x()+fm.width/2 , from.y()+fm.height/2 , to.x() + tm.width/2, to.y()+tm.height/2 ).stroke({width: 5});
+		this.id = from.name+to.name;
 		this.g = SVG.group();
 		this.g.model = this;
 		this.g.add(line);
+		this.g.node.classList.add("flow");
+		this.g.node.model = this;
 		fm.connect(this);
 		tm.connect(this);
 		this.other = function(a) {

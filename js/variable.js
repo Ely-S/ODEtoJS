@@ -17,6 +17,10 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 
 	Variable.variables = [];
 
+	Variable.find = function(name) {
+		return _.findWhere(this.variables, {name: name});
+	};
+
 	Variable.prototype = {
 		watching: false,
 		width: 80,
@@ -24,6 +28,21 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 		color: '#f06',
 		value: 0,
 		formula: "0",
+
+		toJSON: function() {
+			var t = this;
+			return {
+				x: this.g.x(),
+				y: this.g.y(),
+				watching: this.watching,
+				value: this.value,
+				formula: this.formula,
+				name: this.name,
+				linkNames: _.map(this.links, function(l){
+					return l.other(t).name;
+				})
+			};
+		},
 
 		events: {
 			click: function(e){
@@ -43,6 +62,16 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 				document.onmousemove = null;
 			}
 		},
+
+		reconstitute: function() {
+			if (this.watching) {
+				this.rect.node.classList.add("watching");	
+			}
+			this.rect.attr({fill: this.color});
+			this.dformula.val =this.formula;
+			this.val.val = this.value;
+		},
+
 		create: function(name){
 			this.name = name;
 			this.g = SVG.group();
@@ -58,11 +87,10 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 			}).bind(this));
 		},
 
-		name: function(){
-			this.text.text
-		},
-
 		connect: function(flow){
+			// prevent duplicates
+			for (var i = 0, k = this.links, l = k.length; i < l; i++)
+				if (k[i] && k[i].id === flow.id) return;
 			this.links.push(flow);
 		},
 
@@ -117,6 +145,14 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 //			this.delta = new Function(argnames.join(","), "return (" + this.formula + ")*" + dt );
 			
 
+		},
+
+		delete: function() {
+			var l;
+			while (l = this.links.pop()) {
+				l.g.remove();
+			}
+			this.g.remove();
 		},
 
 		calculate: function(t, y) {

@@ -21,11 +21,13 @@ head
       #graphs
     #toolbar
       .workspace-toolbar.toolbar
-        a#run(href='#running') Run
+        a.btn#save(href="#saving") Save 
+        a.btn#load(href="#load") Load 
+        a#run(href='#running') Run 
         | New
-        a.btn#btn-stock(href='#new') Stock
-        a.btn#btn-flow(href='#flow') Flow
-        a.btn#btn-watch(href='#watch') watch
+        a.btn#btn-stock(href='#new') Stock 
+        a.btn#btn-flow(href='#flow') Flow 
+        a.btn#btn-watch(href='#watch') Watch 
         input#value(type='text', placeholder='value', maxlength='200')
         input#formula(type='text', placeholder='formula', maxlength='200')
         input#times(type='number', value='100', placeholder='#Iterations')

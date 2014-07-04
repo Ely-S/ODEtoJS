@@ -1,4 +1,4 @@
-define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Variable, Output, Solver, _){
+define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], function(Variable, Flow, Output, Solver, _){
 	"use strict";
 	var sys = {
 		watching: [],
@@ -70,6 +70,38 @@ define(["variable", "output", "solver", "js/vendor/lodash.min.js"], function(Var
 		    };
 
 		},
+
+		save: function() {
+			var json = JSON.stringify(_.map(Variable.variables, function(v){
+				return v.toJSON();
+			}));
+			localStorage.setItem("save", json);
+		},
+
+		load: function() {
+			var state = JSON.parse(localStorage["save"]);
+			if (state.length) {
+				// clear
+				_.forEach(Variable.variables, function(v){
+					v.delete();
+				});
+
+				Variable.variables = [];
+
+				_.map(state, function(v){
+					var n = new Variable(v.name, v.x, v.y);
+					_.assign(n, v);
+					n.reconstitute();
+					return n;
+				}).forEach(function(n){
+					_.forEach(n.linkNames, function(l) {
+						new Flow("Flow", n.g, Variable.find(l).g);
+					});
+				});
+			}
+
+		},
+
 
 		views: new Output($("#output"))
 	};

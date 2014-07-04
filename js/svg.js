@@ -4,14 +4,15 @@ define(["vendor/svg", "js/vendor/jquery-1.10.2.min.js"], function (argument) {
 		e.stopPropagation()
 		var x = e.clientX, y = e.clientY,
 		svg = $("#workspace svg").css("cursor", "move")[0];
-		document.onmousemove = (function(e) {
+		document.onmousemove = function(e) {
 			e.stopPropagation()
 			svg.style.bottom = y - e.clientY;
 			svg.style.right = x - e.clientX;
-		}).bind(this)
-	}).on("mouseup", function(){
-		document.onmousemove = null;
-		$("#workspace svg").css("cursor", "inherit")
+		};
+		$(document.body).one("mouseup", function(){
+			document.onmousemove = null;
+			$("#workspace svg").css("cursor", "inherit");
+		});
 	});
 	return svg;
 });
