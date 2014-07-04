@@ -60,9 +60,10 @@ $("#workspace").on("click", ".variable", function(e){
 		}
 	}
 }).click(function(e){
+	var pos = $("#workspace > svg").position();
 	if (e.ctrlKey) {
 		e.stopPropagation();
-		new Variable(alphabet.next(), e.clientX, e.clientY);
+		new Variable(alphabet.next(), e.clientX - pos.left, e.clientY - pos.top);
 	}
 });
 
@@ -111,9 +112,10 @@ $("svg").on("click", ".flow, .variable", function(){
 
 $(document).on("keypress", function(e) {
 	if (e.charCode == 127) {
-//		try {
+		// because sometimes there is no selected
+		try {
 			selected.model.delete();
-//		} catch (e) {}
+		} catch (e) {}
 	}
 });
 

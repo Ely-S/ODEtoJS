@@ -49,17 +49,6 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 				if (e.shiftKey) {
 					this.toggleWatch();
 				}
-			},
-			mousedown: function() {
-				document.onmousemove = (function(e) {
-						this.g.move(e.clientX - 20, e.clientY - 20);
-					this.links.forEach(function(e){
-						e.move();
-					});
-				}).bind(this);
-			},
-			mouseup: function(){
-				document.onmousemove = null;
 			}
 		},
 
@@ -77,6 +66,7 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 			this.g = SVG.group();
 			this.g.model = this;
 			this.g.node.classList.add("variable");
+			this.g.draggable();
 			this.text = SVG.plain(name);
 			this.rect = SVG.rect(this.width, this.height).attr({ fill: '#f06', rx: "15px" });
 			this.g.add(this.rect);
@@ -108,42 +98,19 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 
 		compile: function(argnames, dt) {
 			var t = this, replaces = {};
-//				nonstatic = [];
-//				argnames, vals;
 
 				this.links.forEach(function(l){
-					// replace static variables with their values
 					var other = l.other(t);
 					if (other.static()) {
 						replaces[other.name] = other.val.val;
 					}
-					/* else {
-						nonstatic.push(other);
-					}*/
 				});
 
 			// replace names with values for static params
 			for (var name in replaces)
 				this.formula = this.formula.replace(name, replaces[name]);
 
-/*
-				argnames = nonstatic.map(function(o){
-					return o.name;
-				});
-
-				vals = nonstatic.map(function(o){
-					return o.val;
-				});
-
-			// Wrap delta with the necessary arguments
-			vals.unshift(this.val); // add this val to the begining
-			argnames.unshift(this.name);
-
-*/
-
-			return this.formula;
-//			this.delta = new Function(argnames.join(","), "return (" + this.formula + ")*" + dt );
-			
+			return this.formula;			
 
 		},
 

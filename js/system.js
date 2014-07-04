@@ -22,6 +22,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				dt: dt,
 				callback: this.recorder()
 			});
+			
 			solver.solve(this.specs.method);
 
 			this.views.view.done();

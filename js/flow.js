@@ -29,8 +29,10 @@ define(["svg"], function(SVG, SVGModel) {
 			x1 = from.instance.x() + from.instance.model.width/2,
 			y1 = from.instance.y() + from.instance.model.height/2,
 			temp = SVG.line(x1, y1, x1+1, y1+1).stroke({width: 5});
+
 		document.body.onmousemove = function(e){
-			temp.plot(x1, y1, e.clientX-10, e.clientY-10);
+			var pos = $("#workspace > svg").position();
+			temp.plot(x1, y1, e.clientX-5-pos.left, e.clientY-5-pos.top);
 		};
 		g = $("g").on("click", function(e){
 			g.off("click");
