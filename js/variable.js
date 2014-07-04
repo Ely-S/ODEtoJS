@@ -120,6 +120,7 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 				l.g.remove();
 			}
 			this.g.remove();
+			Variable.variables = _.reject(Variable.variables, this);
 		},
 
 		calculate: function(t, y) {
