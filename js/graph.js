@@ -6,8 +6,8 @@ define(["js/vendor/lodash.min.js", "js/vendor/d3.layout.min.js", "js/vendor/jque
 	};
 	Graph.prototype = {
 		renderer: "line",
-		width: 500,
-		height: 300,
+		width: 800,
+		height: 500,
 
 		setup: function(watching) {
 			this.length = watching.length;
@@ -40,6 +40,10 @@ define(["js/vendor/lodash.min.js", "js/vendor/d3.layout.min.js", "js/vendor/jque
 			this.xAxis.render();
 		},
 
+		resize: function() {
+
+		},
+
 		initialize: function(type) {
 			this.renderer = type || "line";
 			this.graph = new Rickshaw.Graph({
@@ -53,6 +57,7 @@ define(["js/vendor/lodash.min.js", "js/vendor/d3.layout.min.js", "js/vendor/jque
 				}]
 			});
 			this.makeAxis();
+			$(this.element.children[0]).resizable(this.resize.bind(this));
 		},
 
 		create: function(names){
@@ -76,6 +81,7 @@ define(["js/vendor/lodash.min.js", "js/vendor/d3.layout.min.js", "js/vendor/jque
 			  })
 			});
 			this.makeAxis();
+			$(this.element.children[0]).resizable(this.resize.bind(this));
 		},
 
 		reset: function() {

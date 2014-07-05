@@ -4,7 +4,7 @@ define(["svg"], function(SVG, SVGModel) {
 		var fm = from.model || from,
 			tm = to.model || to,
 			line = SVG.line(from.x()+fm.width/2 , from.y()+fm.height/2 , to.x() + tm.width/2, to.y()+tm.height/2 ).stroke({width: 5});
-		this.id = from.name+to.name;
+		this.id = [fm.name,tm.name].sort().join("");
 		this.g = SVG.group();
 		this.g.model = this;
 		this.g.add(line);

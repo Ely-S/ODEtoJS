@@ -87,19 +87,7 @@ $(".output").hover(function(){
 	}, 300);
 });
 
-
-var a= new Variable(alphabet.next(), 100, 200);
-//var b = new Variable(alphabet.next(), 200, 200);
-//b.toggleWatch();
-//b.set("0.04*b*a-.5*b");
-//a.set("1.0*a-.2*a*b");
-
-
-//    public static double a=1.0, b=0.2, p=0.04, c=0.5, Prey0=5, Predator0=2;
-//    public static double dt=0.01, tstart=0.0;
-
 // Delete things
-
 var selected;
 $("svg").on("click", ".flow, .variable", function(){
 	var prev = document.querySelector(".selected");
@@ -119,8 +107,27 @@ $(document).on("keypress", function(e) {
 	}
 });
 
+(function(x, y) {
+	$("#editor").submit(function(e){
+		e.preventDefault();
+		var formula = $("#formula").val().split("=");
+		if (formula.length < 2) return;
+		var v = new Variable(formula[0], x, y);
+		v.formula  = formula[1];
+		v.value = $("#value").val();
+		v.linkNames = _.filter(formula[1].replace(/[\W\d]/g, "\n").split("\n"));
+		v.reconstitute();
+		y += 90;
+	});
+}(50, 50));
 
+
+
+var a= new Variable(alphabet.next(), 100, 200);
 a.toggleWatch();
+//var b = new Variable(alphabet.next(), 200, 200);
+//b.toggleWatch();
+//b.set("0.04*b*a-.5*b");
 
 menu.init();
 $(".chart")[0].click();
@@ -129,4 +136,3 @@ $(".chart")[0].click();
 });
 
 });
-

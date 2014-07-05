@@ -1,4 +1,4 @@
-define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, SVG, editors, _) {
+define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(Flow, Value, SVG, editors, _) {
 	"use strict";
 
 	var Variable = function(name, x, y) {
@@ -57,8 +57,12 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 				this.rect.node.classList.add("watching");	
 			}
 			this.rect.attr({fill: this.color});
-			this.dformula.val =this.formula;
+			this.dformula.val = this.formula;
 			this.val.val = this.value;
+			var g = this.g;
+			_.forEach(this.linkNames, function(l) {
+				new Flow("Flow", g, Variable.find(l).g);
+			});
 		},
 
 		create: function(name){
@@ -66,7 +70,10 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 			this.g = SVG.group();
 			this.g.model = this;
 			this.g.node.classList.add("variable");
-			this.g.draggable();
+			this.g.draggable().dragmove = (function(){
+				for (var i = 0, k = this.links, l = k.length; i < l; i++)
+					this.links[i].move();
+			}).bind(this);
 			this.text = SVG.plain(name);
 			this.rect = SVG.rect(this.width, this.height).attr({ fill: '#f06', rx: "15px" });
 			this.g.add(this.rect);
@@ -152,6 +159,7 @@ define(["value", "svg", "editors", "js/vendor/lodash.min.js"], function(Value, S
 					return n;
 				}).place(this.text.node);
 			}).bind(this));
+			this.textVal = textVal;
 		},
 
 		toggleWatch: function() {

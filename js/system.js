@@ -11,7 +11,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 		run: function() {
 			var t, solver,
-				dt = this.specs.dt,
+				dt = this.specs.dt, now,
 				times = this.specs.time = Number($("#times").val());
 
 			solver = new Solver({
@@ -22,10 +22,16 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				dt: dt,
 				callback: this.recorder()
 			});
-			
+
+			now = _.now()
+
 			solver.solve(this.specs.method);
 
+			console.log("Integration", _.now() - now);
+
 			this.views.view.done();
+
+			console.log("Display", _.now() - now);
 		},
 
 		reset: function(){
@@ -79,8 +85,8 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 			localStorage.setItem("save", json);
 		},
 
-		load: function() {
-			var state = JSON.parse(localStorage["save"]);
+		load: function(state) {
+			var state = state || JSON.parse(localStorage["save"]);
 			if (state.length) {
 				// clear
 				_.forEach(Variable.variables, function(v){
@@ -92,12 +98,9 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				_.map(state, function(v){
 					var n = new Variable(v.name, v.x, v.y);
 					_.assign(n, v);
-					n.reconstitute();
 					return n;
-				}).forEach(function(n){
-					_.forEach(n.linkNames, function(l) {
-						new Flow("Flow", n.g, Variable.find(l).g);
-					});
+				}).forEach(function(v) {
+					v.reconstitute();
 				});
 			}
 

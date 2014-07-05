@@ -28,16 +28,18 @@ head
         a.btn#btn-stock(href='#new') Stock 
         a.btn#btn-flow(href='#flow') Flow 
         a.btn#btn-watch(href='#watch') Watch 
-        input#value(type='text', placeholder='value', maxlength='200')
-        input#formula(type='text', placeholder='formula', maxlength='200')
-        input#times(type='number', value='100', placeholder='#Iterations')
-        input#name(type="text", maxlength="100")
+        form#editor(method="get" action="/")
+          input#value(type='text', name="name" placeholder='value', maxlength='200')
+          input#formula(type='text', name="formula" placeholder='formula', maxlength='200')
+          input(type="submit" value="new variable")
+          input#times(type='number' name="number", value='100', placeholder='#Iterations')
+          input#name(type="text", name="name2" maxlength="100")
         hr
         label Method 
-            select#method
-                option(value="Euler", "selected") Euler
-                option(value="DOPRI") DOPRI
-                option(value="RK4") RK4
+          select#method
+            option(value="Euler", "selected") Euler
+            option(value="DOPRI") DOPRI
+            option(value="RK4") RK4
         label dt 
             input#dt(type="number", value=".1", maxlength="10", min=".01")
         .hidden
