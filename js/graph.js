@@ -18,6 +18,7 @@ define(["js/vendor/lodash.min.js", "js/vendor/d3.layout.min.js", "js/vendor/jque
 			var n = 0, l = this.length, data = this.getSeries();
 			return function(t, y){
 				for (var i = 0; i<l; i++) {
+					if (!isNaN(y[i]))
 					data[i][n] = {x: t, y: y[i]}; 
 				}
 				n++;

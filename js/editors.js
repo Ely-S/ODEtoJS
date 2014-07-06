@@ -9,12 +9,14 @@ define(function(){
 	Editor.prototype.select = function(value, callback) {
 		var t = this;
 		this.cb = callback || function(v){ return v; };
-		this.input.val(value.val).focus().blur(function(){
-			t.selected = false;
-		});
+		this.input.val(value.val);
 		this.selected = true;
 		this.value = value;
 		return this;
+	};
+
+	Editor.prototype.deselect = function() {
+		this.selected = false;
 	};
 
 	Editor.prototype.place = function(el) {

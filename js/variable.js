@@ -52,6 +52,11 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			}
 		},
 
+		deselect: function() {
+			editors.veditor.deselect();
+			editors.feditor.deselect();
+		},
+
 		reconstitute: function() {
 			if (this.watching) {
 				this.rect.node.classList.add("watching");	

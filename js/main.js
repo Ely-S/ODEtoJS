@@ -87,15 +87,21 @@ $(".output").hover(function(){
 	}, 300);
 });
 
-// Delete things
-var selected;
+// select things and select for deletion.
+var selected, delselected;
 $("svg").on("click", ".flow, .variable", function(){
 	var prev = document.querySelector(".selected");
 	if (prev) prev.classList.remove("selected");
-	selected = this.instance;
+	selected = delselected = this.instance;
 	this.classList.add("selected");
 }).on("mouseover", ".flow, .variable", function(){
-	selected = null;
+	delselected = null;
+});
+
+$("#workspace g, #workspace").click(function(e){
+	if (selected && selected.node !== e.target) {
+		selected.model.deselect();
+	}
 });
 
 $(document).on("keypress", function(e) {
