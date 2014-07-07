@@ -114,9 +114,9 @@ $(".output").hover(function(){
 var selected, delselected;
 $("svg").on("click", ".flow, .variable", function(e){
 	e.stopPropagation();
+	selected = delselected = this.instance;
 	var prev = document.querySelector(".selected");
 	if (prev) prev.classList.remove("selected");
-	selected = delselected = this.instance;
 	this.classList.add("selected");
 }).on("mouseover", ".flow, .variable", function(){
 	delselected = null;
@@ -125,6 +125,8 @@ $("svg").on("click", ".flow, .variable", function(e){
 $("#workspace").click(function(e){
 	if (selected && e.target.tagName != "INPUT") {
 		selected.model.deselect();
+  	    var prev = document.querySelector(".selected");
+	    if (prev) prev.classList.remove("selected");
 	}
 });
 

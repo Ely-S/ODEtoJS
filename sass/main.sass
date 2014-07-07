@@ -21,11 +21,21 @@ line, rect
 #workspace svg
   position: relative
 
+$varcolor: darken(#1795FF, 10%)
+
+rect
+  fill: $varcolor
+  stroke: 1
+  stroke-opacity: .4
+
 .watching
-  fill: red
+  fill: darken($varcolor, 20%)
 
 .selected
   text-decoration: underline
+  rect
+    stroke: #002B77
+    stroke-width: 5
 
 .output-toolbar
   color: black

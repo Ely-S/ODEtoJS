@@ -25,7 +25,6 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		watching: false,
 		width: 80,
 		height: 80,
-		color: '#f06',
 		value: 0,
 		formula: "0",
 
@@ -61,7 +60,6 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			if (this.watching) {
 				this.rect.node.classList.add("watching");	
 			}
-			this.rect.attr({fill: this.color});
 			this.dformula.val = this.formula;
 			this.val.val = this.value;
 			this.makeLinks();
@@ -89,7 +87,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 					this.links[i].move();
 			}).bind(this);
 			this.text = SVG.plain(name);
-			this.rect = SVG.rect(this.width, this.height).attr({ fill: '#f06', rx: "15px" });
+			this.rect = SVG.rect(this.width, this.height).attr({ rx: "15px" });
 			this.g.add(this.rect);
 			this.rect.node.model = this;
 			this.rect.click((function(){

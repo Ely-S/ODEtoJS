@@ -2203,11 +2203,19 @@ line, rect {
 #workspace svg {
   position: relative; }
 
+rect {
+  fill: #007be3;
+  stroke: 1;
+  stroke-opacity: 0.4; }
+
 .watching {
-  fill: red; }
+  fill: #00447d; }
 
 .selected {
   text-decoration: underline; }
+  .selected rect {
+    stroke: #002b77;
+    stroke-width: 5; }
 
 .output-toolbar {
   color: black; }
