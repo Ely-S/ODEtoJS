@@ -51,7 +51,7 @@ define(["js/vendor/numeric.js"], function(N){
 	       		cb = this.callback,
 	       		y = this.state0,
 	       		dt = this.dt, f = this.func,
-	       		k1, k2,
+	       		k1, k2, d2 = dt/2,
 	       		l = y.length;
 
 	       while(t<times) {
@@ -61,12 +61,12 @@ define(["js/vendor/numeric.js"], function(N){
 			    k1 = f(t, y);
 			    
 			    for (i=0; i<l; ++i)
-			      k1[i] = y[i] + dt * k1[i]/2.0;
+			      k1[i] = y[i] + k1[i] * d2;
 			    
-			    k2 = f(t + dt / 2.0, k1);
+			    k2 = f(t + d2, k1);
 
 			    for (i=0; i<l; ++i)
-				  y[i] = y[i] + k2[i];
+				  y[i] = y[i] + k2[i] * dt;
 
 				t += dt;
 	        }
@@ -82,6 +82,7 @@ define(["js/vendor/numeric.js"], function(N){
 	       		f = this.func,
 	       		l = y.length,
 	       		t = this.start,
+				d2 = dt/2,
 	       		k1,
 	       		 k2 = new Float32Array(l),
 	       		 k3 = new Float32Array(l),
@@ -96,14 +97,14 @@ define(["js/vendor/numeric.js"], function(N){
 			    // loop through components of the vector
 			    for (i=0; i<l; ++i)
 			      // change x and y by the dt
-			      k2[i] = y[i] + dt * k1[i]/2.0;
+			      k2[i] = y[i] + k1[i] * d2;
 			    
-			    k2 = f(t + dt / 2.0, k2);
+			    k2 = f(t + d2, k2);
 			    
 			    for (i=0; i<l; ++i)
-			      k3[i] = y[i] + dt*k2[i]/2.0;
+			      k3[i] = y[i] + k2[i] * d2;
 			    
-			    k3 = f(t+dt/2.0, k3);
+			    k3 = f(t+d2, k3);
 			    
 			    for (i=0; i<l; ++i)
 			      k4[i] = y[i] + dt*k3[i];
