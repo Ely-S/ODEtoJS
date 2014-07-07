@@ -35,7 +35,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 				x: this.g.x(),
 				y: this.g.y(),
 				watching: this.watching,
-				value: this.value,
+				value: this.val.val,
 				formula: this.formula,
 				name: this.name,
 				linkNames: _.map(this.links, function(l){
@@ -64,9 +64,12 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.rect.attr({fill: this.color});
 			this.dformula.val = this.formula;
 			this.val.val = this.value;
-			var g = this.g;
-			_.forEach(this.linkNames, function(l) {
-				new Flow("Flow", g, Variable.find(l).g);
+			var g = this.g, k=this.links;
+			_.forEach(this.linkNames, function(n) {
+				// prevent duplicates
+				for (var i = 0, l = k.length; i < l; i++)
+					if (k[i].other(this).name === n) return;
+				new Flow("Flow", g, Variable.find(n).g);
 			});
 		},
 
@@ -90,9 +93,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		connect: function(flow){
-			// prevent duplicates
-			for (var i = 0, k = this.links, l = k.length; i < l; i++)
-				if (k[i] && k[i].id === flow.id) return;
+
 			this.links.push(flow);
 		},
 

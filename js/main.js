@@ -2,6 +2,29 @@ require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendo
 function($, SVG, Variable, Flow, Sys, Graphs, Shortcut){
 "use strict";
 
+/**
+ * Provides requestAnimationFrame in a cross browser way.
+ * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+ */
+
+if ( !window.requestAnimationFrame ) {
+
+	window.requestAnimationFrame = ( function() {
+
+		return window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+
+			window.setTimeout( callback, 1000 / 60 );
+
+		};
+
+	} )();
+
+}
+
 jQuery(function($){
 
 var alphabet = {
@@ -89,7 +112,8 @@ $(".output").hover(function(){
 
 // select things and select for deletion.
 var selected, delselected;
-$("svg").on("click", ".flow, .variable", function(){
+$("svg").on("click", ".flow, .variable", function(e){
+	e.stopPropagation();
 	var prev = document.querySelector(".selected");
 	if (prev) prev.classList.remove("selected");
 	selected = delselected = this.instance;
@@ -98,8 +122,8 @@ $("svg").on("click", ".flow, .variable", function(){
 	delselected = null;
 });
 
-$("#workspace g, #workspace").click(function(e){
-	if (selected && selected.node !== e.target) {
+$("#workspace").click(function(e){
+	if (selected && e.target.tagName != "INPUT") {
 		selected.model.deselect();
 	}
 });
