@@ -45,6 +45,33 @@ define(["js/vendor/numeric.js"], function(N){
 
 		},
 
+		RK2: function() {
+
+			var i, t = this.start, times = this.end,
+	       		cb = this.callback,
+	       		y = this.state0,
+	       		dt = this.dt, f = this.func,
+	       		k1, k2,
+	       		l = y.length;
+
+	       while(t<times) {
+
+				cb(t, y);
+
+			    k1 = f(t, y);
+			    
+			    for (i=0; i<l; ++i)
+			      k1[i] = y[i] + dt * k1[i]/2.0;
+			    
+			    k2 = f(t + dt / 2.0, k1);
+
+			    for (i=0; i<l; ++i)
+				  y[i] = y[i] + k2[i];
+
+				t += dt;
+	        }
+		},
+
 		RK4: function() {
 
 			// state is y

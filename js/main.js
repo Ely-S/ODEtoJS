@@ -148,8 +148,8 @@ $(document).on("keypress", function(e) {
 			f.makeLinks();
 		} else {
 			var v = new Variable(formula[0], x, y);
-			v.formula  = formula[1];
-			v.value = $("#value").val();
+			v.formula = formula[1];
+			v.value = $("#value").val().trim() || 0;
 			v.reconstitute();
 			y += 90;
 	}
