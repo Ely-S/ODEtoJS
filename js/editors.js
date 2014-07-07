@@ -27,6 +27,12 @@ define(function(){
 			.blur(function(){
 				this.style.width = 0;		 // hide again
 			});
+			$(document.body).on("mousedown", function(e){
+				if (e.target !== t.input[0]) {
+					t.input.width(0);
+					$(document.body).off("mousedown");
+				}
+			});
 	};
 
 	Editor.prototype.selected = false;
