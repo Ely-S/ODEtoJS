@@ -18,7 +18,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 	Variable.variables = [];
 
 	Variable.find = function(name) {
-		return _.findWhere(this.variables, {name: name});
+		return _.find(this.variables, {name: name});
 	};
 
 	Variable.prototype = {
@@ -64,12 +64,18 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.rect.attr({fill: this.color});
 			this.dformula.val = this.formula;
 			this.val.val = this.value;
-			var g = this.g, k=this.links;
-			_.forEach(this.linkNames, function(n) {
+			this.makeLinks();
+		},
+
+		makeLinks:  function() {
+			var linkNames = _.filter(this.formula.replace(/[\W\d]/g, "\n").split("\n")),
+			    g = this.g, k=this.links;
+			_.forEach(linkNames, function(n) {
 				// prevent duplicates
-				for (var i = 0, l = k.length; i < l; i++)
+				for (var fn, i = 0, l = k.length; i < l; i++)
 					if (k[i].other(this).name === n) return;
-				new Flow("Flow", g, Variable.find(n).g);
+				fn = Variable.find(n);
+				if(fn && fn.g) new Flow("Flow", g, fn.g);
 			});
 		},
 

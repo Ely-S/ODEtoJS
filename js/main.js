@@ -140,14 +140,19 @@ $(document).on("keypress", function(e) {
 (function(x, y) {
 	$("#editor").submit(function(e){
 		e.preventDefault();
-		var formula = $("#formula").val().split("=");
-		if (formula.length < 2) return;
-		var v = new Variable(formula[0], x, y);
-		v.formula  = formula[1];
-		v.value = $("#value").val();
-		v.linkNames = _.filter(formula[1].replace(/[\W\d]/g, "\n").split("\n"));
-		v.reconstitute();
-		y += 90;
+		var formula = $("#formula").val().split("="),
+			f = Variable.find(formula[0]);
+		if (formula.length < 2) return; 
+		if (f) {
+			f.dformula.save(formula[1]);
+			f.makeLinks();
+		} else {
+			var v = new Variable(formula[0], x, y);
+			v.formula  = formula[1];
+			v.value = $("#value").val();
+			v.reconstitute();
+			y += 90;
+	}
 	});
 }(50, 50));
 
