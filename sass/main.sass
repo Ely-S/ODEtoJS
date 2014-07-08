@@ -4,15 +4,27 @@
 @import "graph"
 @import "detail"
 @import "legend"
+@import "foundation/settings"
+@import "foundation/foundation"
+
+$varcolor: darken(#1795FF, 10%)
 
 line, rect
   cursor: pointer
 
 #formula
-  width: 60%
+  @include grid-column($columns:9)
 
-#value, #times
-  width: 10%
+#value
+  @include grid-column($columns:1)
+
+input[type=submit]
+  @include button(rem-calc(11), orange, 6, true, false, true)
+  @include grid-column($columns:2)
+
+form label
+  @include grid-column($columns:4)
+
 
 #workspace
   height: 90%
@@ -20,8 +32,6 @@ line, rect
 
 #workspace svg
   position: relative
-
-$varcolor: darken(#1795FF, 10%)
 
 rect
   fill: $varcolor
@@ -37,8 +47,10 @@ rect
     stroke: #002B77
     stroke-width: 5
 
-.output-toolbar
+.toolbar
+  @include sub-nav()
   color: black
+
 
 #output
   overflow-x: hidden
@@ -65,9 +77,6 @@ th, td
 
 .domain
   display: none
-
-#dt
-  width: 60px
 
 #name
   position: absolute

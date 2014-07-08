@@ -20,29 +20,37 @@ head
       hr
       #graphs
     #toolbar
-      .workspace-toolbar.toolbar
-        a.btn#save(href="#saving") Save 
-        a.btn#load(href="#load") Load 
-        a#run(href='#running') Run 
-        | New
-        a.btn#btn-stock(href='#new') Stock 
-        a.btn#btn-flow(href='#flow') Flow 
-        a.btn#btn-watch(href='#watch') Watch 
-        form#editor(method="get" action="/")
+      dl.workspace-toolbar.toolbar
+        dd
+          a.btn#save(href="#saving") Save 
+        dd
+          a.btn#load(href="#load") Load 
+        dd
+          a#run(href='#running') Run 
+        dd
+          a.btn#btn-stock(href='#new') Stock 
+        dd
+          a.btn#btn-flow(href='#flow') Flow 
+        dd
+          a.btn#btn-watch(href='#watch') Watch 
+      form#editor(method="get" action="/")
+        .row
           input#value(type='text', name="name" placeholder='value', maxlength='200')
           input#formula(type='text', name="formula" placeholder='formula', maxlength='200')
           input(type="submit" value="new variable")
-          input#times(type='number' name="number", value='100', placeholder='#Iterations')
-          input#name(type="text", name="name2" maxlength="100")
-        hr
-        label Method 
-          select#method
-            option(value="Euler", "selected") Euler
-            option(value="RK2") RK2
-            option(value="RK4") RK4
-            option(value="DOPRI") DOPRI
-        label dt 
+        .row
+        .row
+          label Time
+            input#times(type='number' name="number", value='100', placeholder='Simulation Length')
+          label Method 
+            select#method
+              option(value="Euler", "selected") Euler
+              option(value="RK2") RK2
+              option(value="RK4") RK4
+              option(value="DOPRI") DOPRI
+          label dt 
             input#dt(type="number", value=".1", maxlength="10", min=".01")
+        input#name(type="text", name="name2" maxlength="100")
         .hidden
           table#table-template.stat-table(data-template='data-template')
             thead
