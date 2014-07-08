@@ -4740,13 +4740,13 @@ line, rect {
 #formula {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
-  width: 75%;
+  width: 50%;
   float: left; }
 
 #value {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
-  width: 8.33333%;
+  width: 16.66667%;
   float: left; }
 
 input[type=submit] {
