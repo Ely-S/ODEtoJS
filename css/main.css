@@ -4737,17 +4737,53 @@ label.error {
 line, rect {
   cursor: pointer; }
 
-#formula {
+.btn {
+  border-style: solid;
+  border-width: 0px;
+  cursor: pointer;
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  line-height: normal;
+  margin: 0 0 1.25rem;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  display: inline-block;
+  padding-top: 1rem;
+  padding-right: 2rem;
+  padding-bottom: 1.0625rem;
+  padding-left: 2rem;
+  font-size: 1rem;
+  background-color: #008cba;
+  border-color: #007095;
+  color: white;
+  float: left;
+  padding-left: 2.3rem;
+  padding-right: 2.3rem; }
+  .btn:hover, .btn:focus {
+    background-color: #007095; }
+  .btn:hover, .btn:focus {
+    color: white; }
+
+.inp2 {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
-  width: 50%;
+  width: 41.66667%;
   float: left; }
 
-#value {
+.inp1 {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
   width: 16.66667%;
   float: left; }
+
+.inp1 .error, .inp2 .error {
+  display: none; }
+
+.row > input {
+  margin: 5px; }
 
 input[type=submit] {
   border-style: solid;
@@ -4782,8 +4818,11 @@ input[type=submit] {
 form label {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
-  width: 33.33333%;
+  width: 25%;
   float: left; }
+
+form {
+  margin-bottom: 0; }
 
 #workspace {
   height: 90%;
@@ -4851,6 +4890,11 @@ rect {
       .toolbar dd.active a:hover,
       .toolbar li.active a:hover {
         background: #0078a0; }
+
+.model-controls {
+  margin-bottom: 0px;
+  background-color: #f7f7f7;
+  padding: 15px; }
 
 #output {
   overflow-x: hidden;

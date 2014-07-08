@@ -12,33 +12,33 @@ html.no-js
     #workspace
     #output.output
       .output-toolbar.toolbar.output
-        a.chart(href='#chart') line 
-        a.chart(href='#chart') bar 
-        a.chart(href='#chart') area 
-        a.chart(href='#chart') scatterplot 
-        a.table(href='#table') table
-      hr
+        dl
+          dd
+            a.chart(href='#chart') line 
+          dd 
+            a.chart(href='#chart') bar 
+          dd
+            a.chart(href='#chart') area 
+          dd 
+            a.chart(href='#chart') scatterplot 
+          dd 
+            a.table(href='#table') table
       #graphs
-    #toolbar
-      dl.workspace-toolbar.toolbar
-        dd
-          a.btn#save(href="#saving") Save 
-        dd
-          a.btn#load(href="#load") Load 
-        dd
-          a#run(href='#running') Run 
-        dd
-          a.btn#btn-stock(href='#new') Stock 
-        dd
-          a.btn#btn-flow(href='#flow') Flow 
-        dd
-          a.btn#btn-watch(href='#watch') Watch 
+    .model-controls
       form#editor(method="get" action="/")
         .row
-          input#value(type='text', name="name" placeholder='value', maxlength='200')
-          input#formula(type='text', name="formula" placeholder='formula', maxlength='200')
-          input(type="submit" value="new variable")
-        .row
+          #run.btn &#9654;
+          div.inp1
+            input#value(type='text', name="name" placeholder='value', maxlength='200')
+            span.error
+          div.inp2
+            label
+            input#formula(type='text', name="formula" placeholder='d/dt', maxlength='200')
+            span.error
+          #btn-stock.btn Stock
+          #btn-flow.btn Flow
+          #btn-watch.btn Watch
+          //input(type="submit" value="new variable")
         .row
           label Time
             input#times(type='number' name="number", value='100', placeholder='Simulation Length')
@@ -50,6 +50,8 @@ html.no-js
               option(value="DOPRI") DOPRI
           label dt 
             input#dt(type="number", value=".1", maxlength="10", min=".01")
+          #save.btn Save
+          #load.btn Load
         input#name(type="text", name="name2" maxlength="100")
         .hidden
           table#table-template.stat-table(data-template='data-template')

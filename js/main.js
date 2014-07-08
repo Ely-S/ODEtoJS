@@ -113,11 +113,13 @@ $(".output").hover(function(){
 // select things and select for deletion.
 var selected, delselected;
 $("svg").on("click", ".flow, .variable", function(e){
-	e.stopPropagation();
-	selected = delselected = this.instance;
-	var prev = document.querySelector(".selected");
-	if (prev) prev.classList.remove("selected");
-	this.classList.add("selected");
+	if (!e.ctrlKey) {
+		e.stopPropagation();
+		selected = delselected = this.instance;
+		var prev = document.querySelector(".selected");
+		if (prev) prev.classList.remove("selected");
+		this.classList.add("selected");
+	}
 }).on("mouseover", ".flow, .variable", function(){
 	delselected = null;
 });

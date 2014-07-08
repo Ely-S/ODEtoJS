@@ -9,22 +9,42 @@
 
 $varcolor: darken(#1795FF, 10%)
 
+@mixin well()
+  margin-bottom: 0px
+  background-color: #F7F7F7
+  padding: 15px
+
 line, rect
   cursor: pointer
 
-#formula
-  @include grid-column($columns:6)
+.btn
+  @include button()
+  float: left
+  padding-left: 2.3rem
+  padding-right: 2.3rem
 
-#value
+
+.inp2
+  @include grid-column($columns:5)
+
+.inp1
   @include grid-column($columns:2)
+
+.inp1 .error, .inp2 .error
+  display: none
+
+.row > input
+  margin: 5px
 
 input[type=submit]
   @include button(rem-calc(11))
   @include grid-column($columns:2)
 
 form label
-  @include grid-column($columns:4)
+  @include grid-column($columns:3)
 
+form
+  margin-bottom: 0
 
 #workspace
   height: 90%
@@ -51,6 +71,8 @@ rect
   @include sub-nav()
   color: black
 
+.model-controls
+  @include well()
 
 #output
   overflow-x: hidden
