@@ -4767,21 +4767,15 @@ input[type=submit] {
   padding-right: 1.375rem;
   padding-bottom: 0.75rem;
   padding-left: 1.375rem;
-  padding-top: 0.6875rem;
-  padding-bottom: 0.75rem;
-  padding-right: 0;
-  padding-left: 0;
-  width: 100%;
-  background-color: orange;
-  border-color: #cc8400;
+  background-color: #008cba;
+  border-color: #007095;
   color: white;
-  border-radius: 6;
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
   width: 16.66667%;
   float: left; }
   input[type=submit]:hover, input[type=submit]:focus {
-    background-color: #cc8400; }
+    background-color: #007095; }
   input[type=submit]:hover, input[type=submit]:focus {
     color: white; }
 
@@ -4884,13 +4878,21 @@ th, td {
 .domain {
   display: none; }
 
-#name {
+#name, #name:focus {
   position: absolute;
   border: none;
   width: 0;
   padding: 0;
   display: none;
-  outline: 0; }
+  outline: 0;
+  background-color: white;
+  font-family: inherit;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  transition: none;
+  color: #222222;
+  font-size: 1rem; }
 
 /* ==========================================================================
  * Print styles.
