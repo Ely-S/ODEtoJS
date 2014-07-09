@@ -24,25 +24,27 @@ define(["svg"], function(SVG, SVGModel) {
 		this.g.remove();
 	};
 
-	Flow.waiting = function(from) {
+	Flow.connection = function(from) {
+		if (this === Flow) return new Flow.connection(from);
 		var g,
-			x1 = from.instance.x() + from.instance.model.width/2,
-			y1 = from.instance.y() + from.instance.model.height/2,
+			x1 = from.x() + from.model.width/2,
+			y1 = from.y() + from.model.height/2,
 			temp = SVG.line(x1, y1, x1+1, y1+1).stroke({width: 5});
 
-		document.body.onmousemove = function(e){
+		$(document.body).on("mousemove", function(e){
 			var pos = $("#workspace > svg").position();
 			temp.plot(x1, y1, e.clientX-5-pos.left, e.clientY-5-pos.top);
-		};
-		g = $("g").one("click", function(e){
-			e.stopPropagation();
-			temp.remove();
-			document.body.onmousemove = null;
-			if (this !== from) {
-				new Flow("Flow", from.instance, this.instance);
-				Flow.fl = false;
-			}
 		});
+
+		this.connect = function(to) {
+			$(document.body).off("mousemove");
+			temp.remove();
+			Flow.waiting = false;
+			if (to !== from) {
+				new Flow("Flow", from, to);
+			}
+		};
+		return Flow.waiting = this;
 	};
 
 	return Flow;

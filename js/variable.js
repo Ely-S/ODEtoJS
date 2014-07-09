@@ -42,13 +42,35 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 
 		events: {
 			click: function(e){
-				if (e.shiftKey) {
+				e.stopPropagation();
+				this.select();
+				this.g.node.classList.add("selected");
+				if (Flow.waiting) {
+					Flow.waiting.connect(this.g);
+				} else if (e.shiftKey) {
 					this.toggleWatch();
+				} else if (e.ctrlKey  || Flow.clicked) {
+					Flow.clicked = false;
+					if (!Flow.waiting) {
+						new Flow.connection(this.g);
+					}
 				}
+			},
+			mouseover: function(){
+				this.delselected = false;
 			}
 		},
 
+		select: function() {
+			if (Variable.selected) Variable.selected.deselect();
+			this.selected = true;
+			Variable.selected = this;
+			// should user hit the delete key now. Delete this
+			this.delselected = true;
+		},
+
 		deselect: function() {
+   		    this.g.node.classList.remove("selected");
 			editors.veditor.deselect();
 			editors.feditor.deselect();
 		},
@@ -135,6 +157,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		delete: function() {
+			if (!this.delselected) return;
 			var l;
 			while (l = this.links.pop()) {
 				l.g.remove();

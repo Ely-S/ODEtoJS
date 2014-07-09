@@ -11,7 +11,13 @@ define(["graph", "system"], function (Graph, System) {
 		this.el.on("click", ".table", (function(e){
 			this.create("table").render();
 			e.preventDefault();
-		}).bind(this));
+		}).bind(this)).click(function(e){
+		  $(this).width("95%").css("overflow-y", "auto");
+		  $("#workspace").one("click", function(){
+		  	$("#output").width("50px").css("overflow-y", "hidden");
+		  });
+		});
+
 	};
 
 	Output.prototype = {

@@ -68,79 +68,30 @@ var menu = {
 			});
 		},
 		"#btn-flow": function(){
-			$("g").one("click", function(e){
-				Flow.waiting(this);
-			});
+			Flow.clicked = true;
 		},
 		"#run": Sys.run.bind(Sys)
 	}
 };
 
 
-$("#workspace").on("click", ".variable", function(e){
-	if (e.ctrlKey) {
-		e.stopPropagation();
-		if (!Flow.fl) {
-			Flow.fl = Flow.waiting(this);
-		}
-	}
-}).click(function(e){
+$("#workspace").click(function(e){
 	var pos = $("#workspace > svg").position();
 	if (e.ctrlKey) {
 		e.stopPropagation();
 		new Variable(alphabet.next(), e.clientX - pos.left, e.clientY - pos.top);
 	}
-});
-
-
-$("#output").on("click", function(e){
-  $(this).width("95%").css("overflow-y", "auto");
-  $("#workspace").one("click", function(){
-  	$("#output").width("50px").css("overflow-y", "hidden");
-  });
-});
-//		$("#output").css({width: "95%", overflow: "auto"});
-//		$(".workspace-toolbar").hide();
-//		$(".output-toolbar").show();
-//		out = true;
-//	}
-/*, function(){
-	timeout = setTimeout(function(){
-		$("#output").animate({width: "20px"}, 'fast').css({"overflow": "hidden"});
-		$(".workspace-toolbar").show();
-		$(".output-toolbar").hide();
-		out = false;
-	}, 400);
-});
-*/
-// select things and select for deletion.
-var selected, delselected;
-$("svg").on("click", ".flow, .variable", function(e){
-	if (!e.ctrlKey) {
-		e.stopPropagation();
-		selected = delselected = this.instance;
-		var prev = document.querySelector(".selected");
-		if (prev) prev.classList.remove("selected");
-		this.classList.add("selected");
-	}
-}).on("mouseover", ".flow, .variable", function(){
-	delselected = null;
-});
-
-$("#workspace").click(function(e){
-	if (selected && e.target.tagName != "INPUT") {
-		selected.model.deselect();
-  	    var prev = document.querySelector(".selected");
-	    if (prev) prev.classList.remove("selected");
-	}
+}).click(function(e){
+	// deselect
+	if (Variable.selected && Variable.selected.rect.node != e.target && e.target.tagName != "INPUT")
+		if (e.target.tagName == "div"  && e.target.className.indexOf("btn") != -1) 
+			Variable.selected.deselect();
 });
 
 $(document).on("keypress", function(e) {
-	if (e.charCode == 127) {
-		// because sometimes there is no selected
-		try {
-			selected.model.delete();
-		} catch (e) {}
+	if (e.charCode == 127) { // delete key
+		if (Variable.selected)
+			Variable.selected.delete();
 	}
 });
 
@@ -167,9 +118,6 @@ $(document).on("keypress", function(e) {
 
 var a= new Variable(alphabet.next(), 100, 200);
 a.toggleWatch();
-//var b = new Variable(alphabet.next(), 200, 200);
-//b.toggleWatch();
-//b.set("0.04*b*a-.5*b");
 
 menu.init();
 //$(".chart")[0].click();
