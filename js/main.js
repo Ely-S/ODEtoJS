@@ -48,6 +48,8 @@ var menu = {
 	inputs: {
 		"#method": function(){
 			Sys.specs.method = this.value
+			$("#dt").attr("disabled", this.value == "DOPRI");
+
 		},
 		"#dt": function(){
 			Sys.specs.dt = parseFloat(this.value);

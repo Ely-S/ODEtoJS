@@ -127,7 +127,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 
 			for (var name in replaces) {
 				var reg = new RegExp([operators, "(", name, ")", operators].join(""), "g");
-				this.formula = this.formula.replace(reg, "$1"+replaces[name]+"$3");
+				this.formula = this.formula.replace(reg, "$1("+replaces[name]+")$3");
 			}
 
 			return this.formula;			
