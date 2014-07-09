@@ -56,7 +56,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 					}
 				}
 			},
-			mouseover: function(){
+			mouseout: function(){
 				this.delselected = false;
 			}
 		},
@@ -157,7 +157,6 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		delete: function() {
-			if (!this.delselected) return;
 			var l;
 			while (l = this.links.pop()) {
 				l.g.remove();

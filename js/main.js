@@ -90,7 +90,7 @@ $("#workspace").click(function(e){
 
 $(document).on("keypress", function(e) {
 	if (e.charCode == 127) { // delete key
-		if (Variable.selected)
+		if (Variable.selected && Variable.selected.delselected)
 			Variable.selected.delete();
 	}
 });
