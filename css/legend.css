@@ -1,3 +1,4 @@
+/* line 1, ../sass/legend.scss */
 .rickshaw_legend {
   font-family: Arial;
   font-size: 12px;
@@ -6,26 +7,36 @@
   display: inline-block;
   padding: 12px 5px;
   border-radius: 2px;
-  position: relative; }
+  position: relative;
+}
 
+/* line 11, ../sass/legend.scss */
 .rickshaw_legend:hover {
-  z-index: 10; }
+  z-index: 10;
+}
 
+/* line 14, ../sass/legend.scss */
 .rickshaw_legend .swatch {
   width: 10px;
   height: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.2); }
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
 
+/* line 19, ../sass/legend.scss */
 .rickshaw_legend .line {
   clear: both;
   line-height: 140%;
-  padding-right: 15px; }
+  padding-right: 15px;
+}
 
+/* line 24, ../sass/legend.scss */
 .rickshaw_legend .line .swatch {
   display: inline-block;
   margin-right: 3px;
-  border-radius: 2px; }
+  border-radius: 2px;
+}
 
+/* line 29, ../sass/legend.scss */
 .rickshaw_legend .label {
   margin: 0;
   white-space: nowrap;
@@ -36,37 +47,52 @@
   font-weight: normal;
   line-height: normal;
   padding: 0px;
-  text-shadow: none; }
+  text-shadow: none;
+}
 
+/* line 41, ../sass/legend.scss */
 .rickshaw_legend .action:hover {
-  opacity: 0.6; }
+  opacity: 0.6;
+}
 
+/* line 44, ../sass/legend.scss */
 .rickshaw_legend .action {
   margin-right: 0.2em;
   font-size: 10px;
   opacity: 0.2;
   cursor: pointer;
-  font-size: 14px; }
+  font-size: 14px;
+}
 
+/* line 51, ../sass/legend.scss */
 .rickshaw_legend .line.disabled {
-  opacity: 0.4; }
+  opacity: 0.4;
+}
 
+/* line 54, ../sass/legend.scss */
 .rickshaw_legend ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   margin: 2px;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
+/* line 61, ../sass/legend.scss */
 .rickshaw_legend li {
   padding: 0 0 0 2px;
   min-width: 80px;
-  white-space: nowrap; }
+  white-space: nowrap;
+}
 
+/* line 66, ../sass/legend.scss */
 .rickshaw_legend li:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 3px; }
+  border-radius: 3px;
+}
 
+/* line 70, ../sass/legend.scss */
 .rickshaw_legend li:active {
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px; }
+  border-radius: 3px;
+}

@@ -1,3 +1,4 @@
+/* line 1, ../sass/detail.scss */
 .rickshaw_graph .detail {
   pointer-events: none;
   position: absolute;
@@ -9,14 +10,20 @@
   transition: opacity 0.25s linear;
   -moz-transition: opacity 0.25s linear;
   -o-transition: opacity 0.25s linear;
-  -webkit-transition: opacity 0.25s linear; }
+  -webkit-transition: opacity 0.25s linear;
+}
 
+/* line 14, ../sass/detail.scss */
 .rickshaw_graph .detail.inactive {
-  opacity: 0; }
+  opacity: 0;
+}
 
+/* line 17, ../sass/detail.scss */
 .rickshaw_graph .detail .item.active {
-  opacity: 1; }
+  opacity: 1;
+}
 
+/* line 20, ../sass/detail.scss */
 .rickshaw_graph .detail .x_label {
   font-family: Arial, sans-serif;
   border-radius: 3px;
@@ -26,14 +33,20 @@
   font-size: 12px;
   position: absolute;
   background: white;
-  white-space: nowrap; }
+  white-space: nowrap;
+}
 
+/* line 31, ../sass/detail.scss */
 .rickshaw_graph .detail .x_label.left {
-  left: 0; }
+  left: 0;
+}
 
+/* line 34, ../sass/detail.scss */
 .rickshaw_graph .detail .x_label.right {
-  right: 0; }
+  right: 0;
+}
 
+/* line 37, ../sass/detail.scss */
 .rickshaw_graph .detail .item {
   position: absolute;
   z-index: 2;
@@ -48,40 +61,54 @@
   margin-left: 1em;
   margin-right: 1em;
   margin-top: -1em;
-  white-space: nowrap; }
+  white-space: nowrap;
+}
 
+/* line 53, ../sass/detail.scss */
 .rickshaw_graph .detail .item.left {
-  left: 0; }
+  left: 0;
+}
 
+/* line 56, ../sass/detail.scss */
 .rickshaw_graph .detail .item.right {
-  right: 0; }
+  right: 0;
+}
 
+/* line 59, ../sass/detail.scss */
 .rickshaw_graph .detail .item.active {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.8); }
+  background: rgba(0, 0, 0, 0.8);
+}
 
+/* line 63, ../sass/detail.scss */
 .rickshaw_graph .detail .item:after {
   position: absolute;
   display: block;
   width: 0;
   height: 0;
   content: "";
-  border: 5px solid transparent; }
+  border: 5px solid transparent;
+}
 
+/* line 73, ../sass/detail.scss */
 .rickshaw_graph .detail .item.left:after {
   top: 1em;
   left: -5px;
   margin-top: -5px;
   border-right-color: rgba(0, 0, 0, 0.8);
-  border-left-width: 0; }
+  border-left-width: 0;
+}
 
+/* line 80, ../sass/detail.scss */
 .rickshaw_graph .detail .item.right:after {
   top: 1em;
   right: -5px;
   margin-top: -5px;
   border-left-color: rgba(0, 0, 0, 0.8);
-  border-right-width: 0; }
+  border-right-width: 0;
+}
 
+/* line 87, ../sass/detail.scss */
 .rickshaw_graph .detail .dot {
   width: 4px;
   height: 4px;
@@ -96,7 +123,10 @@
   border-width: 2px;
   border-style: solid;
   display: none;
-  background-clip: padding-box; }
+  background-clip: padding-box;
+}
 
+/* line 103, ../sass/detail.scss */
 .rickshaw_graph .detail .dot.active {
-  display: block; }
+  display: block;
+}

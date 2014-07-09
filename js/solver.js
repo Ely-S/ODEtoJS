@@ -36,7 +36,7 @@ define(["js/vendor/numeric.js"], function(N){
 
 				t += dt;
 	        }
-	    },
+		},
 
 		DOPRI: function() {
 

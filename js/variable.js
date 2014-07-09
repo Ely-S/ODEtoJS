@@ -36,10 +36,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 				watching: this.watching,
 				value: this.val.val,
 				formula: this.formula,
-				name: this.name,
-				linkNames: _.map(this.links, function(l){
-					return l.other(t).name;
-				})
+				name: this.name
 			};
 		},
 
@@ -65,8 +62,12 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.makeLinks();
 		},
 
+		linkNames: function() {
+			return _.filter(this.formula.replace(/[\W\d]/g, "\n").split("\n"));
+		},
+
 		makeLinks:  function() {
-			var linkNames = _.filter(this.formula.replace(/[\W\d]/g, "\n").split("\n")),
+			var linkNames = this.linkNames || this.linkNames(),
 			    g = this.g, k=this.links;
 			_.forEach(linkNames, function(n) {
 				// prevent duplicates
@@ -91,7 +92,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.g.add(this.rect);
 			this.rect.node.model = this;
 			this.rect.click((function(){
-				editors.veditor.select(this.val, Number);
+				editors.veditor.select(this.val);
 				editors.feditor.select(this.dformula);
 			}).bind(this));
 		},
@@ -114,7 +115,8 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		compile: function(argnames, dt) {
-			var t = this, replaces = {};
+			var t = this, replaces = {},
+			    operators = "(^|$|[\*\+\-\/+\%\(\) \<\>]+)";
 
 				this.links.forEach(function(l){
 					var other = l.other(t);
@@ -123,9 +125,10 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 					}
 				});
 
-			// replace names with values for static params
-			for (var name in replaces)
-				this.formula = this.formula.replace(name, replaces[name]);
+			for (var name in replaces) {
+				var reg = new RegExp([operators, "(", name, ")", operators].join(""), "g");
+				this.formula = this.formula.replace(reg, "$1"+replaces[name]+"$3");
+			}
 
 			return this.formula;			
 

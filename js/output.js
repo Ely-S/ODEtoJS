@@ -6,6 +6,7 @@ define(["graph", "system"], function (Graph, System) {
 			g.initialize($(e.target).text().trim());
 //			g.update();
 			e.preventDefault();
+			e.stopPropagation();
 		}).bind(this));
 		this.el.on("click", ".table", (function(e){
 			this.create("table").render();

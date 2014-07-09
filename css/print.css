@@ -3,51 +3,79 @@
  * Inlined to avoid required HTTP connection: h5bp.com/r
  * ========================================================================== */
 @media print {
+  /* line 8, ../sass/print.sass */
   * {
     background: transparent !important;
     color: black !important;
     /* Black prints faster: h5bp.com/s */
     box-shadow: none !important;
-    text-shadow: none !important; }
+    text-shadow: none !important;
+  }
 
+  /* line 14, ../sass/print.sass */
   a {
-    text-decoration: underline; }
-    a:visited {
-      text-decoration: underline; }
-    a[href]:after {
-      content: " (" attr(href) ")"; }
+    text-decoration: underline;
+  }
+  /* line 16, ../sass/print.sass */
+  a:visited {
+    text-decoration: underline;
+  }
+  /* line 18, ../sass/print.sass */
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
 
+  /* line 20, ../sass/print.sass */
   abbr[title]:after {
-    content: " (" attr(title) ")"; }
+    content: " (" attr(title) ")";
+  }
 
   /* Don't show links for images, or javascript/internal links */
+  /* line 24, ../sass/print.sass */
   .ir a:after {
-    content: ""; }
+    content: "";
+  }
 
+  /* line 27, ../sass/print.sass */
   a[href^="javascript:"]:after, a[href^="#"]:after {
-    content: ""; }
+    content: "";
+  }
 
+  /* line 29, ../sass/print.sass */
   pre, blockquote {
     border: 1px solid #999999;
-    page-break-inside: avoid; }
+    page-break-inside: avoid;
+  }
 
+  /* line 32, ../sass/print.sass */
   thead {
     display: table-header-group;
-    /* h5bp.com/t */ }
+    /* h5bp.com/t */
+  }
 
+  /* line 35, ../sass/print.sass */
   tr {
-    page-break-inside: avoid; }
+    page-break-inside: avoid;
+  }
 
+  /* line 37, ../sass/print.sass */
   img {
     page-break-inside: avoid;
-    max-width: 100% !important; }
+    max-width: 100% !important;
+  }
 
   @page {
-    margin: 0.5cm; }
+    margin: 0.5cm;
+}
 
+  /* line 43, ../sass/print.sass */
   p, h2, h3 {
     orphans: 3;
-    widows: 3; }
+    widows: 3;
+  }
 
+  /* line 46, ../sass/print.sass */
   h2, h3 {
-    page-break-after: avoid; } }
+    page-break-after: avoid;
+  }
+}

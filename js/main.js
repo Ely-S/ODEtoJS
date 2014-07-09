@@ -91,25 +91,26 @@ $("#workspace").on("click", ".variable", function(e){
 });
 
 
-
-var timeout, out = false;
-$(".output").hover(function(){
-	clearTimeout(timeout);
-	if (!out) {
-		$("#output").css({width: "95%"});
-		$(".workspace-toolbar").hide();
-		$(".output-toolbar").show();
-		out = true;
-	}
-}, function(){
+$("#output").on("click", function(e){
+  $(this).width("95%").css("overflow-y", "auto");
+  $("#workspace").one("click", function(){
+  	$("#output").width("50px").css("overflow-y", "hidden");
+  });
+});
+//		$("#output").css({width: "95%", overflow: "auto"});
+//		$(".workspace-toolbar").hide();
+//		$(".output-toolbar").show();
+//		out = true;
+//	}
+/*, function(){
 	timeout = setTimeout(function(){
-		$("#output").animate({width: "20px"}, 'fast');
+		$("#output").animate({width: "20px"}, 'fast').css({"overflow": "hidden"});
 		$(".workspace-toolbar").show();
 		$(".output-toolbar").hide();
 		out = false;
-	}, 300);
+	}, 400);
 });
-
+*/
 // select things and select for deletion.
 var selected, delselected;
 $("svg").on("click", ".flow, .variable", function(e){
@@ -169,7 +170,7 @@ a.toggleWatch();
 //b.set("0.04*b*a-.5*b");
 
 menu.init();
-$(".chart")[0].click();
+//$(".chart")[0].click();
 //$("#run").click();
 
 });

@@ -5,75 +5,98 @@
 /* ==========================================================================
  * Base styles: opinionated defaults
  * ========================================================================== */
+/* line 12, ../sass/html5b.sass */
 html, button, input, select, textarea {
-  color: #222222; }
+  color: #222222;
+}
 
+/* line 15, ../sass/html5b.sass */
 html {
   font-size: 1em;
-  line-height: 1.4; }
+  line-height: 1.4;
+}
 
 /* Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.
  * Customize the background color to match your design. */
+/* line 24, ../sass/html5b.sass */
 ::-moz-selection, ::selection {
   background: #b3d4fc;
-  text-shadow: none; }
+  text-shadow: none;
+}
 
 /* A better looking default horizontal rule */
+/* line 31, ../sass/html5b.sass */
 hr {
   display: block;
   height: 1px;
   border: 0;
   border-top: 1px solid #cccccc;
   margin: 1em 0;
-  padding: 0; }
+  padding: 0;
+}
 
 /* Remove the gap between images, videos, audio and canvas and the bottom of
  * their containers: h5bp.com/i/440 */
+/* line 43, ../sass/html5b.sass */
 audio, canvas, img, video {
-  vertical-align: middle; }
+  vertical-align: middle;
+}
 
 /* Remove default fieldset styles. */
+/* line 49, ../sass/html5b.sass */
 fieldset {
   border: 0;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+}
 
 /* Allow only vertical resizing of textareas. */
+/* line 57, ../sass/html5b.sass */
 textarea {
-  resize: vertical; }
+  resize: vertical;
+}
 
 /* ==========================================================================
  * Browse Happy prompt
  * ========================================================================== */
+/* line 64, ../sass/html5b.sass */
 .browsehappy {
   margin: 0.2em 0;
   background: #cccccc;
   color: black;
-  padding: 0.2em 0; }
+  padding: 0.2em 0;
+}
 
 /* ==========================================================================
  * Helper classes
  * ========================================================================== */
 /* Image replacement */
+/* line 77, ../sass/html5b.sass */
 .ir {
   background-color: transparent;
   border: 0;
   overflow: hidden;
   /* IE 6/7 fallback */
-  *text-indent: -9999px; }
-  .ir:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 150%; }
+  *text-indent: -9999px;
+}
+/* line 83, ../sass/html5b.sass */
+.ir:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 150%;
+}
 
 /* Hide from both screenreaders and browsers: h5bp.com/u */
+/* line 92, ../sass/html5b.sass */
 .hidden {
   display: none !important;
-  visibility: hidden; }
+  visibility: hidden;
+}
 
 /* Hide only visually, but have it available for screenreaders: h5bp.com/v */
+/* line 99, ../sass/html5b.sass */
 .visuallyhidden {
   border: 0;
   clip: rect(0 0 0 0);
@@ -82,20 +105,25 @@ textarea {
   overflow: hidden;
   padding: 0;
   position: absolute;
-  width: 1px; }
-  .visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
-    clip: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto; }
+  width: 1px;
+}
+/* line 109, ../sass/html5b.sass */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+}
 
 /* Extends the .visuallyhidden class to allow the element to be focusable
  * when navigated to via the keyboard: h5bp.com/p */
 /* Hide visually and from screenreaders, but maintain layout */
+/* line 124, ../sass/html5b.sass */
 .invisible {
-  visibility: hidden; }
+  visibility: hidden;
+}
 
 /* Clearfix: contain floats
  *
@@ -106,16 +134,22 @@ textarea {
  *    that receive the `clearfix` class.
  * 2. The use of `table` rather than `block` is only necessary if using
  *    `:before` to contain the top-margins of child elements. */
+/* line 138, ../sass/html5b.sass */
 .clearfix {
-  *zoom: 1; }
-  .clearfix:before {
-    content: " ";
-    /* 1 */
-    display: table;
-    /* 2 */ }
-  .clearfix:after {
-    content: " ";
-    /* 1 */
-    display: table;
-    /* 2 */
-    clear: both; }
+  *zoom: 1;
+}
+/* line 139, ../sass/html5b.sass */
+.clearfix:before {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+/* line 144, ../sass/html5b.sass */
+.clearfix:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+  clear: both;
+}

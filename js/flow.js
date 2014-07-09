@@ -34,11 +34,9 @@ define(["svg"], function(SVG, SVGModel) {
 			var pos = $("#workspace > svg").position();
 			temp.plot(x1, y1, e.clientX-5-pos.left, e.clientY-5-pos.top);
 		};
-		g = $("g").on("click", function(e){
-			g.off("click");
+		g = $("g").one("click", function(e){
 			e.stopPropagation();
 			temp.remove();
-			temp = undefined;
 			document.body.onmousemove = null;
 			if (this !== from) {
 				new Flow("Flow", from.instance, this.instance);
