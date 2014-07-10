@@ -23,6 +23,8 @@ html.no-js
             a.chart(href='#chart') scatterplot 
           dd 
             a.table(href='#table') table
+          dd 
+            a.graph(href='#graph') dygraph
       #graphs
     .model-controls
       form#editor(method="get" action="/")
@@ -44,12 +46,12 @@ html.no-js
             input#times(type='number' name="number", value='100', placeholder='Simulation Length')
           label Method 
             select#method
-              option(value="Euler", "selected") Euler
+              option(value="Euler") Euler
               option(value="RK2") RK2
-              option(value="RK4") RK4
+              option(value="RK4", "selected") RK4
               option(value="DOPRI") DOPRI
           label dt 
-            input#dt(type="number", value=".1", maxlength="10", min=".01")
+            input#dt(type="number", value=".25", maxlength="10", min=".01")
           #save.btn Save
           #load.btn Load
         input#name(type="text", name="name2" maxlength="100")

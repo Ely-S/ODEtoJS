@@ -84,7 +84,7 @@ $("#workspace").click(function(e){
 }).click(function(e){
 	// deselect
 	if (Variable.selected && Variable.selected.rect.node != e.target && e.target.tagName != "INPUT")
-		if (e.target.tagName == "div"  && e.target.className.indexOf("btn") != -1) 
+		if (e.target.tagName == "svg"  || e.target.className.indexOf("btn") != -1) 
 			Variable.selected.deselect();
 });
 
@@ -118,9 +118,10 @@ $(document).on("keypress", function(e) {
 
 var a= new Variable(alphabet.next(), 100, 200);
 a.toggleWatch();
-
+a.set("1");
 menu.init();
-//$(".chart")[0].click();
+//$(".graph").click();
+//$("#load").click();
 //$("#run").click();
 
 });

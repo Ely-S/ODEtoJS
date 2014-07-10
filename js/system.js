@@ -6,7 +6,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 		specs: {
 			dt: .1,
 			time: 100,
-			method: "Euler"
+			method: "RK4"
 		},
 
 		run: function() {

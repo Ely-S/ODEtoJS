@@ -1,4 +1,4 @@
-define(["graph", "system"], function (Graph, System) {
+define(["graph", "graph2", "system"], function (Graph, System) {
 	var Output = function(parent) {
 		this.el = parent.addClass("graphs");
 		this.el.on("click", ".chart", (function(e){
@@ -17,6 +17,9 @@ define(["graph", "system"], function (Graph, System) {
 		  	$("#output").width("50px").css("overflow-y", "hidden");
 		  });
 		});
+		this.el.on("click", ".graph", (function(e){
+			this.create("dygraph");
+		}).bind(this));
 
 	};
 
