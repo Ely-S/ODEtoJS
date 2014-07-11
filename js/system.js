@@ -107,6 +107,49 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 		},
 
+		// reads .stmx files
+		read: function(file) {
+			if (file.indexOf('<?xml version="1.0" encoding="utf-8" ?>')!=0) return; // The file is incompatible
+			var fq = $(file.slice(40)),
+				ss = fq.find("sim_specs"),
+				model = fq.find("model"),
+				variables = model.find("stock, aux"),
+				flows = model.find("flow");
+
+			_.forEach(variables, function(s){
+				var d = s.querySelector("display"),
+				    v = new Variable(s.getAttribute("name"), Number(s.getAttribute("x")), Number(s.getAttribute("y")));
+				    v.val.val = s.querySelector("eqn").textContent;
+
+
+				if (s.tagName == "stock") {
+				    v.color = d.getAttribute("color");
+
+				    _.forEach(s.querySelectorAll("inflow"), function(i) {
+				    		var inflow = _.first(flows, function(f){
+				    			return f.getAttribute("name") == i.textContent;
+				    		});
+				    		v.formula += inflow.querySelector("eqn").textContent;
+				    });
+				    _.forEach(s.querySelectorAll("outflow"), function(i) {
+				    		var inflow = _.first(flows, function(f){
+				    			return f.getAttribute("name") == i.textContent;
+				    		});
+				    		v.formula += inflow.querySelector("eqn").textContent;
+				    });
+
+				    v.reconstitute();
+				}
+
+			});
+
+
+			$("#method").val(ss.attr("method"));
+			$("#times").val(ss.find("#stop").text());
+			$("#dt").val(ss.find("#dt").text());
+
+
+		},
 
 		views: new Output($("#output"))
 	};

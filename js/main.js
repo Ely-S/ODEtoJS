@@ -123,6 +123,19 @@ $(".selectProfile").on("click", ".btn", function(e){
 	$(this.parentNode).foundation("reveal", "close");
 });
 
+
+$("#uploader").change(function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    var reader = new FileReader();  
+    reader.readAsText(this.files[0]);
+    reader.onloadend = function(e) {
+      if (e.target.readyState == FileReader.DONE) { // DONE == 2  
+	    Sys.read(e.target.result);
+      }
+    };
+});
+
 (function(x, y) {
 	$("#editor").submit(function(e){
 		e.preventDefault();

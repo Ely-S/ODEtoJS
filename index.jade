@@ -66,6 +66,8 @@ html.no-js
             p.lead Which profile do you want to load?
             select(name="profile")
             .btn Load
+            p Or open a .stmx
+            input#uploader(type="file")
         input#name(type="text", name="name2" maxlength="100")
         .hidden
           table#table-template.stat-table(data-template='data-template')
