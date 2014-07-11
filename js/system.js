@@ -78,6 +78,14 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 		},
 
+		clear: function(){
+			// clear
+			_.forEach(Variable.variables, function(v){
+				v.delete();
+				Variable.variables = [];
+			});
+		},
+
 		save: function(name) {
 			var json = JSON.stringify(_.map(Variable.variables, function(v){
 				return v.toJSON();
@@ -89,12 +97,8 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 		load: function(profile) {
 			var state = JSON.parse(localStorage[profile]);
 			if (typeof state == "object" && state.length) {
-				// clear
-				_.forEach(Variable.variables, function(v){
-					v.delete();
-				});
 
-				Variable.variables = [];
+				this.clear();
 
 				_.map(state, function(v){
 					var n = new Variable(v.name, v.x, v.y);
@@ -116,39 +120,40 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				variables = model.find("stock, aux"),
 				flows = model.find("flow");
 
-			_.forEach(variables, function(s){
+			this.clear(); // whipe slate clean
+
+			_.map(variables, function(s){
 				var d = s.querySelector("display"),
-				    v = new Variable(s.getAttribute("name"), Number(s.getAttribute("x")), Number(s.getAttribute("y")));
-				    v.val.val = s.querySelector("eqn").textContent;
+				    v = new Variable(s.getAttribute("name"), Number(d.getAttribute("x")), Number(d.getAttribute("y")));
+				    v.value = s.querySelector("eqn").textContent;
 
 
-				if (s.tagName == "stock") {
+				if (s.tagName == "STOCK") {
 				    v.color = d.getAttribute("color");
 
 				    _.forEach(s.querySelectorAll("inflow"), function(i) {
-				    		var inflow = _.first(flows, function(f){
+				    		var inflow = _.find(flows, function(f){
 				    			return f.getAttribute("name") == i.textContent;
 				    		});
 				    		v.formula += inflow.querySelector("eqn").textContent;
 				    });
 				    _.forEach(s.querySelectorAll("outflow"), function(i) {
-				    		var inflow = _.first(flows, function(f){
+				    		var inflow = _.find(flows, function(f){
 				    			return f.getAttribute("name") == i.textContent;
 				    		});
 				    		v.formula += inflow.querySelector("eqn").textContent;
 				    });
-
-				    v.reconstitute();
 				}
 
+				return v;
+			}).forEach(function(v){
+			    v.reconstitute();
 			});
 
 
 			$("#method").val(ss.attr("method"));
 			$("#times").val(ss.find("#stop").text());
 			$("#dt").val(ss.find("#dt").text());
-
-
 		},
 
 		views: new Output($("#output"))

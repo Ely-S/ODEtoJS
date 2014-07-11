@@ -26,7 +26,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		width: 80,
 		height: 80,
 		value: 0,
-		formula: "0",
+		formula: "",
 
 		toJSON: function() {
 			var t = this;
@@ -89,7 +89,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		makeLinks:  function() {
-			var linkNames = this.linkNames || this.linkNames(),
+			var linkNames = this.linkNames(),
 			    g = this.g, k=this.links;
 			_.forEach(linkNames, function(n) {
 				// prevent duplicates

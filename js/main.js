@@ -78,7 +78,8 @@ $("#workspace").click(function(e){
 }).click(function(e){
 	// deselect
 	if (Variable.selected && Variable.selected.rect.node != e.target && e.target.tagName != "INPUT")
-		if (e.target.tagName == "svg"  || e.target.className.indexOf("btn") != -1) 
+		if (!e.target.className.indexOf || e.target.className.indexOf("btn") != -1) 
+			// svg elements don't have a classname!
 			Variable.selected.deselect();
 });
 
@@ -134,6 +135,8 @@ $("#uploader").change(function(e){
 	    Sys.read(e.target.result);
       }
     };
+    this.value = "";
+	$(this.parentNode).foundation("reveal", "close");    
 });
 
 (function(x, y) {
