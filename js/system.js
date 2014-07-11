@@ -14,11 +14,17 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				dt = this.specs.dt, now,
 				times = this.specs.time = Number($("#times").val());
 
+			// need to have a consistent order for function nad recorder
+			Variable.variables = _.sortBy(Variable.variables, "name");
+
+			// dynamic variables
+			this.dynavars = _(Variable.variables).filter(function(v){ return !v.static(); });
+
 			solver = new Solver({
 				start: 0,
 				end: times,
 				func: this.vectorize(dt),
-				state0: _(Variable.variables).pluck("val").pluck("val").__wrapped__,
+				state0: _(this.dynavars).pluck("val").pluck("val").map(Number).__wrapped__,
 				dt: dt,
 				callback: this.recorder()
 			});
@@ -41,13 +47,11 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 		},
 
 		vectorize: function(dt) {
-			var dynavars, varnames, body, func;
+			var varnames, body, func;
 			
-			dynavars = _(Variable.variables).sortBy("name").filter(function(v){ return !v.static(); });
+			varnames = this.dynavars.pluck("name").__wrapped__;
 
-			varnames = dynavars.pluck("name").__wrapped__;
-
-			body =  "return [" + dynavars.map(function(v){ return v.compile(varnames, dt); }).join(",") + "];";
+			body =  "return [" + this.dynavars.map(function(v){ return v.compile(varnames, dt); }).join(",") + "];";
 
 			func = new Function(varnames, body);
 
@@ -56,6 +60,9 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 		},
 
 		recorder: function() {
+
+			// BUG: IF someone watches a static variable...
+			
 			var streams, streamlength;
 
 			this.watching = Variable.variables.filter(function(e){
@@ -82,8 +89,9 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 			// clear
 			_.forEach(Variable.variables, function(v){
 				v.delete();
-				Variable.variables = [];
 			});
+
+			while(Variable.variables.pop()) ;
 		},
 
 		save: function(name) {
@@ -120,7 +128,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				variables = model.find("stock, aux"),
 				flows = model.find("flow");
 
-			this.clear(); // whipe slate clean
+			this.clear(); // wipe slate clean
 
 			_.map(variables, function(s){
 				var d = s.querySelector("display"),
@@ -131,18 +139,20 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				if (s.tagName == "STOCK") {
 				    v.color = d.getAttribute("color");
 
-				    _.forEach(s.querySelectorAll("inflow"), function(i) {
-				    		var inflow = _.find(flows, function(f){
+				    v.formula = _.map(s.querySelectorAll("inflow"), function(i) {
+				    		return _.find(flows, function(f){
 				    			return f.getAttribute("name") == i.textContent;
-				    		});
-				    		v.formula += inflow.querySelector("eqn").textContent;
-				    });
-				    _.forEach(s.querySelectorAll("outflow"), function(i) {
-				    		var inflow = _.find(flows, function(f){
+				    		}).textContent.trim();
+				    }).join(" + ");
+
+				    if (s.querySelectorAll("outflow").length)
+				    v.formula += " - " +
+				    _.map(s.querySelectorAll("outflow"), function(i) {
+				    		return _.find(flows, function(f){
 				    			return f.getAttribute("name") == i.textContent;
-				    		});
-				    		v.formula += inflow.querySelector("eqn").textContent;
-				    });
+				    		}).textContent.trim();
+				    }).join(" - ");
+
 				}
 
 				return v;
@@ -152,8 +162,8 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 
 			$("#method").val(ss.attr("method"));
-			$("#times").val(ss.find("#stop").text());
-			$("#dt").val(ss.find("#dt").text());
+			$("#times").val(ss.find("stop").text());
+			$("#dt").val(ss.find("dt").text());
 		},
 
 		views: new Output($("#output"))
