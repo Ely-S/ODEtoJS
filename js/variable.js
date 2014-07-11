@@ -137,6 +137,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		compile: function(argnames, dt) {
+
 			var t = this, replaces = {},
 			    operators = "(^|$|[\*\+\-\/+\%\(\) \<\>]+)";
 
@@ -147,9 +148,14 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 					}
 				});
 
+			// TODO BUG: what if it replaces a name with one or more names
 			for (var name in replaces) {
 				var reg = new RegExp([operators, "(", name, ")", operators].join(""), "g");
 				this.formula = this.formula.replace(reg, "$1("+replaces[name]+")$3");
+			}
+
+			if (this.formula.indexOf("IF ") > -1) {
+				this.formula=this.formula.replace(/IF\s+(.*)\s+THEN\s+(.*)\s+ELSE\s+(.*)/, "$1?$2:$3");
 			}
 
 			return this.formula;			

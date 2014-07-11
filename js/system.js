@@ -62,7 +62,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 		recorder: function() {
 
 			// BUG: IF someone watches a static variable...
-			
+
 			var streams, streamlength;
 
 			this.watching = Variable.variables.filter(function(e){
@@ -131,27 +131,33 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 			this.clear(); // wipe slate clean
 
 			_.map(variables, function(s){
-				var d = s.querySelector("display"),
+				var d = s.querySelector("display"), qs,
 				    v = new Variable(s.getAttribute("name"), Number(d.getAttribute("x")), Number(d.getAttribute("y")));
-				    v.value = s.querySelector("eqn").textContent;
+				   
+			    if (qs = s.querySelector("eqn")) v.value = qs.textContent;
 
 
 				if (s.tagName == "STOCK") {
 				    v.color = d.getAttribute("color");
 
-				    v.formula = _.map(s.querySelectorAll("inflow"), function(i) {
-				    		return _.find(flows, function(f){
-				    			return f.getAttribute("name") == i.textContent;
-				    		}).textContent.trim();
-				    }).join(" + ");
+					qs = s.querySelectorAll("inflow");
+				    if (qs.length) { // if there are inflows
+					    v.formula = _.map(qs, function(i) {
+					    		return _.find(flows, function(f){
+					    			return f.getAttribute("name") == i.textContent;
+					    		}).textContent.trim();
+					    }).join(" + ");
+					}
 
-				    if (s.querySelectorAll("outflow").length)
-				    v.formula += " - " +
-				    _.map(s.querySelectorAll("outflow"), function(i) {
-				    		return _.find(flows, function(f){
-				    			return f.getAttribute("name") == i.textContent;
-				    		}).textContent.trim();
-				    }).join(" - ");
+					qs = s.querySelectorAll("outflow");
+				    if (qs.length) {
+					    v.formula += " - " +
+					    _.map(qs, function(i) {
+					    		return _.find(flows, function(f){
+					    			return f.getAttribute("name") == i.textContent;
+					    		}).textContent.trim();
+					    }).join(" - ");
+					}
 
 				}
 
