@@ -78,16 +78,17 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 		},
 
-		save: function() {
+		save: function(name) {
 			var json = JSON.stringify(_.map(Variable.variables, function(v){
 				return v.toJSON();
 			}));
-			localStorage.setItem("save", json);
+			name = name || "save";
+			localStorage.setItem(name, json);
 		},
 
-		load: function(state) {
-			var state = state || JSON.parse(localStorage["save"]);
-			if (state.length) {
+		load: function(profile) {
+			var state = JSON.parse(localStorage[profile]);
+			if (typeof state == "object" && state.length) {
 				// clear
 				_.forEach(Variable.variables, function(v){
 					v.delete();

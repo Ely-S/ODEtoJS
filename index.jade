@@ -52,8 +52,20 @@ html.no-js
               option(value="DOPRI") DOPRI
           label dt 
             input#dt(type="number", value=".25", maxlength="10", min=".01")
-          #save.btn Save
-          #load.btn Load
+          #save.btn(data-reveal-id="saveModal") Save
+          #load.btn(data-reveal-id="loadModal") Load
+          #saveModal.selectProfile.reveal-modal.medium(data-reveal)
+            p.lead Save
+            label Pick a profile 
+              select(name="profile")
+            p Or
+            label Create a new profile
+              input(name="profile", type="text")
+            .btn Save
+          #loadModal.selectProfile.reveal-modal.medium(data-reveal)
+            p.lead Which profile do you want to load?
+            select(name="profile")
+            .btn Load
         input#name(type="text", name="name2" maxlength="100")
         .hidden
           table#table-template.stat-table(data-template='data-template')

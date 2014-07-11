@@ -1,4 +1,4 @@
-require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendor/shortcut.js views".split(" "),
+require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendor/shortcut.js views js/vendor/foundation.min.js".split(" "),
 function($, SVG, Variable, Flow, Sys, Graphs, Shortcut){
 "use strict";
 
@@ -56,12 +56,6 @@ var menu = {
 		}
 	},
 	buttons: {
-		"#save": function() {
-			Sys.save();
-		},
-		"#load": function() {
-			Sys.load();
-		},
 		"#btn-stock": function(){
 			$("#workspace").one("click", function(e){
 				var s = new Variable(alphabet.next(), e.clientX, e.clientY);
@@ -93,6 +87,40 @@ $(document).on("keypress", function(e) {
 		if (Variable.selected && Variable.selected.delselected)
 			Variable.selected.delete();
 	}
+});
+
+var Profiles = function() {
+	var selprof = $(document.getElementsByName("profile"));
+
+	selprof.html("<option value=''></option>");
+
+	_(localStorage).keys().forEach(function(k){
+		var d =  document.createElement("option");
+		d.value = k;
+		d.textContent = k;
+		selprof.append(d);
+	});
+};
+
+Profiles();
+
+$("#load, #save").click(function(){
+	$(document.getElementById(this.getAttribute("data-reveal-id")))
+		.foundation("reveal", "open");
+});
+
+$(".selectProfile").on("click", ".btn", function(e){
+	e.preventDefault();
+	var profile = $("select", this.parentNode).val() || $("input", this.parentNode).val(),
+		action = $(this).text();
+	if (action == "Save") {
+		Profiles();
+		Sys.save(profile);
+	} else if (action == "Load") {
+		Sys.load(profile);
+		$(document.getElementsByName("profile")).filter("select").val(profile);
+	}
+	$(this.parentNode).foundation("reveal", "close");
 });
 
 (function(x, y) {
