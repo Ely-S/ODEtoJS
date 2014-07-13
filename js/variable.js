@@ -67,10 +67,17 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		select: function() {
 			this.selected = true;
 			Variable.selected = this;
-			editors.veditor.select(this.val);
-			editors.feditor.select(this.dformula);
+			editors.veditor.select(this.val, this.onedit());
+			editors.feditor.select(this.dformula, this.onedit());
 			// should user hit the delete key now. Delete this
 			this.delselected = true;
+		},
+
+		onedit: function() {
+			return (function(){
+				this.makeLinks();
+				this.deadLinks();
+			}).bind(this);
 		},
 
 		deselect: function() {
@@ -88,8 +95,19 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.makeLinks();
 		},
 
+		deadLinks: function() {
+			// remove unnecessary links
+			var linkNames = this.linkNames(), t = this;
+			linkNames.push(this.name);
+			_(this.links).filter(function(l){
+				return linkNames.indexOf(l.other(t).name) + l.other(t).linkNames().indexOf(t.name) == -2 ;
+			}).forEach(function(l){
+				l.delete();
+			});
+		},
+
 		linkNames: function() {
-			return _((this.formula +" "+this.value).split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)]+/g))
+			return _((this.formula +" "+this.val.val).split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)]+/g))
 				.filter(function(v){
 					return isNaN(Number(v)); // Remove numbers
 				}).uniq();
@@ -113,7 +131,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.g.node.classList.add("variable");
 			this.g.draggable().dragmove = (function(){
 				for (var i = 0, k = this.links, l = k.length; i < l; i++)
-					this.links[i].move();
+					k[i].move();
 			}).bind(this);
 			this.text = SVG.plain(name);
 			this.rect = SVG.rect(this.width, this.height).attr({ rx: "15px" });
@@ -122,8 +140,12 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		connect: function(flow){
-
 			this.links.push(flow);
+		},
+
+		disconnect: function(flow){
+			this.links = _.without(this.links, flow);
+			return this;
 		},
 
 		delta: function() {

@@ -2,8 +2,10 @@ define(function(){
 	"use strict";
 	var Editor = function(input) {
 		this.input = $(input).change((function(e){
-			if (this.selected)
-				this.value.save(this.cb(this.input.val()));
+			if (this.selected) {
+				this.value.save(this.input.val());
+				this.cb(this.input.val());
+			}
 		}).bind(this)).show();
 	};
 	Editor.prototype.select = function(value, callback) {

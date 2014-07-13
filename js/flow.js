@@ -1,10 +1,15 @@
 define(["svg"], function(SVG, SVGModel) {
 	"use strict";
+
+	var Flows = {}; // Index
+
 	var Flow = function(name, from, to) {
 		var fm = from.model || from,
-			tm = to.model || to,
-			line = SVG.line(from.x()+fm.width/2 , from.y()+fm.height/2 , to.x() + tm.width/2, to.y()+tm.height/2);
+			tm = to.model || to;
 		this.id = [fm.name,tm.name].sort().join("");
+		if (Flow[this.id]) return Flow[this.id]; // prevent duplicates
+		else Flows[this.id] = this;
+		var line = SVG.line(from.x()+fm.width/2 , from.y()+fm.height/2 , to.x() + tm.width/2, to.y()+tm.height/2);
 		this.g = SVG.group();
 		this.g.model = this;
 		this.g.add(line);
@@ -22,6 +27,7 @@ define(["svg"], function(SVG, SVGModel) {
 
 	Flow.prototype.delete = function(){
 		this.g.remove();
+		this.other(this.other().disconnect()).disconnect();
 	};
 
 	Flow.connection = function(from) {
