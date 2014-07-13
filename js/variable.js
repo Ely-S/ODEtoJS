@@ -87,10 +87,10 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		linkNames: function() {
-			return _((this.formula +" "+this.value).split(/[\*\+\-\/+\%\(\)\^ \<\>]+/g))
+			return _((this.formula +" "+this.value).split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)]+/g))
 				.filter(function(v){
-				return isNaN(Number(v)); // Remove numbers
-			});
+					return isNaN(Number(v)); // Remove numbers
+				}).uniq();
 		},
 
 		makeLinks:  function() {

@@ -19,11 +19,6 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				return v.static();
 			});
 
-			// dynamic variables
-			this.dynavars = Variable.variables
-				.slice(Variable.variables.sortedIndex(function(v){ return !v.static(); })-1);
-
-
 			this.watching = Variable.variables.filter(function(e){
 				return e.watching;
 			});
@@ -32,7 +27,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				start: 0,
 				end: times,
 				func: this.vectorize(dt),
-				state0: _(this.dynavars).pluck("val").pluck("val").map(Number).__wrapped__,
+				state0: this.state0,
 				dt: dt,
 				callback: this.recorder()
 			});
@@ -55,13 +50,27 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 		},
 
 		vectorize: function(dt) {
-			var varnames, body, func;
+			var varnames, body, func, gencode;
 			
-			varnames = this.dynavars.pluck("name").__wrapped__;
+//			varnames = this.dynavars.pluck("name").__wrapped__;
+// _(this.dynavars).pluck("val").pluck("val").map(Number).__wrapped__
 
-			body =  "return [" + this.watching.map(function(v){ return v.compile(varnames, dt); }).join(",") + "];";
+			gencode = this.watching.map(function(v){ return v.compile(varnames, dt); });
+
+			body =  "return [" + gencode.join(",") + "];";
+
+			varnames = _.uniq(gencode.__wrapped__[0]
+				.split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)]+/g)
+				.filter(function(x){
+					return !(x.indexOf("?") > -1 || x=="Math.pow" || !isNaN(Number(x)));
+				})
+			);
 
 			func = new Function(varnames, body);
+
+			this.state0 = varnames.map(function(vn){
+				return Variable.find(vn).val.val;
+			});
 
 			return func.apply.bind(func);
 
