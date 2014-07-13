@@ -15,6 +15,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		this.g.move(x, y);
 		this.dformula = new Value();
 		this.dformula.watch(this.set.bind(this));
+		this.compiled = {}; // to memoize
 	};
 
 	Variable.variables = [];
@@ -25,8 +26,8 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 
 	Variable.prototype = {
 		watching: false,
-		width: 60,
-		height: 60,
+		width: 40,
+		height: 40,
 		value: 0,
 		formula: "",
 
@@ -64,9 +65,10 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		select: function() {
-			if (Variable.selected) Variable.selected.deselect();
 			this.selected = true;
 			Variable.selected = this;
+			editors.veditor.select(this.val);
+			editors.feditor.select(this.dformula);
 			// should user hit the delete key now. Delete this
 			this.delselected = true;
 		},
@@ -117,10 +119,6 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.rect = SVG.rect(this.width, this.height).attr({ rx: "15px" });
 			this.g.add(this.rect);
 			this.rect.node.model = this;
-			this.rect.click((function(){
-				editors.veditor.select(this.val);
-				editors.feditor.select(this.dformula);
-			}).bind(this));
 		},
 
 		connect: function(flow){
@@ -142,32 +140,38 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 
 		compile: function(argnames, dt) {
 
-			var formula = this.static() ? this.val.val : this.formula;
+			var key, formula = key = this.static() ? this.val.val : this.formula;
 
-			// prevent an infinit loop of compiling itself
-			this.compiling = true;
+			if (this.compiled[formula]) return this.compiled[formula]; 
 
 			if (!isNaN(Number(this.val.val)) && this.static()) {
 				// if val is a numeric string and there is no formula
 				return this.val.val;
 			}
 
+			// prevent it from compiling itself later
+			this.compiling = true;
+
 			this.linkNames().forEach(function(l){
-				var reg, other = Variable.find(l);
+				var reg, rep,  other = Variable.find(l);
 				if (other && !other.compiling && other.static()) {
-					reg = new RegExp([operators, "(", other.name, ")", operators].join(""), "g");
-					formula = formula.replace(reg, "$1("+other.compile()+")$3");
+					reg = new RegExp([operators, "(", other.name, ")", operators].join(""), "g"),
+					rep = "$1("+other.compile()+")$3";
+					// not all browser accept the g flag to the RegExp constructor
+					while (formula.indexOf(other.name)!==-1) {
+						formula = formula.replace(reg, rep);
+					}
 				}
 			});
+
+			this.compiling = false;
 
 			// replace exponential operator with Math.pow
 			// convert IF THEN ELSE to ? : expression
 			formula = formula.replace(/(\w+)\^(\w+)/g, "Math.pow($1, $2)")
-							.replace(/IF\s+(.*)\s+THEN\s+(.*)\s+ELSE\s+(.*)/, "$1?$2:$3");
+							.replace(/IF\s+(.*)\s+THEN\s+(.*)\s+ELSE\s+(.*)/g, "$1?$2:$3");
 
-			this.compiling = false;
-
-			return formula;
+			return this.compiled[key] = formula;
 
 		},
 

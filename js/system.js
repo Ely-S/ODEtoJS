@@ -51,16 +51,13 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 		vectorize: function(dt) {
 			var varnames, body, func, gencode;
-			
-//			varnames = this.dynavars.pluck("name").__wrapped__;
-// _(this.dynavars).pluck("val").pluck("val").map(Number).__wrapped__
 
 			gencode = this.watching.map(function(v){ return v.compile(varnames, dt); });
 
 			body =  "return [" + gencode.join(",") + "];";
 
 			varnames = _.uniq(gencode.__wrapped__[0]
-				.split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)]+/g)
+				.split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)\,]+/g)
 				.filter(function(x){
 					return !(x.indexOf("?") > -1 || x=="Math.pow" || !isNaN(Number(x)));
 				})
