@@ -73,7 +73,7 @@ $("#workspace").click(function(e){
 	var pos = $("#workspace > svg").position();
 	if (e.ctrlKey) {
 		e.stopPropagation();
-		new Variable(alphabet.next(), e.clientX - pos.left, e.clientY - pos.top);
+		new Variable(alphabet.next(), e.clientX - pos.left, e.clientY - pos.top + $(document).scrollTop());
 	}
 }).click(function(e){
 	// deselect

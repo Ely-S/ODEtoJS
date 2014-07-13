@@ -33,7 +33,7 @@ define(["svg"], function(SVG, SVGModel) {
 
 		$(document.body).on("mousemove", function(e){
 			var pos = $("#workspace > svg").position();
-			temp.plot(x1, y1, e.clientX-5-pos.left, e.clientY-5-pos.top);
+			temp.plot(x1, y1, e.clientX-5-pos.left, e.clientY-5-pos.top+$(document).scrollTop());
 		});
 
 		this.connect = function(to) {
