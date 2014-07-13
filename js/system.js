@@ -14,12 +14,20 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 				dt = this.specs.dt, now,
 				times = this.specs.time = Number($("#times").val());
 
-			// need to have a consistent order for function nad recorder
-			Variable.variables = _.sortBy(Variable.variables, "name");
+			// need to have a consistent order for function and recorder
+			Variable.variables = _(Variable.variables).sortBy("name").sortBy(function(v){
+				return v.static();
+			});
 
 			// dynamic variables
-			this.dynavars = _(Variable.variables).filter(function(v){ return !v.static(); });
+			this.dynavars = Variable.variables
+				.slice(Variable.variables.sortedIndex(function(v){ return !v.static(); })-1);
 
+
+			this.watching = Variable.variables.filter(function(e){
+				return e.watching;
+			});
+			
 			solver = new Solver({
 				start: 0,
 				end: times,
@@ -51,7 +59,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 			
 			varnames = this.dynavars.pluck("name").__wrapped__;
 
-			body =  "return [" + this.dynavars.map(function(v){ return v.compile(varnames, dt); }).join(",") + "];";
+			body =  "return [" + this.watching.map(function(v){ return v.compile(varnames, dt); }).join(",") + "];";
 
 			func = new Function(varnames, body);
 
@@ -61,13 +69,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 		recorder: function() {
 
-			// BUG: IF someone watches a static variable...
-
 			var streams, streamlength;
-
-			this.watching = Variable.variables.filter(function(e){
-				return e.watching;
-			});
 
 			this.views.view.setup(this.watching);
 

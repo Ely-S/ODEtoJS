@@ -1,6 +1,8 @@
 define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(Flow, Value, SVG, editors, _) {
 	"use strict";
 
+	var operators = "(^|$|[\*\+\-\/+\%\(\)\^ \<\>]+)";
+
 	var Variable = function(name, x, y) {
 		var e;
 		Variable.variables.push(this);
@@ -18,7 +20,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 	Variable.variables = [];
 
 	Variable.find = function(name) {
-		return _.find(this.variables, {name: name});
+		return _(this.variables).find({name: name});
 	};
 
 	Variable.prototype = {
@@ -85,17 +87,19 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		linkNames: function() {
-			return _.filter(this.formula.replace(/[\W\d]/g, "\n").split("\n"));
+			return _((this.formula +" "+this.value).split(/[\*\+\-\/+\%\(\)\^ \<\>]+/g))
+				.filter(function(v){
+				return isNaN(Number(v)); // Remove numbers
+			});
 		},
 
 		makeLinks:  function() {
-			var linkNames = this.linkNames(),
-			    g = this.g, k=this.links;
-			_.forEach(linkNames, function(n) {
+			var g = this.g, links=this.links;
+			this.linkNames().forEach(function(n) {
 				// prevent duplicates
-				for (var fn, i = 0, l = k.length; i < l; i++)
-					if (k[i].other(this).name === n) return;
-				fn = Variable.find(n);
+//				for (var fn, i = 0, l = links.length; i < l; i++)
+//					if (links[i].other(this).name === n) return;
+				var fn = Variable.find(n);
 				if(fn && fn.g) new Flow("Flow", g, fn.g);
 			});
 		},
@@ -138,27 +142,32 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 
 		compile: function(argnames, dt) {
 
-			var t = this, replaces = {},
-			    operators = "(^|$|[\*\+\-\/+\%\(\) \<\>]+)";
+			var formula = this.static() ? this.val.val : this.formula;
 
-				this.links.forEach(function(l){
-					var other = l.other(t);
-					if (other.static()) {
-						replaces[other.name] = other.val.val;
-					}
-				});
+			// prevent an infinit loop of compiling itself
+			this.compiling = true;
 
-			// TODO BUG: what if it replaces a name with one or more names
-			for (var name in replaces) {
-				var reg = new RegExp([operators, "(", name, ")", operators].join(""), "g");
-				this.formula = this.formula.replace(reg, "$1("+replaces[name]+")$3");
+			if (!isNaN(Number(this.val.val)) && this.static()) {
+				// if val is a numeric string and there is no formula
+				return this.val.val;
 			}
 
-			if (this.formula.indexOf("IF ") > -1) {
-				this.formula=this.formula.replace(/IF\s+(.*)\s+THEN\s+(.*)\s+ELSE\s+(.*)/, "$1?$2:$3");
-			}
+			this.linkNames().forEach(function(l){
+				var reg, other = Variable.find(l);
+				if (other && !other.compiling && other.static()) {
+					reg = new RegExp([operators, "(", other.name, ")", operators].join(""), "g");
+					formula = formula.replace(reg, "$1("+other.compile()+")$3");
+				}
+			});
 
-			return this.formula;			
+			// replace exponential operator with Math.pow
+			// convert IF THEN ELSE to ? : expression
+			formula = formula.replace(/(\w+)\^(\w+)/g, "Math.pow($1, $2)")
+							.replace(/IF\s+(.*)\s+THEN\s+(.*)\s+ELSE\s+(.*)/, "$1?$2:$3");
+
+			this.compiling = false;
+
+			return formula;
 
 		},
 
