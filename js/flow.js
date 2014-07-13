@@ -3,7 +3,7 @@ define(["svg"], function(SVG, SVGModel) {
 	var Flow = function(name, from, to) {
 		var fm = from.model || from,
 			tm = to.model || to,
-			line = SVG.line(from.x()+fm.width/2 , from.y()+fm.height/2 , to.x() + tm.width/2, to.y()+tm.height/2 ).stroke({width: 5});
+			line = SVG.line(from.x()+fm.width/2 , from.y()+fm.height/2 , to.x() + tm.width/2, to.y()+tm.height/2);
 		this.id = [fm.name,tm.name].sort().join("");
 		this.g = SVG.group();
 		this.g.model = this;
@@ -29,7 +29,7 @@ define(["svg"], function(SVG, SVGModel) {
 		var g,
 			x1 = from.x() + from.model.width/2,
 			y1 = from.y() + from.model.height/2,
-			temp = SVG.line(x1, y1, x1+1, y1+1).stroke({width: 5});
+			temp = SVG.line(x1, y1, x1+1, y1+1);
 
 		$(document.body).on("mousemove", function(e){
 			var pos = $("#workspace > svg").position();

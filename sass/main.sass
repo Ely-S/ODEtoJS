@@ -18,6 +18,10 @@ $varcolor: darken(#1795FF, 10%)
 line, rect
   cursor: pointer
 
+line
+  stroke: rgba(10, 5, 30, 0.85)
+  stroke-width: 4
+
 .btn
   @include button()
   padding-left: 2.3rem
@@ -51,8 +55,7 @@ form
 
 #workspace
   height: 90%
-  overflow: auto
-  overflow-x: hidden
+  overflow: hidden
 
 #workspace svg
   position: relative

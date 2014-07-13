@@ -7046,6 +7046,12 @@ line, rect {
 }
 
 /* line 21, ../sass/main.sass */
+line {
+  stroke: rgba(10, 5, 30, 0.85);
+  stroke-width: 4;
+}
+
+/* line 25, ../sass/main.sass */
 .btn {
   border-style: solid;
   border-width: 0px;
@@ -7083,14 +7089,14 @@ line, rect {
   color: white;
 }
 
-/* line 27, ../sass/main.sass */
+/* line 31, ../sass/main.sass */
 .btn:hover {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
 }
 
-/* line 30, ../sass/main.sass */
+/* line 34, ../sass/main.sass */
 .inp2 {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
@@ -7098,7 +7104,7 @@ line, rect {
   float: left;
 }
 
-/* line 33, ../sass/main.sass */
+/* line 37, ../sass/main.sass */
 .inp1 {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
@@ -7106,17 +7112,17 @@ line, rect {
   float: left;
 }
 
-/* line 36, ../sass/main.sass */
+/* line 40, ../sass/main.sass */
 .inp1 .error, .inp2 .error {
   display: none;
 }
 
-/* line 39, ../sass/main.sass */
+/* line 43, ../sass/main.sass */
 .row > input {
   margin: 5px;
 }
 
-/* line 42, ../sass/main.sass */
+/* line 46, ../sass/main.sass */
 input[type=submit] {
   border-style: solid;
   border-width: 0px;
@@ -7152,7 +7158,7 @@ input[type=submit]:hover, input[type=submit]:focus {
   color: white;
 }
 
-/* line 46, ../sass/main.sass */
+/* line 50, ../sass/main.sass */
 form label {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
@@ -7160,46 +7166,45 @@ form label {
   float: left;
 }
 
-/* line 49, ../sass/main.sass */
+/* line 53, ../sass/main.sass */
 form {
   margin-bottom: 0;
 }
 
-/* line 52, ../sass/main.sass */
+/* line 56, ../sass/main.sass */
 #workspace {
   height: 90%;
-  overflow: auto;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-/* line 57, ../sass/main.sass */
+/* line 60, ../sass/main.sass */
 #workspace svg {
   position: relative;
 }
 
-/* line 60, ../sass/main.sass */
+/* line 63, ../sass/main.sass */
 rect {
   fill: #007be3;
   stroke: 1;
   stroke-opacity: 0.4;
 }
 
-/* line 65, ../sass/main.sass */
+/* line 68, ../sass/main.sass */
 .watching {
   fill: #00447d;
 }
 
-/* line 68, ../sass/main.sass */
+/* line 71, ../sass/main.sass */
 .selected {
   text-decoration: underline;
 }
-/* line 70, ../sass/main.sass */
+/* line 73, ../sass/main.sass */
 .selected rect {
   stroke: #002b77;
   stroke-width: 5;
 }
 
-/* line 74, ../sass/main.sass */
+/* line 77, ../sass/main.sass */
 #load, #save {
   position: relative;
   padding-right: 3.5625rem;
@@ -7226,7 +7231,7 @@ rect {
   border-color: white transparent transparent transparent;
 }
 
-/* line 79, ../sass/main.sass */
+/* line 82, ../sass/main.sass */
 .toolbar {
   display: block;
   width: auto;
@@ -7286,14 +7291,14 @@ rect {
   background: #0078a0;
 }
 
-/* line 83, ../sass/main.sass */
+/* line 86, ../sass/main.sass */
 .model-controls {
   margin-bottom: 0px;
   background-color: #f7f7f7;
   padding: 15px;
 }
 
-/* line 86, ../sass/main.sass */
+/* line 89, ../sass/main.sass */
 #output {
   overflow: hidden;
   z-index: 2;
@@ -7306,12 +7311,12 @@ rect {
   height: 90%;
 }
 
-/* line 97, ../sass/main.sass */
+/* line 100, ../sass/main.sass */
 table, .graph-container {
   margin: 20px;
 }
 
-/* line 100, ../sass/main.sass */
+/* line 103, ../sass/main.sass */
 th, td {
   border: 1px solid lightgrey;
   padding: 5px;
@@ -7321,12 +7326,12 @@ th, td {
   text-overflow: clip;
 }
 
-/* line 108, ../sass/main.sass */
+/* line 111, ../sass/main.sass */
 .domain {
   display: none;
 }
 
-/* line 111, ../sass/main.sass */
+/* line 114, ../sass/main.sass */
 #name, #name:focus {
   position: absolute;
   border: none;
