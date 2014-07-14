@@ -140,7 +140,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 
 			_.map(variables, function(s){
 				var d = s.querySelector("display"), qs,
-				    v = new Variable(s.getAttribute("name"), Number(d.getAttribute("x")), Number(d.getAttribute("y")));
+				    v = new Variable(s.getAttribute("name"), 1.2*Number(d.getAttribute("x")), 1.2*Number(d.getAttribute("y")));
 				   
 			    if (qs = s.querySelector("eqn")) v.value = qs.textContent;
 

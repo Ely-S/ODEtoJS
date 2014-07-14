@@ -4,17 +4,13 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 	var operators = "(^|$|[\*\+\-\/+\%\(\)\^ \<\>]+)";
 
 	var Variable = function(name, x, y) {
-		var e;
 		Variable.variables.push(this);
 		this.links = [];
-		this.create(name);
-		for (e in this.events)
+		this.create(name, x, y);
+		for (var e in this.events)
 			this.rect.on(e, this.events[e].bind(this));
-		this.val = new Value(1, name);
 		this.addText();
-		this.g.move(x, y);
-		this.dformula = new Value();
-		this.dformula.watch(this.set.bind(this));
+		this.init();
 		this.compiled = {}; // to memoize
 	};
 
@@ -26,10 +22,18 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 
 	Variable.prototype = {
 		watching: false,
-		width: 40,
-		height: 40,
+		width: 50,
+		height: 50,
 		value: 0,
 		formula: "",
+		rx: "4px",
+
+		init: function(){
+			// initializes data
+			this.val = new Value(1, name);
+			this.dformula = new Value();
+			this.dformula.watch(this.set.bind(this));
+		},
 
 		toJSON: function() {
 			var t = this;
@@ -124,7 +128,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			});
 		},
 
-		create: function(name){
+		create: function(name, x ,y){
 			this.name = name;
 			this.g = SVG.group();
 			this.g.model = this;
@@ -134,16 +138,17 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 					k[i].move();
 			}).bind(this);
 			this.text = SVG.plain(name);
-			this.rect = SVG.rect(this.width, this.height).attr({ rx: "15px" });
+			this.rect = SVG.rect(this.width, this.height).attr({ rx: this.rx });
 			this.g.add(this.rect);
 			this.rect.node.model = this;
+			this.g.move(x, y);
 		},
 
 		connect: function(flow){
 			this.links.push(flow);
 		},
 
-		disconnect: function(flow){
+		discronnect: function(flow){
 			this.links = _.without(this.links, flow);
 			return this;
 		},

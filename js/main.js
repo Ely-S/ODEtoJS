@@ -1,5 +1,5 @@
-require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendor/shortcut.js views js/vendor/foundation.min.js".split(" "),
-function($, SVG, Variable, Flow, Sys, Graphs, Shortcut){
+require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendor/shortcut.js datum views js/vendor/foundation.min.js".split(" "),
+function($, SVG, Variable, Flow, Sys, Graphs, Shortcut, Datum){
 "use strict";
 
 /**
@@ -56,9 +56,14 @@ var menu = {
 		}
 	},
 	buttons: {
+		"#btn-datum": function(){
+			$("#workspace").one("click", function(e){
+				var s = new Datum(alphabet.next(), e.clientX, e.clientY + $(document).scrollTop());
+			});
+		},
 		"#btn-stock": function(){
 			$("#workspace").one("click", function(e){
-				var s = new Variable(alphabet.next(), e.clientX, e.clientY);
+				var s = new Variable(alphabet.next(), e.clientX, e.clientY + $(document).scrollTop());
 			});
 		},
 		"#btn-flow": function(){
