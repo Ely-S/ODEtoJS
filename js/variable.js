@@ -51,6 +51,8 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			click: function(e){
 				e.stopPropagation();
 				this.select();
+				// move this to top layer
+				SVG.node.appendChild(this.g.node);
 				this.g.node.classList.add("selected");
 				if (Flow.waiting) {
 					Flow.waiting.connect(this.g);
