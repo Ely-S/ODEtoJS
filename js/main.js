@@ -76,9 +76,10 @@ var menu = {
 
 $("#workspace").click(function(e){
 	var pos = $("#workspace > svg").position();
-	if (e.ctrlKey) {
+	if (e.ctrlKey || e.shiftKey) {
 		e.stopPropagation();
-		new Variable(alphabet.next(), e.clientX - pos.left, e.clientY - pos.top + $(document).scrollTop());
+		new (e.ctrlKey? Variable : Datum)
+			(alphabet.next(), e.clientX - pos.left, e.clientY - pos.top + $(document).scrollTop());
 	}
 }).click(function(e){
 	// deselect

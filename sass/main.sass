@@ -1,7 +1,7 @@
 @import "normalize"
 @import "html5b"
 @import "jquery-ui"
-@import "graph"
+@import "graph"c
 @import "detail"
 @import "legend"
 @import "foundation/settings"
@@ -15,15 +15,7 @@ $varcolor: darken(#1795FF, 10%)
   background-color: #F7F7F7
   padding: 15px
 
-line, rect
-  cursor: pointer
-
-line
-  stroke: rgba(10, 5, 30, 0.85)
-  stroke-width: 4
-
-.datum > rect
-  fill: lighten($varcolor, 25%)
+// #### Inputs ####
 
 .btn
   @include button()
@@ -34,16 +26,32 @@ line
 .btn:hover
   +box-shadow(none)
 
-.inp2
-  @include grid-column($columns:3)
+.inputs
+  @include grid-column($columns:7)
+  overflow: hidden
 
+.halfmode .inp1
+  @include grid-column($columns:12)
+
+.halfmode .inp2
+  width: 0
+  padding: 0
+  margin: 0
+  border 0
+
+.inp2
+  @include grid-column($columns:8)
+ 
 .inp1
-  @include grid-column($columns:4)
+  @include grid-column($columns:3)
 
 .inp1 .error, .inp2 .error
   display: none
 
-.row > input
+.inp1, .inp2
+  overflow: hidden
+
+.row input
   margin: 5px
 
 input[type=submit]
@@ -55,6 +63,44 @@ form label
 
 form
   margin-bottom: 0
+
+#load, #save
+  @include dropdown-button($padding:medium, $pip-color:#fff, $base-style:true)
+
+.toolbar
+  @include sub-nav()
+  color: black
+
+.model-controls
+  @include well()
+
+#name, #name:focus
+  position: absolute
+  border: none
+  width: 0
+  padding: 0
+  display: none
+  outline: 0
+  background-color: #FFF
+  font-family: inherit
+  box-shadow: none
+  margin: 0
+  padding: 0
+  transition: none
+  color: #222
+  font-size: 1rem
+
+// #### SVG ###
+
+line, rect
+  cursor: pointer
+
+line
+  stroke: rgba(10, 5, 30, 0.85)
+  stroke-width: 4
+
+.datum > rect
+  fill: lighten($varcolor, 25%)
 
 #workspace
   height: 90%
@@ -73,22 +119,11 @@ rect
 
 .selected
   text-decoration: underline
-  rect
+  rect, .datum > rect
     stroke: #002B77
     stroke-width: 5
 
-#load, #save
-  @include dropdown-button($padding:medium, $pip-color:#fff, $base-style:true)
-
-
-
-.toolbar
-  @include sub-nav()
-  color: black
-
-.model-controls
-  @include well()
-
+// #### Output ####
 #output
   overflow: hidden
   z-index: 2
@@ -114,20 +149,5 @@ th, td
 .domain
   display: none
 
-#name, #name:focus
-  position: absolute
-  border: none
-  width: 0
-  padding: 0
-  display: none
-  outline: 0
-  background-color: #FFF
-  font-family: inherit
-  box-shadow: none
-  margin: 0
-  padding: 0
-  transition: none
-  color: #222
-  font-size: 1rem
 
 @import "print"

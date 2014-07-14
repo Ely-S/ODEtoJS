@@ -71,6 +71,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		select: function() {
 			this.selected = true;
 			Variable.selected = this;
+			editors.fullmode();
 			editors.veditor.select(this.val, this.onedit());
 			editors.feditor.select(this.dformula, this.onedit());
 			// should user hit the delete key now. Delete this
@@ -165,16 +166,11 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			return (this.formula.trim() == "") || (this.formula.trim() == "0");
 		},
 
-		compile: function(argnames, dt) {
+		compile: function(formula) {
 
-			var key, formula = key = this.static() ? this.val.val : this.formula;
+			var key, formula = key = formula || this.formula;
 
 			if (this.compiled[formula]) return this.compiled[formula]; 
-
-			if (!isNaN(Number(this.val.val)) && this.static()) {
-				// if val is a numeric string and there is no formula
-				return this.val.val;
-			}
 
 			// prevent it from compiling itself later
 			this.compiling = true;

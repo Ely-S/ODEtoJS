@@ -42,6 +42,12 @@ define(function(){
 	return {
 		veditor: new Editor("#value"),
 		feditor: new Editor("#formula"),
-		neditor: new Editor("#name")
+		neditor: new Editor("#name"),
+		halfmode: function() {
+			$("#editor").addClass("halfmode");
+		},
+		fullmode: function() {
+			$("#editor").removeClass("halfmode");
+		}		
 	}
 });

@@ -4,6 +4,7 @@
  * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
+@import "graph" c;
 /* line 9, ../sass/normalize.scss */
 html {
   font-family: sans-serif;
@@ -2648,212 +2649,6 @@ button.ui-button::-moz-focus-inner {
   -khtml-border-radius: 8px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
-}
-
-/* graph */
-/* line 3, ../sass/graph.scss */
-.rickshaw_graph {
-  position: relative;
-}
-
-/* line 6, ../sass/graph.scss */
-.rickshaw_graph svg {
-  display: block;
-  overflow: hidden;
-}
-
-/* ticks */
-/* line 13, ../sass/graph.scss */
-.rickshaw_graph .x_tick {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 0px;
-  border-left: 1px dotted rgba(0, 0, 0, 0.2);
-  pointer-events: none;
-}
-
-/* line 21, ../sass/graph.scss */
-.rickshaw_graph .x_tick .title {
-  position: absolute;
-  font-size: 12px;
-  font-family: Arial, sans-serif;
-  opacity: 0.5;
-  white-space: nowrap;
-  margin-left: 3px;
-  bottom: 1px;
-}
-
-/* annotations */
-/* line 33, ../sass/graph.scss */
-.rickshaw_annotation_timeline {
-  height: 1px;
-  border-top: 1px solid #e0e0e0;
-  margin-top: 10px;
-  position: relative;
-}
-
-/* line 39, ../sass/graph.scss */
-.rickshaw_annotation_timeline .annotation {
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  margin-left: -2px;
-  top: -3px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.25);
-}
-
-/* line 48, ../sass/graph.scss */
-.rickshaw_graph .annotation_line {
-  position: absolute;
-  top: 0;
-  bottom: -6px;
-  width: 0px;
-  border-left: 2px solid rgba(0, 0, 0, 0.3);
-  display: none;
-}
-
-/* line 56, ../sass/graph.scss */
-.rickshaw_graph .annotation_line.active {
-  display: block;
-}
-
-/* line 60, ../sass/graph.scss */
-.rickshaw_graph .annotation_range {
-  background: rgba(0, 0, 0, 0.1);
-  display: none;
-  position: absolute;
-  top: 0;
-  bottom: -6px;
-}
-
-/* line 67, ../sass/graph.scss */
-.rickshaw_graph .annotation_range.active {
-  display: block;
-}
-
-/* line 70, ../sass/graph.scss */
-.rickshaw_graph .annotation_range.active.offscreen {
-  display: none;
-}
-
-/* line 74, ../sass/graph.scss */
-.rickshaw_annotation_timeline .annotation .content {
-  background: white;
-  color: black;
-  opacity: 0.9;
-  padding: 5px 5px;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
-  border-radius: 3px;
-  position: relative;
-  z-index: 20;
-  font-size: 12px;
-  padding: 6px 8px 8px;
-  top: 18px;
-  left: -11px;
-  width: 160px;
-  display: none;
-  cursor: pointer;
-}
-
-/* line 91, ../sass/graph.scss */
-.rickshaw_annotation_timeline .annotation .content:before {
-  content: "\25b2";
-  position: absolute;
-  top: -11px;
-  color: white;
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
-}
-
-/* line 99, ../sass/graph.scss */
-.rickshaw_annotation_timeline .annotation.active,
-.rickshaw_annotation_timeline .annotation:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  cursor: none;
-}
-
-/* line 103, ../sass/graph.scss */
-.rickshaw_annotation_timeline .annotation .content:hover {
-  z-index: 50;
-}
-
-/* line 106, ../sass/graph.scss */
-.rickshaw_annotation_timeline .annotation.active .content {
-  display: block;
-}
-
-/* line 109, ../sass/graph.scss */
-.rickshaw_annotation_timeline .annotation:hover .content {
-  display: block;
-  z-index: 50;
-}
-
-/* line 114, ../sass/graph.scss */
-.rickshaw_graph .y_axis,
-.rickshaw_graph .x_axis_d3 {
-  fill: none;
-}
-
-/* line 118, ../sass/graph.scss */
-.rickshaw_graph .y_ticks .tick line,
-.rickshaw_graph .x_ticks_d3 .tick {
-  stroke: rgba(0, 0, 0, 0.16);
-  stroke-width: 2px;
-  shape-rendering: crisp-edges;
-  pointer-events: none;
-}
-
-/* line 125, ../sass/graph.scss */
-.rickshaw_graph .y_grid .tick,
-.rickshaw_graph .x_grid_d3 .tick {
-  z-index: -1;
-  stroke: rgba(0, 0, 0, 0.2);
-  stroke-width: 1px;
-  stroke-dasharray: 1 1;
-}
-
-/* line 131, ../sass/graph.scss */
-.rickshaw_graph .y_grid .tick[data-y-value="0"] {
-  stroke-dasharray: 1 0;
-}
-
-/* line 135, ../sass/graph.scss */
-.rickshaw_graph .y_grid path,
-.rickshaw_graph .x_grid_d3 path {
-  fill: none;
-  stroke: none;
-}
-
-/* line 140, ../sass/graph.scss */
-.rickshaw_graph .y_ticks path,
-.rickshaw_graph .x_ticks_d3 path {
-  fill: none;
-  stroke: #808080;
-}
-
-/* line 145, ../sass/graph.scss */
-.rickshaw_graph .y_ticks text,
-.rickshaw_graph .x_ticks_d3 text {
-  opacity: 0.5;
-  font-size: 12px;
-  pointer-events: none;
-}
-
-/* line 151, ../sass/graph.scss */
-.rickshaw_graph .x_tick.glow .title,
-.rickshaw_graph .y_ticks.glow text {
-  fill: black;
-  color: black;
-  text-shadow: -1px 1px 0 rgba(255, 255, 255, 0.1), 1px -1px 0 rgba(255, 255, 255, 0.1), 1px 1px 0 rgba(255, 255, 255, 0.1), 0px 1px 0 rgba(255, 255, 255, 0.1), 0px -1px 0 rgba(255, 255, 255, 0.1), 1px 0px 0 rgba(255, 255, 255, 0.1), -1px 0px 0 rgba(255, 255, 255, 0.1), -1px -1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* line 165, ../sass/graph.scss */
-.rickshaw_graph .x_tick.inverse .title,
-.rickshaw_graph .y_ticks.inverse text {
-  fill: white;
-  color: white;
-  text-shadow: -1px 1px 0 rgba(0, 0, 0, 0.8), 1px -1px 0 rgba(0, 0, 0, 0.8), 1px 1px 0 rgba(0, 0, 0, 0.8), 0px 1px 0 rgba(0, 0, 0, 0.8), 0px -1px 0 rgba(0, 0, 0, 0.8), 1px 0px 0 rgba(0, 0, 0, 0.8), -1px 0px 0 rgba(0, 0, 0, 0.8), -1px -1px 0 rgba(0, 0, 0, 0.8);
 }
 
 /* line 1, ../sass/detail.scss */
@@ -7040,23 +6835,7 @@ label.error {
   color: #f04124;
 }
 
-/* line 18, ../sass/main.sass */
-line, rect {
-  cursor: pointer;
-}
-
-/* line 21, ../sass/main.sass */
-line {
-  stroke: rgba(10, 5, 30, 0.85);
-  stroke-width: 4;
-}
-
-/* line 25, ../sass/main.sass */
-.datum > rect {
-  fill: #63b8ff;
-}
-
-/* line 28, ../sass/main.sass */
+/* line 20, ../sass/main.sass */
 .btn {
   border-style: solid;
   border-width: 0px;
@@ -7094,40 +6873,69 @@ line {
   color: white;
 }
 
-/* line 34, ../sass/main.sass */
+/* line 26, ../sass/main.sass */
 .btn:hover {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
 }
 
-/* line 37, ../sass/main.sass */
+/* line 29, ../sass/main.sass */
+.inputs {
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  width: 58.33333%;
+  float: left;
+  overflow: hidden;
+}
+
+/* line 33, ../sass/main.sass */
+.halfmode .inp1 {
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  width: 100%;
+  float: left;
+}
+
+/* line 36, ../sass/main.sass */
+.halfmode .inp2 {
+  width: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 42, ../sass/main.sass */
 .inp2 {
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  width: 66.66667%;
+  float: left;
+}
+
+/* line 45, ../sass/main.sass */
+.inp1 {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
   width: 25%;
   float: left;
 }
 
-/* line 40, ../sass/main.sass */
-.inp1 {
-  padding-left: 0.9375rem;
-  padding-right: 0.9375rem;
-  width: 33.33333%;
-  float: left;
-}
-
-/* line 43, ../sass/main.sass */
+/* line 48, ../sass/main.sass */
 .inp1 .error, .inp2 .error {
   display: none;
 }
 
-/* line 46, ../sass/main.sass */
-.row > input {
+/* line 51, ../sass/main.sass */
+.inp1, .inp2 {
+  overflow: hidden;
+}
+
+/* line 54, ../sass/main.sass */
+.row input {
   margin: 5px;
 }
 
-/* line 49, ../sass/main.sass */
+/* line 57, ../sass/main.sass */
 input[type=submit] {
   border-style: solid;
   border-width: 0px;
@@ -7163,7 +6971,7 @@ input[type=submit]:hover, input[type=submit]:focus {
   color: white;
 }
 
-/* line 53, ../sass/main.sass */
+/* line 61, ../sass/main.sass */
 form label {
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
@@ -7171,45 +6979,12 @@ form label {
   float: left;
 }
 
-/* line 56, ../sass/main.sass */
+/* line 64, ../sass/main.sass */
 form {
   margin-bottom: 0;
 }
 
-/* line 59, ../sass/main.sass */
-#workspace {
-  height: 90%;
-  overflow: hidden;
-}
-
-/* line 63, ../sass/main.sass */
-#workspace svg {
-  position: relative;
-}
-
-/* line 66, ../sass/main.sass */
-rect {
-  fill: #007be3;
-  stroke: 1;
-  stroke-opacity: 0.4;
-}
-
-/* line 71, ../sass/main.sass */
-.watching {
-  fill: #00447d;
-}
-
-/* line 74, ../sass/main.sass */
-.selected {
-  text-decoration: underline;
-}
-/* line 76, ../sass/main.sass */
-.selected rect {
-  stroke: #002b77;
-  stroke-width: 5;
-}
-
-/* line 80, ../sass/main.sass */
+/* line 67, ../sass/main.sass */
 #load, #save {
   position: relative;
   padding-right: 3.5625rem;
@@ -7236,7 +7011,7 @@ rect {
   border-color: white transparent transparent transparent;
 }
 
-/* line 85, ../sass/main.sass */
+/* line 70, ../sass/main.sass */
 .toolbar {
   display: block;
   width: auto;
@@ -7296,47 +7071,14 @@ rect {
   background: #0078a0;
 }
 
-/* line 89, ../sass/main.sass */
+/* line 74, ../sass/main.sass */
 .model-controls {
   margin-bottom: 0px;
   background-color: #f7f7f7;
   padding: 15px;
 }
 
-/* line 92, ../sass/main.sass */
-#output {
-  overflow: hidden;
-  z-index: 2;
-  width: 50px;
-  background-color: white;
-  border-left: 1px solid #909090;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  height: 90%;
-}
-
-/* line 103, ../sass/main.sass */
-table, .graph-container {
-  margin: 20px;
-}
-
-/* line 106, ../sass/main.sass */
-th, td {
-  border: 1px solid lightgrey;
-  padding: 5px;
-  text-align: center;
-  width: 50px;
-  overflow: hidden;
-  text-overflow: clip;
-}
-
-/* line 114, ../sass/main.sass */
-.domain {
-  display: none;
-}
-
-/* line 117, ../sass/main.sass */
+/* line 77, ../sass/main.sass */
 #name, #name:focus {
   position: absolute;
   border: none;
@@ -7352,6 +7094,88 @@ th, td {
   transition: none;
   color: #222222;
   font-size: 1rem;
+}
+
+/* line 95, ../sass/main.sass */
+line, rect {
+  cursor: pointer;
+}
+
+/* line 98, ../sass/main.sass */
+line {
+  stroke: rgba(10, 5, 30, 0.85);
+  stroke-width: 4;
+}
+
+/* line 102, ../sass/main.sass */
+.datum > rect {
+  fill: #63b8ff;
+}
+
+/* line 105, ../sass/main.sass */
+#workspace {
+  height: 90%;
+  overflow: hidden;
+}
+
+/* line 109, ../sass/main.sass */
+#workspace svg {
+  position: relative;
+}
+
+/* line 112, ../sass/main.sass */
+rect {
+  fill: #007be3;
+  stroke: 1;
+  stroke-opacity: 0.4;
+}
+
+/* line 117, ../sass/main.sass */
+.watching {
+  fill: #00447d;
+}
+
+/* line 120, ../sass/main.sass */
+.selected {
+  text-decoration: underline;
+}
+/* line 122, ../sass/main.sass */
+.selected rect, .selected .datum > rect {
+  stroke: #002b77;
+  stroke-width: 5;
+}
+
+/* line 127, ../sass/main.sass */
+#output {
+  overflow: hidden;
+  z-index: 2;
+  width: 50px;
+  background-color: white;
+  border-left: 1px solid #909090;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 90%;
+}
+
+/* line 138, ../sass/main.sass */
+table, .graph-container {
+  margin: 20px;
+}
+
+/* line 141, ../sass/main.sass */
+th, td {
+  border: 1px solid lightgrey;
+  padding: 5px;
+  text-align: center;
+  width: 50px;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+/* line 149, ../sass/main.sass */
+.domain {
+  display: none;
 }
 
 /* ==========================================================================

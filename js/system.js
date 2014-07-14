@@ -1,4 +1,4 @@
-define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], function(Variable, Flow, Output, Solver, _){
+define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.js"], function(Variable, Flow, Output, Solver, Datum, _){
 	"use strict";
 	var sys = {
 		watching: [],
@@ -52,7 +52,7 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 		vectorize: function(dt) {
 			var varnames, body, func, gencode;
 
-			gencode = this.watching.map(function(v){ return v.compile(varnames, dt); });
+			gencode = this.watching.map(function(v){ return v.compile(); });
 
 			body =  "return [" + gencode.join(",") + "];";
 
@@ -139,14 +139,11 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 			this.clear(); // wipe slate clean
 
 			_.map(variables, function(s){
-				var d = s.querySelector("display"), qs,
-				    v = new Variable(s.getAttribute("name"), 1.2*Number(d.getAttribute("x")), 1.2*Number(d.getAttribute("y")));
-				   
-			    if (qs = s.querySelector("eqn")) v.value = qs.textContent;
-
+				var d = s.querySelector("display"), qs, v; 
 
 				if (s.tagName == "STOCK") {
-				    v.color = d.getAttribute("color");
+					v = new Variable(s.getAttribute("name"), 1.2*Number(d.getAttribute("x")), 1.2*Number(d.getAttribute("y")));
+				    v.color = d.getAttribute("color");				   
 
 					qs = s.querySelectorAll("inflow");
 				    if (qs.length) { // if there are inflows
@@ -167,7 +164,11 @@ define(["variable", "flow", "output", "solver", "js/vendor/lodash.min.js"], func
 					    }).join(" - ");
 					}
 
+				} else {
+					v = new Datum(s.getAttribute("name"), 1.2*Number(d.getAttribute("x")), 1.2*Number(d.getAttribute("y")));
 				}
+
+			    if (qs = s.querySelector("eqn")) v.value = qs.textContent;
 
 				return v;
 			}).forEach(function(v){

@@ -30,13 +30,14 @@ html.no-js
       form#editor(method="get" action="/")
         .row
           #run.btn &#9654;
-          div.inp1
-            input#value(type='text', name="name" placeholder='value', maxlength='200')
-            span.error
-          div.inp2
-            label
-            input#formula(type='text', name="formula" placeholder='d/dt', maxlength='200')
-            span.error
+          .inputs
+            div.inp1
+              input#value(type='text', name="name" placeholder='value', maxlength='200')
+              span.error
+            div.inp2
+              label
+              input#formula(type='text', name="formula" placeholder='d/dt', maxlength='200')
+              span.error
           #btn-stock.btn Stock
           #btn-datum.btn Datum
           #btn-flow.btn Flow
