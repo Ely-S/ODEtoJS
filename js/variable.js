@@ -71,6 +71,8 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 		},
 
 		select: function() {
+			if(Variable.selected && Variable.selected !== this)
+				Variable.selected.deselect();
 			this.selected = true;
 			Variable.selected = this;
 			editors.fullmode();

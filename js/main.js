@@ -1,29 +1,6 @@
-require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendor/shortcut.js datum views js/vendor/foundation.min.js".split(" "),
-function($, SVG, Variable, Flow, Sys, Graphs, Shortcut, Datum){
+require("js/vendor/jquery-1.10.2.min.js svg variable flow system output js/vendor/shortcut.js editors datum views js/vendor/foundation.min.js".split(" "),
+function($, SVG, Variable, Flow, Sys, Graphs, Shortcut, editors, Datum){
 "use strict";
-
-/**
- * Provides requestAnimationFrame in a cross browser way.
- * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
- */
-
-if ( !window.requestAnimationFrame ) {
-
-	window.requestAnimationFrame = ( function() {
-
-		return window.webkitRequestAnimationFrame ||
-		window.mozRequestAnimationFrame ||
-		window.oRequestAnimationFrame ||
-		window.msRequestAnimationFrame ||
-		function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-
-			window.setTimeout( callback, 1000 / 60 );
-
-		};
-
-	} )();
-
-}
 
 jQuery(function($){
 
@@ -81,6 +58,7 @@ $("#workspace").click(function(e){
 		new (e.ctrlKey? Variable : Datum)
 			(alphabet.next(), e.clientX - pos.left, e.clientY - pos.top + $(document).scrollTop());
 	}
+	editors.fullmode();
 }).click(function(e){
 	// deselect
 	if (Variable.selected && Variable.selected.rect.node != e.target && e.target.tagName != "INPUT")
