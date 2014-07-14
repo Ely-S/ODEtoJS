@@ -65,9 +65,9 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 
 			func = new Function(varnames, body);
 
-			this.state0 = varnames.map(function(vn){
-				return Variable.find(vn).val.val;
-			});
+			this.state0 = this.watching.map(function(v){
+				return v.val.val;
+			}).__wrapped__;
 
 			return func.apply.bind(func);
 
