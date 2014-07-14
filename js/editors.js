@@ -22,9 +22,12 @@ define(function(){
 	};
 
 	Editor.prototype.place = function(el) {
-		var t = this;
+		var t = this, rect = el.getBoundingClientRect();
 		this.input
-			.css(el.getBoundingClientRect()) // overlap
+			// overlap name
+			.css(rect)
+			// adjust for scroll
+			.css("top", rect.top+$(document).scrollTop())
 			.width(100)
 			.blur(function(){
 				this.style.width = 0;		 // hide again

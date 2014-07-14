@@ -146,7 +146,7 @@ $("#uploader").change(function(e){
 });
 
 (function(x, y) {
-	$("#editor").submit(function(e){
+	$("#editor").on("change", "input", function(e){
 		e.preventDefault();
 		var formula = $("#formula").val().split("="),
 			f = Variable.find(formula[0]);
