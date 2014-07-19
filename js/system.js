@@ -15,9 +15,7 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 				times = this.specs.time = Number($("#times").val());
 
 			// need to have a consistent order for function and recorder
-			Variable.variables = _(Variable.variables).sortBy("name").sortBy(function(v){
-				return v.static();
-			});
+			Variable.variables = _(Variable.variables).sortBy("name").sortBy("v.static");
 
 			this.watching = Variable.variables.filter(function(e){
 				return e.watching;
@@ -52,21 +50,19 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 		vectorize: function(dt) {
 			var varnames, body, func, gencode;
 
-			gencode = this.watching.map(function(v){ return v.compile(); });
+			gencode = this.watching.map(function(v){ return v.compile(); }).join();
 
-			body =  "return [" + gencode.join(",") + "];";
+			body =  "return [" + gencode + "];";
 
-			varnames = _.uniq(gencode.__wrapped__[0]
-				.split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)\,]+/g)
+			varnames = _(gencode.split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)\,]+/g))
 				.filter(function(x){
 					return !(x.indexOf("?") > -1 || x=="Math.pow" || !isNaN(Number(x)));
-				})
-			);
+				}).uniq();
 
-			func = new Function(varnames, body);
+			func = new Function(varnames.__wrapped__, body);
 
-			this.state0 = this.watching.map(function(v){
-				return v.val.val;
+			this.state0 = varnames.map(function(v){
+				return Number(Variable.find(v).val.val);
 			}).__wrapped__;
 
 			return func.apply.bind(func);
@@ -103,9 +99,9 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 		},
 
 		save: function(name) {
-			var json = JSON.stringify(_.map(Variable.variables, function(v){
+			var json = JSON.stringify(_(Variable.variables).map(function(v){
 				return v.toJSON();
-			}));
+			}).__wrapped__);
 			name = name || "save";
 			localStorage.setItem(name, json);
 		},
@@ -117,7 +113,7 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 				this.clear();
 
 				_.map(state, function(v){
-					var n = new Variable(v.name, v.x, v.y);
+					var n = new (v.static ? Datum : Variable)(v.name, v.x, v.y);
 					_.assign(n, v);
 					return n;
 				}).forEach(function(v) {

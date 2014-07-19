@@ -142,11 +142,16 @@ $("#uploader").change(function(e){
 	});
 }(50, 50));
 
+$(document).on("close", function(){
+	Sys.save("last");
+})
 
-
+Sys.load("last");
+/*
 var a= new Variable(alphabet.next(), 100, 200);
 a.toggleWatch();
 a.set("1");
+*/
 menu.init();
 //$(".graph").click();
 //$("#load").click();

@@ -43,7 +43,8 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 				watching: this.watching,
 				value: this.val.val,
 				formula: this.formula,
-				name: this.name
+				name: this.name,
+				static: this.static
 			};
 		},
 
@@ -153,7 +154,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.links.push(flow);
 		},
 
-		discronnect: function(flow){
+		disconnect: function(flow){
 			this.links = _.without(this.links, flow);
 			return this;
 		},
@@ -166,9 +167,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 			this.formula = formula;
 		},
 
-		static: function(){
-			return (this.formula.trim() == "") || (this.formula.trim() == "0");
-		},
+		static: false,
 
 		compile: function(formula) {
 
@@ -181,7 +180,7 @@ define(["flow", "value", "svg", "editors", "js/vendor/lodash.min.js"], function(
 
 			this.linkNames().forEach(function(l){
 				var reg, rep,  other = Variable.find(l);
-				if (other && !other.compiling && other.static()) {
+				if (other && !other.compiling && other.static) {
 					reg = new RegExp([operators, "(", other.name, ")", operators].join(""), "g"),
 					rep = "$1("+other.compile()+")$3";
 					// not all browser accept the g flag to the RegExp constructor
