@@ -48,22 +48,35 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 		},
 
 		vectorize: function(dt) {
-			var varnames, body, func, gencode;
+			var varnames, body, func, gencode, code;
 
-			gencode = this.watching.map(function(v){ return v.compile(); }).join();
+			gencode = this.watching.map(function(v){ return v.compile(); })
 
-			body =  "return [" + gencode + "];";
-
-			varnames = _(gencode.split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)\,]+/g))
+			varnames = _(gencode.join().split(/[\*\+\-\/+\%\(\)\^ \<\>\(\)\,]+/g))
 				.filter(function(x){
 					return !(x.indexOf("?") > -1 || x=="Math.pow" || !isNaN(Number(x)));
-				}).uniq();
+				}).union(this.watching.pluck('name').__wrapped__).__wrapped__;
 
-			func = new Function(varnames.__wrapped__, body);
+			// expressions must be in the order of the function arguments (varnames)
+			code = gencode.sortBy(function(expression){
+				// return the index of the variable in varnames with its expression
+				for (var index, i = 0, vs=Variable.variables.__wrapped__, l = vs.length; i < l; i++) {
+					if (vs[i].compile() === expression ) {
+						index = varnames.indexOf(vs[i].name);
+						console.log(index);
+						if (index === -1) return varnames.length+1
+						return index;
+					}
+				} 
+			}).join();
 
-			this.state0 = varnames.map(function(v){
+			body =  "return [" + code + "];";
+
+			func = new Function(varnames, body);
+
+			this.state0 = _.map(varnames, function(v){
 				return Number(Variable.find(v).val.val);
-			}).__wrapped__;
+			});
 
 			return func.apply.bind(func);
 
@@ -91,7 +104,7 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 
 		clear: function(){
 			// clear
-			_.forEach(Variable.variables, function(v){
+			Variable.variables.forEach(function(v){
 				v.delete();
 			});
 

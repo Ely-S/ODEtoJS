@@ -49,6 +49,7 @@ define(["js/vendor/lodash.min.js", "js/vendor/dygraphs.js"], function(_, Dygraph
 			this.graph = new Dygraph(this.element, this.data, {
 				labels: this.labels,
                 legend: 'always',
+                logscale: true,
                 animatedZooms: true
             });
 		},
