@@ -10,7 +10,7 @@ define(["js/vendor/lodash.min.js", "js/vendor/d3.layout.min.js", "js/vendor/jque
 		height: 500,
 
 		setup: function(watching) {
-			this.length = watching.length;
+			this.length = watching.__wrapped__.length;
 			this.create(_(watching).pluck("val").pluck("name").__wrapped__);
 		},
 
