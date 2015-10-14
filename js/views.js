@@ -12,7 +12,7 @@ define(["system", "table", "graph", "graph2", "output", "js/vendor/rickshaw.min.
 		};
 	});
 
-//	System.views.create("console");
+	System.views.create("console");
 
 	System.views.new("graph", Graph);
 
