@@ -7107,6 +7107,7 @@ label.error {
   width: 0;
   padding: 0;
   margin: 0;
+  border: 0;
 }
 
 /* line 42, ../sass/main.sass */
