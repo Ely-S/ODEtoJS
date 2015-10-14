@@ -120,6 +120,7 @@ define(["variable", "flow", "output", "solver", "datum", "js/vendor/lodash.min.j
 		},
 
 		load: function(profile) {
+			if(localStorage[profile] === undefined) return;
 			var state = JSON.parse(localStorage[profile]);
 			if (typeof state == "object" && state.length) {
 
