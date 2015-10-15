@@ -1,0 +1,59 @@
+/*
+Syntax error: File to import not found or unreadable: foundation/functions.
+              Load paths:
+                /home/eli/Desktop/progs/systems
+                /home/eli/Desktop/progs/systems/sass
+        on line 13 of sass/foundation/foundation/settings.scss
+
+8: 
+9: // This is the default html and body font-size for the base rem value.
+10: // $rem-base: 16px;
+11: 
+12: // Allows the use of rem-calc() or lower-bound() in your settings
+13: @import "foundation/functions";
+14: 
+15: // $experimental: true;
+16: 
+17: // The default font-size is set to 100% of the browser style sheet (usually 16px)
+18: // for compatibility with browser-based text zoom or user-set defaults.
+
+Backtrace:
+sass/foundation/foundation/settings.scss:13
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:67:in `rescue in import'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:45:in `import'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:28:in `imported_file'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/import_node.rb:37:in `css_import?'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:217:in `visit_import'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:100:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `map'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:109:in `block in visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:121:in `with_environment'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:108:in `visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `block in visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:128:in `visit_root'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:100:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/visitors/perform.rb:7:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/tree/root_node.rb:20:in `render'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/engine.rb:315:in `_render'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/engine.rb:262:in `render'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:362:in `update_stylesheet'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:203:in `block in update_stylesheets'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:201:in `each'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:201:in `update_stylesheets'
+/var/lib/gems/1.9.1/gems/sass-3.2.19/lib/sass/plugin/compiler.rb:283:in `block in watch'
+/var/lib/gems/1.9.1/gems/listen-0.7.2/lib/listen/multi_listener.rb:108:in `call'
+/var/lib/gems/1.9.1/gems/listen-0.7.2/lib/listen/multi_listener.rb:108:in `on_change'
+/var/lib/gems/1.9.1/gems/listen-0.7.2/lib/listen/multi_listener.rb:117:in `block in initialize_adapter'
+/var/lib/gems/1.9.1/gems/listen-0.7.2/lib/listen/adapter.rb:198:in `call'
+/var/lib/gems/1.9.1/gems/listen-0.7.2/lib/listen/adapter.rb:198:in `report_changes'
+/var/lib/gems/1.9.1/gems/listen-0.7.2/lib/listen/adapter.rb:210:in `poll_changed_dirs'
+/var/lib/gems/1.9.1/gems/listen-0.7.2/lib/listen/adapters/linux.rb:48:in `block in start'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: File to import not found or unreadable: foundation/functions.\A               Load paths:\A                 /home/eli/Desktop/progs/systems\A                 /home/eli/Desktop/progs/systems/sass\A         on line 13 of sass/foundation/foundation/settings.scss\A \A 8: \A 9: // This is the default html and body font-size for the base rem value.\A 10: // $rem-base: 16px;\A 11: \A 12: // Allows the use of rem-calc() or lower-bound() in your settings\A 13: @import \"foundation/functions\";\A 14: \A 15: // $experimental: true;\A 16: \A 17: // The default font-size is set to 100% of the browser style sheet (usually 16px)\A 18: // for compatibility with browser-based text zoom or user-set defaults."; }
